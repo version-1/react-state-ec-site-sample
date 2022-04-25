@@ -1,23 +1,68 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { HashRouter, Routes, Route } from "react-router-dom";
+import Home from "screens/Home";
+import { IoCartOutline, IoPerson } from "react-icons/io5";
 
 function App() {
+  const login = true;
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+      <header className="header">
+        <div className="logo-container">
+          <div className="logo">
+            <p>テク</p>
+            <p>クロ</p>
+          </div>
+        </div>
+        <div className="menu">
+          <ul>
+            <li>Women</li>
+            <li>Men</li>
+            <li>Kids</li>
+          </ul>
+        </div>
+        <div className="icon-menu">
+          {login ? (
+            <ul>
+              <li>
+                <div className="menu-icon">
+                  <div>
+                    <IoCartOutline size={24} />
+                  </div>
+                  <p>カート</p>
+                </div>
+              </li>
+            </ul>
+          ) : (
+            <ul>
+              <li>
+                <div className="menu-icon">
+                  <div>
+                    <IoPerson size={24} />
+                  </div>
+                  <p>カート</p>
+                </div>
+              </li>
+            </ul>
+          )}
+        </div>
       </header>
+      <HashRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/men" element={<Home />} />
+          <Route path="/women" element={<Home />} />
+          <Route path="/kids" element={<Home />} />
+          <Route path="/accounts" element={<Home />}>
+            <Route path="edit" element={<Home />} />
+            <Route path="email/edit" element={<Home />} />
+          </Route>
+          <Route path="/items" element={<Home />}>
+            <Route path=":id" element={<Home />} />
+          </Route>
+        </Routes>
+      </HashRouter>
     </div>
   );
 }

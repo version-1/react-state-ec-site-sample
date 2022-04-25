@@ -1,0 +1,58 @@
+.home-container {
+}
+
+.home-hero {
+  width: 100%;
+}
+
+.home-hero-back {
+  position: absolute;
+  height: 60%;
+  left: 16px;
+}
+
+.home-hero-overlay {
+  position: absolute;
+  height: 480px;
+  width: 100%;
+  background: #22222235;
+}
+
+.home-hero-forward {
+  position: absolute;
+  height: 60%;
+  right: 16px;
+}
+
+.home-slide {
+  display: flex;
+}
+
+.home-slide li {
+  width: 100%;
+}
+
+.home-slide li.active {
+  height: 480px;
+  width: 100%;
+}
+
+.home-slide li {
+  width: 0;
+  height: 480px;
+}
+
+.home-slide li.active > img {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+  opacity: 1;
+  transition: opacity 0.3s ease-in;
+}
+
+.home-slide li > img {
+  object-fit: cover;
+  width: 0;
+  height: 0;
+  opacity: 0;
+}

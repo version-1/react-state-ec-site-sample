@@ -1,0 +1,44 @@
+.product {
+  text-align: left;
+  width: 200px;
+  margin-right: 32px;
+  margin-bottom: 32px;
+}
+
+.product-price {
+  margin-bottom: 8px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.product-headlines {
+  min-height: 200px;
+}
+
+.product-title {
+  font-size: 16px;
+}
+
+.product-colors {
+  display: flex;
+  margin-bottom: 8px;
+}
+
+.product-info {
+  display: flex;
+  color: gray;
+  justify-content: space-between;
+}
+
+.product-image {
+  width: 200px;
+  height: 260px;
+  margin-bottom: 16px;
+}
+
+.product-image img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+

@@ -1,0 +1,56 @@
+.container {
+  width: 100%;
+}
+
+.back {
+  position: absolute;
+  height: 70%;
+  left: 16px;
+}
+
+.forward {
+  position: absolute;
+  height: 70%;
+  right: 16px;
+}
+
+.overlay {
+  position: absolute;
+  height: 480px;
+  width: 100%;
+  background: #22222235;
+}
+
+.content {
+  display: flex;
+  width: 100%;
+}
+
+.content li {
+  width: 100%;
+}
+
+.content li.active {
+  height: 480px;
+  width: 100%;
+}
+
+.content li {
+  width: 0;
+  height: 480px;
+}
+
+.content li.active > img {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+  opacity: 1;
+  transition: opacity 0.3s ease-in;
+}
+
+.content li > img {
+  object-fit: cover;
+  width: 0;
+  height: 0;
+  opacity: 0;
+}

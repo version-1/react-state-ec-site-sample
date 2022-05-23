@@ -1,20 +1,22 @@
 import "./index.css";
 import Ratings from "components/molecules/ratings";
 
+const assetURL = "http://localhost:8080/assets"
+
 const Product = ({ item }) => {
   return (
     <div className="product" key={item.id}>
       <div className="product-image">
-        <img src={item.imageUrl} alt={item.title} />
+        <img src={assetURL + item.imageURL} alt={item.title} />
       </div>
       <div className="product-content">
         <ul className="product-colors">
-          {item.colors.map((color) => {
+          {Object.keys(item.colors).map((color) => {
             return (
               <li key={color.hex}>
                 <div
                   style={{
-                    background: color.hex,
+                    background: color,
                     marginRight: 4,
                     height: 16,
                     width: 16,

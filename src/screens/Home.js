@@ -12,33 +12,7 @@ const Home = () => {
     const fetch = async () => {
       const res = await fetchProducts();
 
-      const list = res.map((item) => {
-        return {
-          raw: item,
-          id: item.id,
-          title: item.title,
-          imageUrl: item.image,
-          price: Math.floor(item.price * 127),
-          rating: item.rating,
-          categories: [{ label: "MEN" }],
-          colors: [
-            {
-              hex: "red",
-            },
-            {
-              hex: "blue",
-            },
-            {
-              hex: "lightgray",
-            },
-            {
-              hex: "black",
-            },
-          ],
-          size: { min: "M", max: "L" },
-        };
-      });
-      setProducts(list);
+      setProducts(res.data);
     };
 
     fetch();
@@ -144,7 +118,6 @@ const Home = () => {
               }
 
               const [first, second, third] = products.slice(index, index + 3);
-              console.log(first, second, third)
               return (
                 <div className="product-list-row">
                   {first && <Product item={first} />}

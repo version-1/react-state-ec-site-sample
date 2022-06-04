@@ -1,0 +1,18 @@
+.container {
+}
+
+.content {
+  display: none;
+  height: 0px;
+}
+
+.open {
+  display: block;
+  height: auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

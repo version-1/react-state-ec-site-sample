@@ -3,6 +3,8 @@ import { IoSearchOutline } from "react-icons/io5";
 import Slide from "components/organisms/slide";
 import Dropdown from "components/atoms/select";
 import Product from "components/organisms/product";
+import TagList from "components/molecules/tagList";
+import SidebarSection from "components/organisms/section";
 import { fetchProducts } from "services/api";
 import "./Home.css";
 
@@ -44,20 +46,17 @@ const Home = () => {
         </div>
         <div className="main">
           <div className="sidebar">
+            <div style={{ marginBottom: 16 }}>
             <div className="sidebar-section">
               <h3>並び替え</h3>
               <Dropdown data={sortOptions} />
             </div>
             <div className="sidebar-section">
               <h3>フィルタ</h3>
-              <select>
-                <option value="latest">新着順</option>
-                <option value="higher-price">価格の高い順</option>
-                <option value="lower-price">価格の安い順</option>
-              </select>
+              <TagList data={["Men's", "Women's"]} />
             </div>
-            <div className="sidebar-section">
-              <h3>カテゴリ</h3>
+            </div>
+            <SidebarSection title="カテゴリ">
               <ul>
                 <li>
                   <label>
@@ -90,9 +89,8 @@ const Home = () => {
                   </label>
                 </li>
               </ul>
-            </div>
-            <div className="sidebar-section">
-              <h3>価格</h3>
+            </SidebarSection>
+            <SidebarSection title="価格">
               <ul>
                 {[
                   [0, 5000],
@@ -113,7 +111,9 @@ const Home = () => {
                   );
                 })}
               </ul>
-            </div>
+            </SidebarSection>
+            <SidebarSection title="カラー" />
+            <SidebarSection title="サイズ" />
           </div>
           <div className="products">
             {products.map((_item, index) => {

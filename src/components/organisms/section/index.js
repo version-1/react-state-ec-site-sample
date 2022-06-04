@@ -1,0 +1,22 @@
+import { useState } from "react";
+import { IoAdd, IoRemove } from "react-icons/io5";
+import classNames from "classnames";
+import style from "./index.module.css";
+
+const Section = ({ title, children }) => {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <section className={style.container}>
+      <div className={style.header} onClick={() => setOpen((open) => !open)}>
+        <h3>{title}</h3>
+        {open ? <IoRemove /> : <IoAdd />}
+      </div>
+      <div className={classNames(style.content, { [style.open]: open })}>
+        {children}
+      </div>
+    </section>
+  );
+};
+
+export default Section;

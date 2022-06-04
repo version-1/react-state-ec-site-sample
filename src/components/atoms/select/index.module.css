@@ -1,0 +1,51 @@
+
+.dropdown {
+  display: none;
+}
+
+.container {
+  width: 180px;
+}
+
+.triangle {
+  position: relative;
+  border: 8px solid white;
+  border-top: 8px solid var(--co-black);
+}
+
+.options {
+  position: absolute;
+  width: 180px;
+  cursor: pointer;
+  border: 1px solid var(--co-border);
+  height: 0px;
+  display: none;
+  box-shadow: 2px 4px 4px 0px var(--co-border);
+  background: var(--co-white);
+}
+
+.option {
+  padding: 16px;
+  border-bottom: 1px solid var(--co-border);
+  display: none;
+  height: 0px;
+}
+
+.option:hover {
+  background: #eee;
+  color: skyblue;
+}
+
+.active {
+  display: block;
+  height: auto;
+}
+
+.content {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid var(--co-border);
+  padding: 16px;
+}

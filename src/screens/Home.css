@@ -46,3 +46,11 @@
   padding: 8px;
 }
 
+.sidebar {
+  text-align: left;
+}
+
+.sidebar-section h3 {
+  text-align: left;
+}
+

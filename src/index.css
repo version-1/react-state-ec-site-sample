@@ -14,5 +14,7 @@ code {
 
 :root {
   --co-black: #222;
+  --co-border: #eee;
+  --co-white: #fefefe;
 }
 

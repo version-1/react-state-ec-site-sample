@@ -1,9 +1,16 @@
 import { useEffect, useState } from "react";
-import Slide from "components/organisms/slide";
 import { IoSearchOutline } from "react-icons/io5";
+import Slide from "components/organisms/slide";
+import Dropdown from "components/atoms/select";
 import Product from "components/organisms/product";
 import { fetchProducts } from "services/api";
 import "./Home.css";
+
+const sortOptions = [
+  { label: "新着順", value: "latest" },
+  { label: "価格の高い順", value: "higher-price" },
+  { label: "価格の安い順", value: "lower-price" },
+];
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -17,6 +24,7 @@ const Home = () => {
 
     fetch();
   }, []);
+
   return (
     <div className="home-container">
       <section className="home-hero">
@@ -38,11 +46,7 @@ const Home = () => {
           <div className="sidebar">
             <div className="sidebar-section">
               <h3>並び替え</h3>
-              <select>
-                <option value="latest">新着順</option>
-                <option value="higher-price">価格の高い順</option>
-                <option value="lower-price">価格の安い順</option>
-              </select>
+              <Dropdown data={sortOptions} />
             </div>
             <div className="sidebar-section">
               <h3>フィルタ</h3>

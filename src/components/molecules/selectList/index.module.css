@@ -1,0 +1,19 @@
+.container {
+
+}
+
+.item {
+  cursor: pointer;
+  padding: 16px;
+  border-bottom: 1px solid var(--co-border);
+}
+
+.item:hover {
+  background: var(--co-lightgray);
+  color: white;
+}
+
+.selected {
+  background: var(--co-black);
+  color: white;
+}

@@ -1,6 +1,7 @@
 .container {
   display: flex;
-  padding: 16px;
+  padding: 8px;
+  margin-bottom: 8px;
   justify-content: space-between;
   align-items: center;
   border: 1px solid var(--co-border);
@@ -8,4 +9,8 @@
 
 .label {
   padding-right: 16px;
+}
+
+.icon {
+  cursor: pointer;
 }

@@ -1,0 +1,15 @@
+.container {
+
+}
+
+.radio {
+  margin-right: 16px;
+  border-radius: 16px;
+}
+
+.item {
+  display: flex;
+  margin-bottom: 16px;
+  justify-content: space-between;
+  letter-spacing: 0.8px;
+}

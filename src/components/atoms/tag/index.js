@@ -5,7 +5,9 @@ const Tag = ({ label, onRemove }) => {
   return (
     <div className={style.container}>
       <p className={style.label}>{label}</p>
-      <IoClose onClick={onRemove} />
+      <p className={style.icon}>
+        <IoClose onClick={onRemove} />
+      </p>
     </div>
   );
 };

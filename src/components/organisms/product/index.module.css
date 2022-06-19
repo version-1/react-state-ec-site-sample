@@ -1,42 +1,40 @@
-.product {
+.container {
   text-align: left;
-  width: 200px;
-  margin-right: 32px;
   margin-bottom: 32px;
 }
 
-.product-price {
+.price {
   margin-bottom: 8px;
   font-size: 16px;
   font-weight: bold;
 }
 
-.product-headlines {
+.headlines {
   min-height: 200px;
 }
 
-.product-title {
+.title {
   font-size: 16px;
 }
 
-.product-colors {
+.colors {
   display: flex;
   margin-bottom: 8px;
 }
 
-.product-info {
+.info {
   display: flex;
   color: gray;
   justify-content: space-between;
 }
 
-.product-image {
-  width: 200px;
-  height: 260px;
+.image {
+  width: 240px;
+  height: 280px;
   margin-bottom: 16px;
 }
 
-.product-image img {
+.img {
   object-fit: cover;
   width: 100%;
   height: 100%;

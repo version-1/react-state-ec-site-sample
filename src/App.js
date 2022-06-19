@@ -1,6 +1,6 @@
 import "./App.css";
 import { HashRouter, Routes, Route } from "react-router-dom";
-import Home from "screens/Home";
+import Home from "screens/home";
 import { IoCartOutline, IoPerson } from "react-icons/io5";
 
 function App() {

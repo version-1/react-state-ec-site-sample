@@ -4,13 +4,13 @@
 
 .back {
   position: absolute;
-  height: 70%;
+  height: 50%;
   left: 16px;
 }
 
 .forward {
   position: absolute;
-  height: 70%;
+  height: 50%;
   right: 16px;
 }
 

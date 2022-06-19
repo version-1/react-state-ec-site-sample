@@ -10,7 +10,7 @@ const Section = ({ title, children }) => {
     <section className={style.container}>
       <div className={style.header} onClick={() => setOpen((open) => !open)}>
         <h3>{title}</h3>
-        {open ? <IoRemove /> : <IoAdd />}
+        <div className={style.toggle}>{open ? <IoRemove /> : <IoAdd />}</div>
       </div>
       <div className={classNames(style.content, { [style.open]: open })}>
         {children}

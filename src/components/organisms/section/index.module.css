@@ -1,7 +1,9 @@
 .container {
+  width: 240px;
 }
 
 .content {
+  width: 240px;
   display: none;
   height: 0px;
 }
@@ -9,6 +11,10 @@
 .open {
   display: block;
   height: auto;
+}
+
+.toggle {
+  cursor: pointer;
 }
 
 .header {

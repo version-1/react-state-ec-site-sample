@@ -34,7 +34,7 @@ const Product = ({ item }) => {
           <ul className={style.categories}>
             {item.categories.map((category) => {
               return (
-                <li>
+                <li key={category.label}>
                   <div>{category.label}</div>
                 </li>
               );

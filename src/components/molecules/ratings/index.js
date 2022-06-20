@@ -5,21 +5,22 @@ const Ratings = ({ rate }) => {
   const ratings = [];
   for (let i = 0; i < 50; i = i + 10) {
     const v = rate * 10;
-    if (v - i < 10 && (v - i) > 0) {
+    const key = `ratings-${i}`;
+    if (v - i < 10 && v - i > 0) {
       ratings.push(
-        <li>
+        <li key={key}>
           <IoStarHalfOutline />
         </li>
       );
     } else if (v - i <= 0) {
       ratings.push(
-        <li>
+        <li key={key}>
           <IoStarOutline />
         </li>
       );
     } else {
       ratings.push(
-        <li>
+        <li key={key}>
           <IoStarSharp />
         </li>
       );

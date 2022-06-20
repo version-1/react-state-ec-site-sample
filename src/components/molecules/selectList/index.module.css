@@ -9,7 +9,7 @@
 }
 
 .item:hover {
-  background: var(--co-lightgray);
+  background: var(--co-gray);
   color: white;
 }
 

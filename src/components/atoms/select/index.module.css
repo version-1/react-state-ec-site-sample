@@ -25,7 +25,7 @@
 }
 
 .option {
-  padding: 16px;
+  padding: 8px;
   border-bottom: 1px solid var(--co-border);
   display: none;
   height: 0px;
@@ -47,5 +47,5 @@
   justify-content: space-between;
   align-items: center;
   border: 1px solid var(--co-border);
-  padding: 16px;
+  padding: 8px;
 }

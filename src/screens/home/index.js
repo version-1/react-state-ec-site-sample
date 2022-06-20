@@ -5,8 +5,7 @@ import {
   IoChevronForward,
 } from "react-icons/io5";
 import { useSearchParams } from "react-router-dom";
-import qs from 'qs';
-import { serializeQueryParameters } from "services/query";
+import qs from "qs";
 import Slide from "components/organisms/slide";
 import Product from "components/organisms/product";
 import Sidebar from "components/templates/sidebar";
@@ -15,7 +14,7 @@ import { serialize, deserialize } from "models/filter";
 import style from "./index.module.css";
 
 const Home = () => {
-  let [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState([]);
   const [meta, setMeta] = useState([]);
   const [page, setPage] = useState(searchParams.get("page") || 1);
@@ -119,7 +118,7 @@ const Home = () => {
                       <IoChevronBack
                         size={24}
                         onClick={() => {
-                          fetch({ page: page - 1 });
+                          fetch({ page: page - 1, ...serialize(filters) });
                         }}
                       />
                     </li>
@@ -144,7 +143,7 @@ const Home = () => {
                       <IoChevronForward
                         size={24}
                         onClick={() => {
-                          fetch({ page: page + 1 });
+                          fetch({ page: page + 1, ...serialize(filters) });
                         }}
                       />
                     </li>

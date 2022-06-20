@@ -7,6 +7,7 @@ const SelectList = ({ data, selected, onClick }) => {
       {data.map((item) => {
         return (
           <li
+            key={item.value}
             className={classNames(style.item, {
               [style.selected]: selected.some((v) => v.value === item.value),
             })}

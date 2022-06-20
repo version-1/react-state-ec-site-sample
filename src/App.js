@@ -51,6 +51,7 @@ function App() {
       <HashRouter>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home />} />
           <Route path="/men" element={<Home />} />
           <Route path="/women" element={<Home />} />
           <Route path="/kids" element={<Home />} />

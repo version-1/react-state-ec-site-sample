@@ -4,30 +4,43 @@ import {
   IoChevronBack,
   IoChevronForward,
 } from "react-icons/io5";
+import { useSearchParams } from "react-router-dom";
+import qs from 'qs';
+import { serializeQueryParameters } from "services/query";
 import Slide from "components/organisms/slide";
 import Product from "components/organisms/product";
 import Sidebar from "components/templates/sidebar";
 import { fetchProducts } from "services/api";
+import { serialize, deserialize } from "models/filter";
 import style from "./index.module.css";
 
 const Home = () => {
+  let [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState([]);
   const [meta, setMeta] = useState([]);
-  const [page, setPage] = useState(1);
-  const [filters, setFilters] = useState([]);
+  const [page, setPage] = useState(searchParams.get("page") || 1);
+  const [filters, setFilters] = useState(() =>
+    deserialize(decodeURIComponent(searchParams.toString()))
+  );
 
-  const fetch = async ({ page } = {}) => {
-    const res = await fetchProducts({ page });
+  const fetch = async (params = {}) => {
+    const res = await fetchProducts(params);
 
+    const { page } = params;
     const { data, ...rest } = res;
+    const { limit, totalCount } = rest;
+
+    const maxPage = Math.floor(totalCount / limit) + 1;
 
     setProducts(data);
-    setMeta(rest);
+    setMeta({ ...rest, maxPage });
     setPage(page);
+    const serialziedParams = qs.stringify(params);
+    setSearchParams(serialziedParams);
   };
 
   useEffect(() => {
-    fetch();
+    fetch({ page, ...serialize(filters) });
   }, []);
 
   const pagination = useMemo(() => {
@@ -38,6 +51,7 @@ const Home = () => {
     const handleClick = (p) => async () => {
       fetch({
         page: p,
+        ...serialize(filters),
       });
     };
 
@@ -58,6 +72,12 @@ const Home = () => {
 
     return res;
   }, [page, filters, meta]);
+
+  const onChangeFilters = (params) => {
+    const _params = serialize(params);
+    fetch({ page, ..._params });
+    setFilters(params);
+  };
 
   const count = useMemo(() => {
     const cnt = meta.page * meta.limit;
@@ -84,7 +104,7 @@ const Home = () => {
           </div>
         </div>
         <div className={style.main}>
-          <Sidebar filters={filters} onChangeFilters={setFilters} />
+          <Sidebar filters={filters} onChangeFilters={onChangeFilters} />
           <div className={style.products}>
             <div className={style.productsHeader}>
               <div>
@@ -94,23 +114,23 @@ const Home = () => {
               </div>
               <div>
                 <ul className={style.pagination}>
-                  <li>
-                    <IoChevronBack
-                      size={24}
-                      onClick={() => {
-                        if (page > 1) {
+                  {page > 1 ? (
+                    <li style={{ cursor: "pointer" }}>
+                      <IoChevronBack
+                        size={24}
+                        onClick={() => {
                           fetch({ page: page - 1 });
-                        }
-                      }}
-                    />
-                  </li>
+                        }}
+                      />
+                    </li>
+                  ) : null}
                   {pagination.map((item) => {
                     return (
                       <li
                         key={`paigination-${item.label}`}
                         className={[
                           style.paginationItem,
-                          page === item.value
+                          String(page) === String(item.value)
                             ? style.paginationActiveItem
                             : undefined,
                         ].join(" ")}
@@ -119,19 +139,16 @@ const Home = () => {
                       </li>
                     );
                   })}
-                  <li>
-                    <IoChevronForward
-                      size={24}
-                      onClick={() => {
-                        const maxPage = Math.floor(
-                          meta.totalCount / meta.limit
-                        );
-                        if (maxPage > page) {
+                  {meta?.maxPage > page ? (
+                    <li style={{ cursor: "pointer" }}>
+                      <IoChevronForward
+                        size={24}
+                        onClick={() => {
                           fetch({ page: page + 1 });
-                        }
-                      }}
-                    />
-                  </li>
+                        }}
+                      />
+                    </li>
+                  ) : null}
                 </ul>
               </div>
             </div>
@@ -143,7 +160,7 @@ const Home = () => {
 
                 const [first, second, third] = products.slice(index, index + 3);
                 return (
-                  <div className={style.productListRow}>
+                  <div className={style.productListRow} key={_item.imageURL}>
                     {first && <Product item={first} />}
                     {second && <Product item={second} />}
                     {third && <Product item={third} />}

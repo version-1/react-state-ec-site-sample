@@ -4,3 +4,9 @@
   text-align: left;
 }
 
+.allClear {
+  cursor: pointer;
+  display: inline-block;
+  border-bottom: 1px solid var(--co-black);
+}
+

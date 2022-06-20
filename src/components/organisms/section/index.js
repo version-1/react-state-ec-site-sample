@@ -3,8 +3,8 @@ import { IoAdd, IoRemove } from "react-icons/io5";
 import classNames from "classnames";
 import style from "./index.module.css";
 
-const Section = ({ title, children }) => {
-  const [open, setOpen] = useState(false);
+const Section = ({ title, children, defaultOpen }) => {
+  const [open, setOpen] = useState(defaultOpen);
 
   return (
     <section className={style.container}>

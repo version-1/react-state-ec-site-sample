@@ -2,122 +2,15 @@ import Dropdown from "components/atoms/select";
 import TagList from "components/molecules/tagList";
 import SelectList from "components/molecules/selectList";
 import RadioGroup from "components/molecules/radioGroup";
+import {
+  sortOptions,
+  categoryList,
+  colorList,
+  priceLabels,
+  sizeList,
+} from "models/filter";
 import SidebarSection from "components/organisms/section";
 import style from "./index.module.css";
-
-const sortOptions = [
-  { label: "新着順", value: "latest" },
-  { label: "価格の高い順", value: "higher-price" },
-  { label: "価格の安い順", value: "lower-price" },
-];
-
-const categoryList = [
-  {
-    label: "Men's",
-    value: "men",
-  },
-  {
-    label: "Women's",
-    value: "women",
-  },
-  {
-    label: "コート",
-    value: "coats",
-  },
-  {
-    label: "T シャツ",
-    code: "t-shirts",
-  },
-  {
-    label: "ジーンズ",
-    value: "jeans",
-  },
-  {
-    label: "ボトムス",
-    value: "shorts",
-  },
-  {
-    label: "その他（アクセサリ・ベルト）",
-    value: "others",
-  },
-];
-
-const priceLabels = [
-  {
-    label: "¥0 ~ 5,000",
-    value: { min: 0, max: 5000 },
-  },
-  {
-    label: "¥5,000 ~ 10,000",
-    value: { min: 5000, max: 10000 },
-  },
-  {
-    label: "¥10,000 ~ 20,000",
-    value: { min: 10000, max: 20000 },
-  },
-  {
-    label: "¥20,000 ~ 30,000",
-    value: { min: 20000, max: 30000 },
-  },
-  {
-    label: "¥30,000 ~ 40,000",
-    value: { min: 30000, max: 40000 },
-  },
-  {
-    label: "¥40,000 ~ 50,000",
-    value: { min: 40000, max: 50000 },
-  },
-  {
-    label: "¥50,000 ~ ",
-    value: { min: 50000, max: Infinity },
-  },
-];
-
-const sizeList = [
-  {
-    label: "XS",
-    value: "xs",
-  },
-  {
-    label: "S",
-    value: "s",
-  },
-  {
-    label: "M",
-    value: "m",
-  },
-  {
-    label: "L",
-    value: "l",
-  },
-  {
-    label: "XL",
-    value: "xl",
-  },
-];
-
-const colorList = [
-  {
-    label: "レッド",
-    value: "red",
-  },
-  {
-    label: "ネイビー",
-    value: "navy",
-  },
-  {
-    label: "グレー",
-    value: "gray",
-  },
-  {
-    label: "ブラック",
-    value: "black",
-  },
-  {
-    label: "ホワイト",
-    value: "white",
-  },
-];
 
 const Sidebar = ({ filters, onChangeFilters }) => {
   const _onChangeFilters = (item) => {
@@ -128,6 +21,12 @@ const Sidebar = ({ filters, onChangeFilters }) => {
     } else {
       onChangeFilters([...filters, item]);
     }
+  };
+
+  const _onChangeRadioGroup = (item) => {
+    const _filters = filters.filter((item) => item.group !== "price");
+
+    onChangeFilters([..._filters, item]);
   };
 
   return (
@@ -146,26 +45,53 @@ const Sidebar = ({ filters, onChangeFilters }) => {
               onChangeFilters(filters.filter((f) => item.value !== f.value));
             }}
           />
+          {filters.length > 0 ? (
+            <p
+              className={style.allClear}
+              onClick={() => {
+                onChangeFilters([]);
+              }}
+            >
+              絞り込みを全て削除
+            </p>
+          ) : null}
         </div>
       </div>
-      <SidebarSection title="カテゴリ">
+      <SidebarSection
+        title="カテゴリ"
+        defaultOpen={filters.some((item) => item.group === "categories")}
+      >
         <SelectList
           data={categoryList}
           selected={filters}
           onClick={_onChangeFilters}
         />
       </SidebarSection>
-      <SidebarSection title="価格">
-        <RadioGroup name="price-range" data={priceLabels} />
+      <SidebarSection
+        title="価格"
+        defaultOpen={filters.some((item) => item.group === "price")}
+      >
+        <RadioGroup
+          name="price-range"
+          data={priceLabels}
+          onClick={_onChangeRadioGroup}
+          value={filters.find((item) => item.group === "price")?.value}
+        />
       </SidebarSection>
-      <SidebarSection title="サイズ">
+      <SidebarSection
+        title="サイズ"
+        defaultOpen={filters.some((item) => item.group === "size")}
+      >
         <SelectList
           data={sizeList}
           selected={filters}
           onClick={_onChangeFilters}
         />
       </SidebarSection>
-      <SidebarSection title="カラー">
+      <SidebarSection
+        title="カラー"
+        defaultOpen={filters.some((item) => item.group === "color")}
+      >
         <SelectList
           data={colorList}
           selected={filters}

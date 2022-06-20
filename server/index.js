@@ -57,7 +57,9 @@ app.get("/api/v1/products", (req, res) => {
 
     if (
       categories.length &&
-      !item.categories.some((cat) => categories.includes(cat.code))
+      !categories.every((cat) => {
+        return (item.categories || []).some((it) => it.code === cat);
+      })
     ) {
       return false;
     }

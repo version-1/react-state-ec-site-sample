@@ -17,10 +17,13 @@ const Home = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState([]);
   const [meta, setMeta] = useState([]);
+  const [text, setText] = useState(searchParams.get("text") || "");
   const [page, setPage] = useState(searchParams.get("page") || 1);
   const [filters, setFilters] = useState(() =>
     deserialize(decodeURIComponent(searchParams.toString()))
   );
+
+  const serializedFilters = useMemo(() => serialize(filters), [filters]);
 
   const fetch = async (params = {}) => {
     const res = await fetchProducts(params);
@@ -39,7 +42,7 @@ const Home = () => {
   };
 
   useEffect(() => {
-    fetch({ page, ...serialize(filters) });
+    fetch({ page, text, ...serializedFilters });
   }, []);
 
   const pagination = useMemo(() => {
@@ -50,6 +53,7 @@ const Home = () => {
     const handleClick = (p) => async () => {
       fetch({
         page: p,
+        text,
         ...serialize(filters),
       });
     };
@@ -70,11 +74,11 @@ const Home = () => {
     }
 
     return res;
-  }, [page, filters, meta]);
+  }, [page, filters, meta, text]);
 
   const onChangeFilters = (params) => {
     const _params = serialize(params);
-    fetch({ page, ..._params });
+    fetch({ page, text, ..._params });
     setFilters(params);
   };
 
@@ -96,6 +100,11 @@ const Home = () => {
               className={style.searchFormInput}
               type="text"
               placeholder="キーワードで探す"
+              value={text}
+              onChange={(e) => {
+                setText(e.target.value);
+                fetch({ page, text: e.target.value, ...serializedFilters });
+              }}
             />
             <a href="#!" className={style.searchFormButton}>
               <IoSearchOutline size="32" color="white" />
@@ -118,7 +127,7 @@ const Home = () => {
                       <IoChevronBack
                         size={24}
                         onClick={() => {
-                          fetch({ page: page - 1, ...serialize(filters) });
+                          fetch({ page: page - 1, text, ...serializedFilters });
                         }}
                       />
                     </li>
@@ -143,7 +152,7 @@ const Home = () => {
                       <IoChevronForward
                         size={24}
                         onClick={() => {
-                          fetch({ page: page + 1, ...serialize(filters) });
+                          fetch({ page: page + 1, text, ...serializedFilters });
                         }}
                       />
                     </li>

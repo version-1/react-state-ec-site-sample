@@ -1,0 +1,16 @@
+.pagination {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.paginationItem {
+  cursor: pointer;
+  position: relative;
+  bottom: 2px;
+  padding: 8px;
+}
+
+.paginationActiveItem {
+  font-weight: bold;
+}

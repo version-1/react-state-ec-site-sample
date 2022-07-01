@@ -1,0 +1,87 @@
+.container {
+}
+
+.main {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 16px;
+}
+
+.content {
+  padding: 32px;
+}
+
+.contentHeader {
+  width: 80%;
+  margin: auto;
+}
+
+.productsContent {
+  width: 100%;
+}
+
+.productListRow {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.productListTitle {
+  text-align: left;
+  border-bottom: 1px solid lightgray;
+  width: 100%;
+  padding: 8px;
+}
+
+.searchForm {
+  display: flex;
+  width: 100%;
+}
+
+.products {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  padding: 32px;
+  width: 796px;
+}
+
+.productsHeader {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.searchFormInput {
+  padding: 8px;
+  padding: 8px 16px;
+  width: 80%;
+}
+
+.searchFormButton {
+  display: block;
+  background: var(--co-black);
+  padding: 8px;
+}
+
+.sidebar {
+  text-align: left;
+}
+
+
+.pagination {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.paginationItem {
+  cursor: pointer;
+  position: relative;
+  bottom: 2px;
+  padding: 8px;
+}
+
+.paginationActiveItem {
+  font-weight: bold;
+}

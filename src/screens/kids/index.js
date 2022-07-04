@@ -4,15 +4,15 @@ import Slide from "components/organisms/slide";
 import { categoryList } from "models/filter";
 import style from "./index.module.css";
 
-const Men = () => {
+const Kids = () => {
   return (
     <Layout>
       <section>
-        <Slide defaultIndex={1} slide={false} />
+        <Slide defaultIndex={2} slide={false} />
       </section>
-      <Products defaultFilters={[categoryList[0]]} />
+      <Products defaultFilters={[categoryList[2]]} />
     </Layout>
   );
 };
 
-export default Men;
+export default Kids;

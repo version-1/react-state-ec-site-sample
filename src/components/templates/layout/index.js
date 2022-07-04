@@ -8,18 +8,29 @@ const Layout = ({ children }) => {
     <div className={style.container}>
       <header className={style.header}>
         <div className={style.logoContainer}>
-          <div className={style.logo}>
-            <p className={style.logoText}>テク</p>
-            <p className={style.logoText}>クロ</p>
-          </div>
+          <Link to="/">
+            <div className={style.logo}>
+              <p className={style.logoText}>テク</p>
+              <p className={style.logoText}>クロ</p>
+            </div>
+          </Link>
         </div>
         <div className={style.menu}>
           <ul className={style.menuList}>
             <li className={style.menuItem}>
-              <Link to="/women">Women</Link>
+              <Link className={style.menuItemText} to="/women">
+                Women
+              </Link>
             </li>
             <li className={style.menuItem}>
-              <Link to="/men">Men</Link>
+              <Link className={style.menuItemText} to="/men">
+                Men
+              </Link>
+            </li>
+            <li className={style.menuItem}>
+              <Link className={style.menuItemText} to="/kids">
+                Kids
+              </Link>
             </li>
           </ul>
         </div>

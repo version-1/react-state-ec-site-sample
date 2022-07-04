@@ -18,6 +18,11 @@ export const categoryList = [
     group: "categories",
   },
   {
+    label: "Kids",
+    value: "kids",
+    group: "categories",
+  },
+  {
     label: "コート",
     value: "coats",
     group: "categories",
@@ -140,16 +145,22 @@ export const colorList = [
 
 const indexedByValue = (list, cb) => {
   return list.reduce((acc, item) => {
-    const key = cb ? cb(item.value) : item.value;
+    const key = cb ? cb(item) : item.value;
     return { ...acc, [key]: item };
   }, {});
+};
+
+export const uniq = (list) => {
+  return Object.values(
+    indexedByValue(list, (item) => `${item.group}-${item.value}`)
+  );
 };
 
 const indexedSizeList = indexedByValue(sizeList);
 const indexedColorList = indexedByValue(colorList);
 const indexedCategoryList = indexedByValue(categoryList);
 
-const priceKey = ({ min, max } = {}) => {
+const priceKey = ({ value: { min, max } } = {}) => {
   return `${min}-${max}`;
 };
 const indexedPriceLabels = indexedByValue(priceLabels, priceKey);

@@ -20,6 +20,7 @@ const Product = ({ item }) => {
               <li key={color.hex}>
                 <div
                   style={{
+                    border: '1px solid #bbb',
                     background: color,
                     marginRight: 4,
                     height: 16,

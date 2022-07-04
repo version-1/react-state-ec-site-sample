@@ -1,6 +1,8 @@
-:global(:root) {
-  --header-bg-color: #;
+:root {
+  --header-bg-color: #eee;
   --black: #222;
+  --gray: #eee;
+  --gray-0: #fefefe;
   --gray-1: #eee;
   --gray-2: #ddd;
   --gray-3: #ccc;
@@ -27,6 +29,10 @@ ul {
 p {
   margin: 0;
   padding: 0;
+}
+
+a {
+  text-decoration: none;
 }
 
 .logo p {

@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: var(--gray-1);
+  background-color: var(--gray-0);
 }
 
 .logo {
@@ -15,11 +15,6 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-}
-
-.logo p {
-  font-size: 12px;
-  font-weight: bold;
 }
 
 .logoContainer {
@@ -40,6 +35,8 @@
 }
 
 .logoText {
+  font-size: 12px;
+  font-weight: bold;
   padding: 0;
   margin: 0;
 }
@@ -53,6 +50,15 @@
   margin-right: 16px;
 
   font-size: 18px;
+}
+
+.menuItemText {
+  color: var(--co-black);
+  transition: all 0.5s;
+}
+
+.menuItemText:hover {
+  color: var(--gray-3);
 }
 
 .iconMenuList {

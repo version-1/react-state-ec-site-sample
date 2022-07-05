@@ -1644,13 +1644,13 @@ module.exports = [
   {
     "id": 35,
     "code": "yMDiCWSx",
-    "title": "メンズ Tシャツ",
+    "title": "レディース Tシャツ",
     "price": 1000,
     "imageURL": "/clothing/t-shirts/men/dmitry-vechorko-yXhJ_eQK0mE-unsplash.jpg",
     "categories": [
       {
-        "code": "men",
-        "label": "メンズ"
+        "code": "women",
+        "label": "レディース"
       },
       {
         "code": "t-shirts",

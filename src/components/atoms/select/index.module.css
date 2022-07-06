@@ -1,10 +1,6 @@
-
-.dropdown {
-  display: none;
-}
-
 .container {
-  width: 180px;
+  width: 100%;
+  position: relative;
 }
 
 .triangle {
@@ -15,7 +11,8 @@
 
 .options {
   position: absolute;
-  width: 180px;
+  width: 100%;
+  text-align: left;
   cursor: pointer;
   border: 1px solid var(--co-border);
   height: 0px;

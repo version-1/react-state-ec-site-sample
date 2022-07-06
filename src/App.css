@@ -10,6 +10,10 @@
   --gray-5: #999;
 }
 
+*, *:after {
+  box-sizing: border-box;
+}
+
 ul {
   padding: 0;
   margin: 0;

@@ -1,0 +1,8 @@
+.base {
+  border: 0;
+  background: var(--co-black);
+  color: var(--co-white);
+  width: 100%;
+  padding: 16px;
+  font-size: 18px;
+}

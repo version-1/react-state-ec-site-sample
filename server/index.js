@@ -86,12 +86,17 @@ app.get("/api/v1/products", (req, res) => {
   });
 });
 
-app.get("/api/v1/products", (req, res) => {
-  const { page = 1, limit = 21 } = req.query;
+app.get("/api/v1/products/:code", (req, res) => {
+  const { code } = req.params;
+
+  const product = products.find((item) => item.code === code);
+  if (!product) {
+    res.status(404).json();
+    return
+  }
 
   res.status(200).json({
-    data: products.slice((page - 1) * limit, page * limit),
-    totalCount: products.length,
+    data: product,
   });
 });
 

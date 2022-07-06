@@ -13,10 +13,97 @@ code {
 }
 
 :root {
+  --header-bg-color: #eee;
   --co-black: #222;
   --co-border: #eee;
   --co-white: #fefefe;
   --co-lightgray: #ddd;
   --co-gray: #6a6a6a;
+  --co-gray: #eee;
+  --co-gray-0: #fefefe;
+  --co-gray-1: #eee;
+  --co-gray-2: #ddd;
+  --co-gray-3: #ccc;
+  --co-gray-4: #bbb;
+  --co-gray-5: #999;
 }
 
+*, *:after {
+  box-sizing: border-box;
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  text-align: left;
+}
+
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+p {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+.logo p {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.logo p {
+  padding: 0;
+  margin: 0;
+}
+
+.menu ul {
+  display: flex;
+}
+
+.menu li {
+  display: inline-block;
+  margin-right: 16px;
+
+  font-size: 18px;
+}
+
+.icon-menu ul {
+  display: flex;
+}
+
+.icon-menu li {
+  display: inline-block;
+  margin-right: 16px;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -4,6 +4,7 @@ import Home from "screens/home";
 import Men from "screens/men";
 import Women from "screens/women";
 import Kids from "screens/kids";
+import Item from "screens/items";
 
 function App() {
   return (
@@ -18,8 +19,8 @@ function App() {
             <Route path="edit" element={<Home />} />
             <Route path="email/edit" element={<Home />} />
           </Route>
-          <Route path="/items" element={<Home />}>
-            <Route path=":id" element={<Home />} />
+          <Route path="/items">
+            <Route path=":code" element={<Item />} />
           </Route>
         </Routes>
       </HashRouter>

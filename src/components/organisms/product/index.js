@@ -1,10 +1,11 @@
 import style from "./index.module.css";
 import Ratings from "components/molecules/ratings";
-
-const assetURL = "http://localhost:8080/assets";
+import { Link } from "react-router-dom";
+import { assetURL } from 'constants/index';
 
 const Product = ({ item }) => {
   return (
+    <Link to={`/items/${item.code}`}>
     <div className={style.container} key={item.id}>
       <div className={style.image}>
         <img
@@ -52,6 +53,7 @@ const Product = ({ item }) => {
         </div>
       </div>
     </div>
+    </Link>
   );
 };
 

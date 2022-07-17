@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import style from "./index.module.css";
 import classNames from "classnames";
 
-const Select = ({ data }) => {
-  const [selected, setSelected] = useState(data[0]);
+const Select = ({ data, defaultValue }) => {
+  const [selected, setSelected] = useState(defaultValue || data[0]);
   const [active, setActive] = useState(false);
 
   const closeOptions = () => {
@@ -27,7 +27,7 @@ const Select = ({ data }) => {
           setActive(true);
         }}
       >
-        <p>{selected.label}</p>
+        <p>{selected?.label || '未選択'}</p>
         <div>
           <div className={style.triangle}></div>
         </div>

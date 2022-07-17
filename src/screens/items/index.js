@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
+import classNames from "classnames";
 import Layout from "components/templates/layout";
 import Dropdown from "components/atoms/select";
 import Button from "components/atoms/button";
@@ -11,6 +12,11 @@ import styles from "./index.module.css";
 function Item() {
   const { code } = useParams();
   const [item, setItem] = useState();
+  const [form, setForm] = useState({
+    color: undefined,
+    size: undefined,
+    amount: undefined,
+  });
 
   useEffect(() => {
     if (!code) {
@@ -25,17 +31,27 @@ function Item() {
     init();
   }, [code]);
 
+  const sizes = useMemo(() => {
+    if (!form.color) {
+      return undefined;
+    }
+
+    return item.stocks[form.color];
+  }, [item, form]);
+
   const amounts = useMemo(() => {
-    return new Array(10)
+    if (!form.color || !form.size) {
+      return [];
+    }
+
+    return new Array(sizes[form.size] || 0)
       .fill("")
       .map((_, index) => ({ label: index + 1, value: index + 1 }));
-  }, [item]);
+  }, [sizes, form]);
 
   if (!item) {
     return null;
   }
-
-  console.log(item);
 
   return (
     <Layout>
@@ -86,12 +102,36 @@ function Item() {
               <h3 className={styles.label}>カラー</h3>
               <div>
                 <ul className={styles.colors}>
-                  {colorList.map((item) => {
+                  {colorList.map((c) => {
+                    const hasStock = Object.values(
+                      item.stocks[c.value] || {}
+                    ).some((it) => it > 0);
+
                     return (
                       <div
-                        className={styles.color}
-                        style={{ background: item.value }}
-                      ></div>
+                        className={styles.colorContainer}
+                        onClick={() => {
+                          if (!hasStock) {
+                            return;
+                          }
+
+                          setForm({
+                            ...form,
+                            color: c.value,
+                          });
+                        }}
+                      >
+                        <div
+                          className={classNames(styles.colorOverlay, {
+                            [styles.colorDisabled]: !hasStock,
+                            [styles.colorSelected]: form.color === c.value,
+                          })}
+                        ></div>
+                        <div
+                          className={styles.color}
+                          style={{ background: c.value }}
+                        ></div>
+                      </div>
                     );
                   })}
                 </ul>
@@ -100,8 +140,34 @@ function Item() {
                 <h3 className={styles.label}>サイズ</h3>
                 <div>
                   <ul className={styles.sizes}>
-                    {sizeList.map((item) => {
-                      return <div className={styles.size}>{item.label}</div>;
+                    {sizeList.map((size) => {
+                      const hasStock = sizes
+                        ? (sizes[size.value] || 0) > 0
+                        : true;
+
+                      return (
+                        <div
+                          className={styles.sizeContainer}
+                          onClick={() => {
+                            if (!hasStock) {
+                              return;
+                            }
+
+                            setForm({
+                              ...form,
+                              size: size.value,
+                            });
+                          }}
+                        >
+                          <div
+                            className={classNames(styles.sizeOverlay, {
+                              [styles.sizeDisabled]: !hasStock,
+                              [styles.sizeSelected]: form.size === size.value,
+                            })}
+                          ></div>
+                          <div className={styles.size}>{size.label}</div>
+                        </div>
+                      );
                     })}
                   </ul>
                 </div>

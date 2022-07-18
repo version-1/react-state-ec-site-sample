@@ -27,3 +27,18 @@ export const fetchProduct = async ({
   const res = await fetch(`http://localhost:8080/api/v1/products/${code}`);
   return await res.json();
 };
+
+export const fetchProductByCodes = async ({
+  codes
+}) => {
+  const qs = codes.reduce((acc, code, index) => {
+    if (index === 0 ) {
+      return `codes[]=${code}`
+    }
+
+    return acc + `&codes[]=${code}`
+  }, "")
+
+  const res = await fetch(`http://localhost:8080/api/v1/cart/products?${qs}`);
+  return await res.json();
+};

@@ -10,8 +10,38 @@ app.use(express.json());
 app.use(bodyParser.json({ type: "application/*+json" }));
 app.use(cors());
 
+const withColors = (item) => {
+  item.colors = {};
+  Object.keys(item.stocks).forEach((key) => {
+    const sizes = item.stocks[key];
+    Object.keys(sizes).forEach((s) => {
+      if (sizes[s] > 0) {
+        item.colors[key] = true;
+      }
+    });
+  });
+};
+
 app.get("/api/v1/", (req, res) => {
   res.status(200).json({ message: "ok" });
+});
+
+app.get("/api/v1/cart/products", (req, res) => {
+  const { codes = [] } = req.query;
+
+  const data = products.reduce((acc, item) => {
+    if (!codes.includes(item.code)) {
+      return acc
+    }
+
+    withColors(item)
+
+    return [...acc, item]
+  }, []);
+
+  res.status(200).json({
+    data,
+  });
 });
 
 app.get("/api/v1/products", (req, res) => {
@@ -35,15 +65,7 @@ app.get("/api/v1/products", (req, res) => {
       });
     });
 
-    item.colors = {};
-    Object.keys(item.stocks).forEach((key) => {
-      const sizes = item.stocks[key];
-      Object.keys(sizes).forEach((s) => {
-        if (sizes[s] > 0) {
-          item.colors[key] = true;
-        }
-      });
-    });
+    withColors(item)
 
     if (
       text &&
@@ -92,7 +114,7 @@ app.get("/api/v1/products/:code", (req, res) => {
   const product = products.find((item) => item.code === code);
   if (!product) {
     res.status(404).json();
-    return
+    return;
   }
 
   res.status(200).json({

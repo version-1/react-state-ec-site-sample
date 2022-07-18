@@ -1,9 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useCallback, useMemo, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import classNames from "classnames";
 import Layout from "components/templates/layout";
 import Dropdown from "components/atoms/select";
 import Button from "components/atoms/button";
+import { useCart } from "hooks/useCart";
 import { fetchProduct } from "services/api";
 import { assetURL } from "constants/index";
 import { sizeList, colorList } from "models/filter";
@@ -17,6 +18,9 @@ function Item() {
     size: undefined,
     amount: undefined,
   });
+  const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
+  const { add, has } = useCart();
 
   useEffect(() => {
     if (!code) {
@@ -49,6 +53,14 @@ function Item() {
       .map((_, index) => ({ label: index + 1, value: index + 1 }));
   }, [sizes, form]);
 
+  const onChange = useCallback(
+    (form) => {
+      setForm(form);
+      setErrors({});
+    },
+    [setForm, setErrors]
+  );
+
   if (!item) {
     return null;
   }
@@ -62,7 +74,6 @@ function Item() {
             src={assetURL + item.imageURL}
             alt={item.title}
           />
-
           <div className={styles.imageList}>
             <h3 className={styles.label}>商品イメージ</h3>
             <ul className={styles.images}>
@@ -115,7 +126,7 @@ function Item() {
                             return;
                           }
 
-                          setForm({
+                          onChange({
                             ...form,
                             color: c.value,
                           });
@@ -135,6 +146,7 @@ function Item() {
                     );
                   })}
                 </ul>
+                <p className={styles.errorMessage}>{errors.color}</p>
               </div>
               <div className={styles.row}>
                 <h3 className={styles.label}>サイズ</h3>
@@ -153,7 +165,7 @@ function Item() {
                               return;
                             }
 
-                            setForm({
+                            onChange({
                               ...form,
                               size: size.value,
                             });
@@ -170,6 +182,7 @@ function Item() {
                       );
                     })}
                   </ul>
+                  <p className={styles.errorMessage}>{errors.size}</p>
                 </div>
               </div>
             </div>
@@ -179,11 +192,49 @@ function Item() {
             <div className={styles.row}>
               <h3 className={styles.label}>数量</h3>
               <div className={styles.dropdown}>
-                <Dropdown data={amounts} />
+                <Dropdown
+                  data={amounts}
+                  onSelect={(item) => {
+                    onChange({
+                      ...form,
+                      amount: item.value,
+                    });
+                  }}
+                />
+                <p className={styles.errorMessage}>{errors.amount}</p>
               </div>
             </div>
             <div>
-              <Button label="カートに入れる" />
+              <Button
+                label="カートに入れる"
+                disabled={has(item) || Object.values(errors).length > 0}
+                onClick={() => {
+                  const validationErrors = {};
+                  if (!form.color) {
+                    validationErrors.color = "カラーを選択してください";
+                  }
+
+                  if (!form.size) {
+                    validationErrors.size = "サイズを選択してください";
+                  }
+
+                  if (!form.amount) {
+                    validationErrors.amount = "数量を選択してください";
+                  }
+
+                  setErrors(validationErrors);
+                  if (Object.keys(validationErrors).length > 0) {
+                    return;
+                  }
+
+                  add({
+                    code: item.code,
+                    product: item,
+                    form,
+                  });
+                  navigate('/cart')
+                }}
+              />
             </div>
           </div>
         </div>

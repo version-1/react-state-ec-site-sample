@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import style from "./index.module.css";
 import classNames from "classnames";
 
-const Select = ({ data, defaultValue }) => {
+const Select = ({ data, defaultValue, onSelect }) => {
   const [selected, setSelected] = useState(defaultValue || data[0]);
   const [active, setActive] = useState(false);
 
@@ -45,6 +45,7 @@ const Select = ({ data, defaultValue }) => {
               className={classNames(style.option, { [style.active]: active })}
               onClick={() => {
                 setSelected(item);
+                onSelect(item);
               }}
             >
               {item.label}

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
 import { useSearchParams } from "react-router-dom";
 import qs from "qs";
-import Product from "components/organisms/product";
+import ProductList from "components/organisms/productList";
 import Pagination from "components/organisms/pagination";
 import Sidebar from "components/templates/sidebar";
 import { fetchProducts } from "services/api";
@@ -100,22 +100,7 @@ const Products = ({ defaultFilters = [] }) => {
               />
             </div>
           </div>
-          <div className={style.productsContent}>
-            {products.map((_item, index) => {
-              if (index % 3 !== 0) {
-                return null;
-              }
-
-              const [first, second, third] = products.slice(index, index + 3);
-              return (
-                <div className={style.productListRow} key={_item.imageURL}>
-                  {first && <Product item={first} />}
-                  {second && <Product item={second} />}
-                  {third && <Product item={third} />}
-                </div>
-              );
-            })}
-          </div>
+          <ProductList products={products} />
         </div>
       </div>
     </section>

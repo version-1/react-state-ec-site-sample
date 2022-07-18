@@ -1,0 +1,117 @@
+.container {
+  width: 60%;
+  margin: auto;
+  margin-top: 128px;
+}
+
+.title {
+  border-bottom: 1px solid var(--co-gray);
+  margin-bottom: 64px;
+}
+
+.content {
+  margin-bottom: 32px;
+}
+
+.buttons {
+  display: flex;
+}
+
+.emptyState {
+  height: 200px;
+  width: 100%;
+  padding: 64px;
+}
+
+.emptyStateText {
+  text-align: center;
+  font-size: 20px;
+}
+
+.product {
+  display: flex;
+  border-bottom: 1px solid var(--co-gray);
+  padding: 16px;
+}
+
+.left {
+  flex: 1;
+  padding: 16px;
+}
+
+.center {
+  flex: 3;
+}
+
+.right {
+  flex: 1;
+  margin: auto;
+}
+
+.imageContainer {
+  width: 128px;
+  height: 128px;
+}
+
+.image {
+  width: 100%;
+  object-fit: cover;
+  height: 100%;
+}
+
+.price {
+  font-size: 20px;
+}
+
+.action {
+  color: #666;
+  font-size: 20px;
+}
+
+.delete {
+  display: flex;
+  align-items: center;
+}
+
+.deleteLabel {
+  margin-left: 8px;
+}
+
+.subtotal {
+  display: flex;
+}
+
+.summary {
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--co-gray);
+}
+
+.summaryLabel {
+  margin-right: 16px;
+}
+
+.summaryValue {
+}
+
+.summarySmall {
+  font-size: 12px;
+}
+
+.summaryMedium {
+
+}
+
+.summaryLarge {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.subtotalLeft {
+  flex: 3;
+}
+
+.subtotalRight {
+  flex: 2;
+}

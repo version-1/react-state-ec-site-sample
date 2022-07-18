@@ -38,12 +38,14 @@ const Layout = ({ children }) => {
           {login ? (
             <ul className={style.iconMenuList}>
               <li className={style.iconMenuItem}>
-                <div className="menu-icon">
-                  <div>
-                    <IoCartOutline size={24} />
+                <Link to="/cart">
+                  <div className="menu-icon">
+                    <div>
+                      <IoCartOutline size={24} />
+                    </div>
+                    <p>カート</p>
                   </div>
-                  <p>カート</p>
-                </div>
+                </Link>
               </li>
             </ul>
           ) : (

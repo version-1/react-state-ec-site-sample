@@ -1,8 +1,21 @@
 .base {
+  cursor: pointer;
   border: 0;
   background: var(--co-black);
   color: var(--co-white);
   width: 100%;
   padding: 16px;
   font-size: 18px;
+}
+
+.outline {
+  border: 1px solid var(--co-black);
+  color: var(--co-black);
+  background: white;
+}
+
+.disabled {
+  border: 1px solid var(--co-gray);
+  color: var(--co-white);
+  background: var(--co-gray);
 }

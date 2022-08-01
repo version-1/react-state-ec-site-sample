@@ -1,0 +1,120 @@
+.container {
+  width: 60%;
+  margin: auto;
+  margin-top: 128px;
+  display: flex;
+}
+
+.twinForm {
+  display: flex;
+}
+
+.input {
+  width: 100%;
+  border: 1px solid var(--co-border);
+  padding: 16px;
+}
+
+.fieldTitle {
+  margin: 0;
+  font-weight: normal;
+}
+
+.textFieldContainer {
+  width: 100%;
+  align-items: center;
+  padding: 16px 0;
+  margin-right: 8px;
+}
+
+.textFieldLabel {
+  text-align: left;
+  display: block;
+  padding: 8px 0;
+  font-size: 18px;
+}
+
+.card {
+  display: flex;
+  padding: 32px;
+  border: 1px solid var(--co-border);
+}
+
+.cardInfo {
+  margin-left: 32px;
+}
+
+.cardBrand {
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.cardNumber {
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.cardDetails {
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.newCard {
+  color: #444;
+  font-size: 18px;
+  padding: 16px 0px;
+  text-align: left;
+}
+
+.left {
+  flex: 3;
+}
+
+.right {
+  padding: 0 32px;
+  flex: 2;
+}
+
+.subtotal {
+  /* background: var(--co-gray-2); */
+}
+
+.summary {
+  border: 1px solid var(--co-gray-1);
+}
+
+.rightSection {
+  padding: 8px;
+  margin-bottom: 32px;
+}
+
+.rightSectionTitle {
+  font-size: 20px;
+  margin-bottom: 32px;
+}
+
+.product {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--co-gray-1);
+}
+
+.productLeft {
+  flex: 1;
+  margin-right: 32px;
+}
+
+.productRight {
+  flex: 2;
+}
+
+.productPrice {
+  font-size: 18px;
+  margin: 8px 0;
+}
+
+.image {
+  width: 100px;
+}

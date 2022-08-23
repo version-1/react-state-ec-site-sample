@@ -1,0 +1,18 @@
+.container {
+
+}
+
+.content {
+  width: 60%;
+  margin: auto;
+  margin-top: 128px;
+}
+
+.message {
+  text-align: center;
+  margin-bottom: 128px;
+}
+
+.buttons {
+  display: flex
+}

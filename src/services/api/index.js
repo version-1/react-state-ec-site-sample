@@ -21,6 +21,11 @@ export const fetchProducts = async ({
   return await res.json();
 };
 
+export const fetchUser = async () => {
+  const res = await fetch(`http://localhost:8080/api/v1/user`);
+  return await res.json();
+};
+
 export const fetchProduct = async ({
   code
 }) => {

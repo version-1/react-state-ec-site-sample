@@ -21,9 +21,10 @@ function PaymentConfirmation() {
   return (
     <Layout>
       <PaymentTemplate
+        readOnly
         submitLabel="支払いを完了させる"
         defaultValue={defaultValue}
-        onSubmit={(payment) => {
+        onSubmit={() => {
           navigate("/cart/payment/complete");
         }}
       />

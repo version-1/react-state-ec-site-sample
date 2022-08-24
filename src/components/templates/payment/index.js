@@ -48,29 +48,27 @@ const fieldMap = {
   address1: "番地",
 };
 
-function Payment({ defaultValue, submitLabel, onSubmit }) {
+function Payment({ readOnly, defaultValue, submitLabel, onSubmit }) {
   const [errors, setErrors] = useState({});
   const [products, setProducts] = useState([]);
   const { summary, cart, codes } = useCart();
   const navigate = useNavigate();
-  const [payment, setPayment] = useState(
-    defaultValue || {
-      userInfo: {
-        firstName: undefined,
-        lastName: undefined,
-        firstNameKana: undefined,
-        lastNameKana: undefined,
-        zipCode: undefined,
-        prefecture: undefined,
-        city: undefined,
-        address1: undefined,
-        address2: undefined,
-        card: "dummy",
-      },
-      codes,
-      summary,
-    }
-  );
+  const [payment, setPayment] = useState({
+    userInfo: {
+      lastName: undefined,
+      firstNameKana: undefined,
+      lastNameKana: undefined,
+      zipCode: undefined,
+      prefecture: undefined,
+      city: undefined,
+      address1: undefined,
+      address2: undefined,
+      card: "dummy",
+    },
+    codes,
+    summary,
+    ...(defaultValue || {}),
+  });
 
   const { userInfo } = payment;
 
@@ -138,14 +136,14 @@ function Payment({ defaultValue, submitLabel, onSubmit }) {
                   label="姓"
                   onChange={handleOnChange("lastName")}
                   value={userInfo.lastName}
-                  readOnly={defaultValue}
+                  readOnly={readOnly}
                   errorMessage={errors.lastName}
                 />
                 <TextField
                   label="名"
                   onChange={handleOnChange("firstName")}
                   value={userInfo.firstName}
-                  readOnly={defaultValue}
+                  readOnly={readOnly}
                   errorMessage={errors.firstName}
                 />
               </div>
@@ -156,14 +154,14 @@ function Payment({ defaultValue, submitLabel, onSubmit }) {
                   label="セイ"
                   onChange={handleOnChange("lastNameKana")}
                   value={userInfo.lastNameKana}
-                  readOnly={defaultValue}
+                  readOnly={readOnly}
                   errorMessage={errors.lastNameKana}
                 />
                 <TextField
                   label="メイ"
                   onChange={handleOnChange("firstNameKana")}
                   value={userInfo.firstNameKana}
-                  readOnly={defaultValue}
+                  readOnly={readOnly}
                   errorMessage={errors.firstNameKana}
                 />
               </div>
@@ -173,7 +171,7 @@ function Payment({ defaultValue, submitLabel, onSubmit }) {
               <TextField
                 onChange={handleOnChange("zipCode")}
                 value={userInfo.zipCode}
-                readOnly={defaultValue}
+                readOnly={readOnly}
                 errorMessage={errors.zipCode}
               />
             </div>
@@ -182,7 +180,7 @@ function Payment({ defaultValue, submitLabel, onSubmit }) {
               <TextField
                 onChange={handleOnChange("prefecture")}
                 value={userInfo.prefecture}
-                readOnly={defaultValue}
+                readOnly={readOnly}
                 errorMessage={errors.prefecture}
               />
             </div>
@@ -191,7 +189,7 @@ function Payment({ defaultValue, submitLabel, onSubmit }) {
               <TextField
                 onChange={handleOnChange("city")}
                 value={userInfo.city}
-                readOnly={defaultValue}
+                readOnly={readOnly}
                 errorMessage={errors.city}
               />
             </div>
@@ -200,7 +198,7 @@ function Payment({ defaultValue, submitLabel, onSubmit }) {
               <TextField
                 onChange={handleOnChange("address1")}
                 value={userInfo.address1}
-                readOnly={defaultValue}
+                readOnly={readOnly}
                 errorMessage={errors.address1}
               />
             </div>
@@ -211,7 +209,7 @@ function Payment({ defaultValue, submitLabel, onSubmit }) {
               <TextField
                 onChange={handleOnChange("address2")}
                 value={userInfo.address2}
-                readOnly={defaultValue}
+                readOnly={readOnly}
                 errorMessage={errors.address2}
               />
             </div>
@@ -228,7 +226,7 @@ function Payment({ defaultValue, submitLabel, onSubmit }) {
                   <p className={styles.cardDetails}>TECH TARO | 08 / 2025</p>
                 </div>
               </div>
-              {defaultValue ? null : (
+              {readOnly ? null : (
                 <div className={styles.newCard}>
                   <a>+ 新しいカードを登録する</a>
                 </div>

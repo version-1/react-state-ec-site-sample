@@ -3,12 +3,15 @@ const app = express();
 const port = 8080;
 const bodyParser = require("body-parser");
 const products = require("./datasource/products");
+const User = require("./models/user");
 const cors = require("cors");
 
 app.use(express.static("public"));
 app.use(express.json());
 app.use(bodyParser.json({ type: "application/*+json" }));
 app.use(cors());
+
+const loginUserId = 1
 
 const withColors = (item) => {
   item.colors = {};
@@ -121,6 +124,19 @@ app.get("/api/v1/products/:code", (req, res) => {
     data: product,
   });
 });
+
+app.get("/api/v1/user", (req, res) => {
+  const user = User.find(loginUserId);
+  if (!user) {
+    res.status(404).json();
+    return;
+  }
+
+  res.status(200).json({
+    data: user.serialize,
+  });
+});
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

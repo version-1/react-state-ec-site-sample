@@ -1,4 +1,5 @@
 import "./App.css";
+import { useEffect, useState } from "react";
 import { HashRouter, Routes, Route } from "react-router-dom";
 import Home from "screens/home";
 import Men from "screens/men";
@@ -9,8 +10,20 @@ import Cart from "screens/cart";
 import Payment from "screens/cart/payment";
 import PaymentConfirmation from "screens/cart/payment/confirmation";
 import PaymentComplete from "screens/cart/payment/complete";
+import { fetchUser } from "services/api";
 
 function App() {
+  const [user, setUser] = useState()
+
+  useEffect(() => {
+    const init = async() => {
+     const res = await fetchUser()
+      setUser(res.data)
+    }
+
+    init()
+  }, [])
+
   return (
     <div className="App">
       <HashRouter>
@@ -19,7 +32,7 @@ function App() {
           <Route path="/men" element={<Men />} />
           <Route path="/women" element={<Women />} />
           <Route path="/kids" element={<Kids />} />
-          <Route path="/cart/payment" element={<Payment />} />
+          <Route path="/cart/payment" element={<Payment user={user} />} />
           <Route
             path="/cart/payment/confirmation"
             element={<PaymentConfirmation />}

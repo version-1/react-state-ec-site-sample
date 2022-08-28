@@ -70,3 +70,7 @@
   margin-right: 16px;
 }
 
+.iconMenuItemContent {
+  color: var(--co-black);
+}
+

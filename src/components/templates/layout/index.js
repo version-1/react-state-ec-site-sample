@@ -1,9 +1,9 @@
 import style from "./index.module.css";
 import { Link } from "react-router-dom";
-import { IoCartOutline, IoPerson } from "react-icons/io5";
+import { IoCartOutline, IoPerson, IoEnterOutline } from "react-icons/io5";
 
 const login = true;
-const Layout = ({ children }) => {
+const Layout = ({ guest, children }) => {
   return (
     <div className={style.container}>
       <header className={style.header}>
@@ -15,52 +15,68 @@ const Layout = ({ children }) => {
             </div>
           </Link>
         </div>
-        <div className={style.menu}>
-          <ul className={style.menuList}>
-            <li className={style.menuItem}>
-              <Link className={style.menuItemText} to="/women">
-                Women
-              </Link>
-            </li>
-            <li className={style.menuItem}>
-              <Link className={style.menuItemText} to="/men">
-                Men
-              </Link>
-            </li>
-            <li className={style.menuItem}>
-              <Link className={style.menuItemText} to="/kids">
-                Kids
-              </Link>
-            </li>
-          </ul>
-        </div>
-        <div className={style.iconMenu}>
-          {login ? (
-            <ul className={style.iconMenuList}>
-              <li className={style.iconMenuItem}>
-                <Link to="/cart">
-                  <div className="menu-icon">
-                    <div>
-                      <IoCartOutline size={24} />
-                    </div>
-                    <p>カート</p>
-                  </div>
+        {guest ? null : (
+          <div className={style.menu}>
+            <ul className={style.menuList}>
+              <li className={style.menuItem}>
+                <Link className={style.menuItemText} to="/women">
+                  Women
+                </Link>
+              </li>
+              <li className={style.menuItem}>
+                <Link className={style.menuItemText} to="/men">
+                  Men
+                </Link>
+              </li>
+              <li className={style.menuItem}>
+                <Link className={style.menuItemText} to="/kids">
+                  Kids
                 </Link>
               </li>
             </ul>
-          ) : (
-            <ul className={style.iconMenuList}>
-              <li className={style.iconMenuItem}>
-                <div className="menu-icon">
-                  <div>
-                    <IoPerson size={24} />
-                  </div>
-                  <p>ログイン</p>
-                </div>
-              </li>
-            </ul>
-          )}
-        </div>
+          </div>
+        )}
+        {guest ? null : (
+          <div className={style.iconMenu}>
+            {login ? (
+              <ul className={style.iconMenuList}>
+                <li className={style.iconMenuItem}>
+                  <Link to="/cart">
+                    <div className={style.iconMenuItemContent}>
+                      <div>
+                        <IoCartOutline size={24} />
+                      </div>
+                      <p>カート</p>
+                    </div>
+                  </Link>
+                </li>
+                <li className={style.iconMenuItem}>
+                  <Link to="/cart">
+                    <div className={style.iconMenuItemContent}>
+                      <div>
+                        <IoPerson size={24} />
+                      </div>
+                      <p>アカウント</p>
+                    </div>
+                  </Link>
+                </li>
+              </ul>
+            ) : (
+              <ul className={style.iconMenuList}>
+                <li className={style.iconMenuItem}>
+                  <Link to="/account">
+                    <div className={style.iconMenuItemContent}>
+                      <div>
+                        <IoEnterOutline size={24} />
+                      </div>
+                      <p>ログイン</p>
+                    </div>
+                  </Link>
+                </li>
+              </ul>
+            )}
+          </div>
+        )}
       </header>
       {children}
     </div>

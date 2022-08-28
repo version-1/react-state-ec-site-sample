@@ -1,0 +1,28 @@
+.input {
+  width: 100%;
+  border: 1px solid var(--co-border);
+  padding: 16px;
+}
+
+.fieldTitle {
+  margin: 0;
+  font-weight: normal;
+}
+
+.textFieldContainer {
+  width: 100%;
+  align-items: center;
+  padding: 16px 0;
+  margin-right: 8px;
+}
+
+.textFieldLabel {
+  text-align: left;
+  display: block;
+  padding: 8px 0;
+  font-size: 18px;
+}
+
+.errorMessages {
+  color: var(--co-danger);
+}

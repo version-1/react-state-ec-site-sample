@@ -4,14 +4,21 @@ const port = 8080;
 const bodyParser = require("body-parser");
 const products = require("./datasource/products");
 const User = require("./models/user");
+const UserToken = require("./models/user_token");
 const cors = require("cors");
+const { logMiddleware, authMiddleware } = require("./middlewares");
 
 app.use(express.static("public"));
 app.use(express.json());
 app.use(bodyParser.json({ type: "application/*+json" }));
 app.use(cors());
+app.use(logMiddleware);
+app.use(authMiddleware);
+
+const baseRoute = (path) => `/api/v1${path || ''}`
 
 const loginUserId = 1
+const loginUserPassword = "password"
 
 const withColors = (item) => {
   item.colors = {};
@@ -25,11 +32,11 @@ const withColors = (item) => {
   });
 };
 
-app.get("/api/v1/", (req, res) => {
+app.get(baseRoute(), (req, res) => {
   res.status(200).json({ message: "ok" });
 });
 
-app.get("/api/v1/cart/products", (req, res) => {
+app.get(baseRoute("/cart/products"), (req, res) => {
   const { codes = [] } = req.query;
 
   const data = products.reduce((acc, item) => {
@@ -47,7 +54,7 @@ app.get("/api/v1/cart/products", (req, res) => {
   });
 });
 
-app.get("/api/v1/products", (req, res) => {
+app.get(baseRoute("/products"), (req, res) => {
   const {
     page = 1,
     limit = 21,
@@ -111,7 +118,7 @@ app.get("/api/v1/products", (req, res) => {
   });
 });
 
-app.get("/api/v1/products/:code", (req, res) => {
+app.get(baseRoute("/products/:code"), (req, res) => {
   const { code } = req.params;
 
   const product = products.find((item) => item.code === code);
@@ -125,7 +132,7 @@ app.get("/api/v1/products/:code", (req, res) => {
   });
 });
 
-app.get("/api/v1/user", (req, res) => {
+app.get(baseRoute("/user"), (_req, res) => {
   const user = User.find(loginUserId);
   if (!user) {
     res.status(404).json();
@@ -137,6 +144,28 @@ app.get("/api/v1/user", (req, res) => {
   });
 });
 
+app.post(baseRoute("/auth/token"), (req, res) => {
+  const user = User.find(loginUserId);
+  if (!user) {
+    res.status(404).json({});
+    return;
+  }
+
+  const { email, password } = req.body;
+  if (email !== user.email || password !== loginUserPassword) {
+    res.status(403).json({});
+    return;
+  }
+
+  const userToken = UserToken.find(loginUserId);
+
+  res.status(200).json({
+    data: {
+      user: user.serialize,
+      token: userToken.token
+    }
+  });
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

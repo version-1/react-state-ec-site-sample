@@ -6,36 +6,7 @@ import Subtotal from "components/organisms/subtotal";
 import Button from "components/atoms/button";
 import { assetURL } from "constants/index";
 import { fetchProductByCodes } from "services/api";
-
-function TextField(props) {
-  const { label, errorMessage, ...rest } = props;
-
-  return (
-    <div className={styles.textFieldContainer}>
-      {label && <label className={styles.textFieldLabel}>{label}</label>}
-      <TextInput {...rest} />
-      <ErrorMessages message={errorMessage} />
-    </div>
-  );
-}
-function TextInput(props) {
-  return (
-    <input
-      className={styles.input}
-      type="text"
-      {...props}
-      disabled={props.readOnly}
-    />
-  );
-}
-
-function ErrorMessages({ message }) {
-  if (!message) {
-    return <p>&nbsp;</p>;
-  }
-
-  return <p className={styles.errorMessages}>{message}</p>;
-}
+import { TextField } from "components/atoms/textField";
 
 const fieldMap = {
   lastName: "姓",

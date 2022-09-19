@@ -1,14 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TextField } from "components/atoms/textField";
 import Button from "components/atoms/button";
 import Layout from "components/templates/layout";
+import { useNavigate } from "react-router-dom";
 import styles from "./index.module.css";
 import { createToken } from "services/api";
 
-function Login() {
+function Login({ user }) {
+  const navigate = useNavigate();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    if (localStorage.getItem("token") && user) {
+      navigate("/");
+    }
+  }, [user, navigate]);
 
   const validate = () => {
     const newErrors = {};
@@ -22,7 +30,7 @@ function Login() {
 
     setErrors(newErrors);
 
-    return !Object.keys(newErrors).length
+    return !Object.keys(newErrors).length;
   };
 
   return (
@@ -56,11 +64,12 @@ function Login() {
                 const res = await createToken({ email, password });
                 if (res) {
                   localStorage.setItem("token", res.data.token);
+                  navigate("/");
                 }
               } catch (e) {
                 if (e.status === 403) {
-                  alert("メールアドレスかパスワードが正しくありません。")
-                  return
+                  alert("メールアドレスかパスワードが正しくありません。");
+                  return;
                 }
               }
             }}

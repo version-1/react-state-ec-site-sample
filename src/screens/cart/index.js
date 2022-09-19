@@ -10,7 +10,7 @@ import styles from "./index.module.css";
 import { assetURL } from "constants/index";
 import ProductList from "components/organisms/productList";
 
-function Cart() {
+function Cart({ user }) {
   const [products, setProducts] = useState([]);
   const { summary, cart, codes } = useCart();
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ function Cart() {
   }, [codes]);
 
   return (
-    <Layout>
+    <Layout user={user}>
       <div className={styles.container}>
         <h2 className={styles.title}>カート</h2>
         <div className={styles.content}>

@@ -10,7 +10,7 @@ import { assetURL } from "constants/index";
 import { sizeList, colorList } from "models/filter";
 import styles from "./index.module.css";
 
-function Item() {
+function Item({ user }) {
   const { code } = useParams();
   const [item, setItem] = useState();
   const [form, setForm] = useState({
@@ -66,7 +66,7 @@ function Item() {
   }
 
   return (
-    <Layout>
+    <Layout user={user}>
       <div className={styles.container}>
         <div className={styles.left}>
           <img
@@ -232,7 +232,7 @@ function Item() {
                     product: item,
                     form,
                   });
-                  navigate('/cart')
+                  navigate("/cart");
                 }}
               />
             </div>

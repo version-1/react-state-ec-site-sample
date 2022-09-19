@@ -29,26 +29,29 @@ function App() {
     <div className="App">
       <HashRouter>
         <Routes>
-          <Route path="/" element={<Home />} caseSensitive />
-          <Route path="/men" element={<Men />} />
-          <Route path="/women" element={<Women />} />
-          <Route path="/kids" element={<Kids />} />
+          <Route path="/" element={<Home user={user} />} caseSensitive />
+          <Route path="/men" element={<Men user={user} />} />
+          <Route path="/women" element={<Women user={user} />} />
+          <Route path="/kids" element={<Kids user={user} />} />
           <Route path="/cart">
-            <Route path="" element={<Cart />} />
+            <Route path="" element={<Cart user={user} />} />
             <Route path="payment" element={<Payment user={user} />} />
             <Route
               path="payment/confirmation"
-              element={<PaymentConfirmation />}
+              element={<PaymentConfirmation user={user} />}
             />
-            <Route path="payment/complete" element={<PaymentComplete />} />
+            <Route
+              path="payment/complete"
+              element={<PaymentComplete user={user} />}
+            />
           </Route>
           <Route path="/accounts">
-            <Route path="login" element={<Login />} />
-            <Route path="edit" element={<Home />} />
-            <Route path="email/edit" element={<Home />} />
+            <Route path="login" element={<Login user={user} />} />
+            <Route path="edit" element={<Home user={user} />} />
+            <Route path="email/edit" element={<Home user={user} />} />
           </Route>
           <Route path="/items">
-            <Route path=":code" element={<Item />} />
+            <Route path=":code" element={<Item user={user} />} />
           </Route>
         </Routes>
       </HashRouter>

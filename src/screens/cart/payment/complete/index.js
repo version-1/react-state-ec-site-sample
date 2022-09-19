@@ -1,14 +1,13 @@
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./index.module.css";
 import Layout from "components/templates/layout";
 import Button from "components/atoms/button";
 
-function PaymentComplete() {
+function PaymentComplete({ user }) {
   const navigate = useNavigate();
 
   return (
-    <Layout>
+    <Layout user={user}>
       <div className={styles.container}>
         <div className={styles.content}>
           <h2 className={styles.message}>支払いを完了しました</h2>

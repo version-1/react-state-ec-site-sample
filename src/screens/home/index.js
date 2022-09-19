@@ -2,9 +2,9 @@ import Layout from "components/templates/layout";
 import Products from "components/templates/products";
 import Slide from "components/organisms/slide";
 
-const Home = () => {
+const Home = ({ user }) => {
   return (
-    <Layout>
+    <Layout user={user}>
       <section>
         <Slide />
       </section>

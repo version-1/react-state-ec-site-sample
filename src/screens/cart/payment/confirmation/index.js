@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Layout from "components/templates/layout";
 import PaymentTemplate from "components/templates/payment";
 
-function PaymentConfirmation() {
+function PaymentConfirmation({ user }) {
   const location = useLocation();
   const navigate = useNavigate();
   const { payment: defaultValue } = location?.state || {};
@@ -19,7 +19,7 @@ function PaymentConfirmation() {
   }
 
   return (
-    <Layout>
+    <Layout user={user}>
       <PaymentTemplate
         readOnly
         submitLabel="支払いを完了させる"

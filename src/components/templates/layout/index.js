@@ -2,8 +2,10 @@ import style from "./index.module.css";
 import { Link } from "react-router-dom";
 import { IoCartOutline, IoPerson, IoEnterOutline } from "react-icons/io5";
 
-const login = true;
-const Layout = ({ guest, children }) => {
+const Layout = ({ guest, user, children }) => {
+  // INFO: サーバー側で固定でユーザを返すので、トークンの有無だけでログインを判断
+  const login = !!(localStorage.getItem("token") && user);
+
   return (
     <div className={style.container}>
       <header className={style.header}>

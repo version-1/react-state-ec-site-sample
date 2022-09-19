@@ -3,9 +3,9 @@ import Products from "components/templates/products";
 import Slide from "components/organisms/slide";
 import { categoryList } from "models/filter";
 
-const Women = () => {
+const Women = ({ user }) => {
   return (
-    <Layout>
+    <Layout user={user}>
       <section>
         <Slide defaultIndex={0} slide={false} />
       </section>
@@ -14,4 +14,4 @@ const Women = () => {
   );
 };
 
-export default Women
+export default Women;

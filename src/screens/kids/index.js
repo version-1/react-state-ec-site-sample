@@ -4,9 +4,9 @@ import Slide from "components/organisms/slide";
 import { categoryList } from "models/filter";
 import style from "./index.module.css";
 
-const Kids = () => {
+const Kids = ({ user }) => {
   return (
-    <Layout>
+    <Layout user={user}>
       <section>
         <Slide defaultIndex={2} slide={false} />
       </section>

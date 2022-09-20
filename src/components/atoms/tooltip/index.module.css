@@ -1,0 +1,30 @@
+.tooltip {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.tip {
+  position: absolute;
+  top: -30px;
+  padding: 8px;
+  opacity: 0;
+  background: var(--co-black);
+  color: var(--co-white);
+}
+
+.tooltip:hover .tip {
+  display: block;
+  opacity: 1;
+  transition: all 0.2s ease;
+}
+
+.arrow {
+  position: absolute;
+  bottom: -16px;
+  left: 45%;
+  width: 16px;
+  height: 16px;
+  border: 8px solid transparent;
+  border-top: 8px solid var(--co-black);
+}

@@ -1,0 +1,28 @@
+.container {
+  background: var(--co-white);
+  display: none;
+  position: absolute;
+  right: 0;
+  min-width: 200px;
+  z-index: 1000;
+  border: 1px solid var(--co-border);
+  border-bottom: 0;
+}
+
+.show {
+  display: block;
+}
+
+.item {
+  padding: 16px;
+  border-bottom: 1px solid var(--co-border);
+  color: var(--co-black);
+}
+
+.item:hover {
+  opacity: 0.5;
+}
+
+.disruptive {
+  color: var(--co-danger);
+}

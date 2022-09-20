@@ -7,6 +7,7 @@ import Button from "components/atoms/button";
 import { assetURL } from "constants/index";
 import { fetchProductByCodes } from "services/api";
 import { TextField } from "components/atoms/textField";
+import PaymentCard from "components/molecules/paymentCard";
 
 const fieldMap = {
   lastName: "姓",
@@ -189,14 +190,7 @@ function Payment({ readOnly, defaultValue, submitLabel, onSubmit }) {
             <h2>2. 支払い方法</h2>
             <div>
               <h2>クレジットカード</h2>
-              <div className={styles.card}>
-                <input type="radio" checked onChange={() => {}} />
-                <div className={styles.cardInfo}>
-                  <p className={styles.cardBrand}>VISA</p>
-                  <p className={styles.cardNumber}>**** **** **** 1234</p>
-                  <p className={styles.cardDetails}>TECH TARO | 08 / 2025</p>
-                </div>
-              </div>
+              <PaymentCard />
               {readOnly ? null : (
                 <div className={styles.newCard}>
                   <a>+ 新しいカードを登録する</a>

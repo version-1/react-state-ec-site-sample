@@ -20,6 +20,7 @@ class User {
     this.lastNameKana = params.kana.split(" ")[1]
     this.email = params.email
     this.iconURL = params.iconURL
+    this.birthday = params.birthday
   }
 
   get shipmentInfo() {
@@ -37,6 +38,7 @@ class User {
       lastName: this.lastName,
       firstNameKana: this.firstNameKana,
       lastNameKana: this.lastNameKana,
+      birthday: this.birthday,
       shipmentInfo: this.shipmentInfo
     }
   }

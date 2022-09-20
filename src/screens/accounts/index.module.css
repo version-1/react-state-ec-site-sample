@@ -1,0 +1,68 @@
+.container {
+
+}
+
+.content {
+  margin: auto;
+  margin-top: 80px;
+  width: 60%;
+}
+
+.twinForm {
+  display: flex;
+}
+
+.avatar {
+  flex: 1
+}
+
+.profile {
+  flex: 3
+}
+
+.left {
+
+}
+
+.right {
+
+}
+
+.title {
+  padding: 8px 0;
+  font-weight: normal;
+  border-bottom: 1px solid var(--co-border);
+  margin-bottom: 64px;
+}
+
+.subtitle {
+  padding: 8px 0;
+  font-weight: normal;
+  border-bottom: 1px solid var(--co-border);
+  margin-bottom: 32px;
+}
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.section {
+}
+
+.left {
+  flex: 1;
+}
+
+.right {
+  flex: 3;
+}
+
+
+.action {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 16px;
+  padding-bottom: 32px;
+}

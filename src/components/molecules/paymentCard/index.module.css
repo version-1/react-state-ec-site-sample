@@ -1,0 +1,19 @@
+.card {
+  display: flex;
+  padding: 32px;
+  border: 1px solid var(--co-border);
+}
+
+.cardInfo {
+  margin-left: 32px;
+}
+
+.cardBrand {
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.cardNumber {
+  font-size: 18px;
+  margin-bottom: 8px;
+}

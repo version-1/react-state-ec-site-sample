@@ -11,6 +11,8 @@ import Login from "screens/accounts/login";
 import Payment from "screens/cart/payment";
 import PaymentConfirmation from "screens/cart/payment/confirmation";
 import PaymentComplete from "screens/cart/payment/complete";
+import Account from "screens/accounts";
+import AccountEdit from "screens/accounts/edit";
 import { fetchUser } from "services/api";
 
 function App() {
@@ -46,9 +48,8 @@ function App() {
             />
           </Route>
           <Route path="/accounts">
+            <Route path="" element={<Account user={user} />} />
             <Route path="login" element={<Login user={user} />} />
-            <Route path="edit" element={<Home user={user} />} />
-            <Route path="email/edit" element={<Home user={user} />} />
           </Route>
           <Route path="/items">
             <Route path=":code" element={<Item user={user} />} />

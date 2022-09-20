@@ -9,6 +9,11 @@
   margin-bottom: 64px;
 }
 
+.action {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .content {
   margin-bottom: 32px;
 }

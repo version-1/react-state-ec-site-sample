@@ -5,11 +5,12 @@ import DropDownMenu from "components/organisms/dropdown";
 
 const dropdownMenuList = (navigate) => [
   {
-    to: "/accounts/edit",
+    key: 'profile',
+    to: "/accounts",
     label: "プロフィール",
   },
   {
-    to: "/accounts/edit",
+    key: 'logout',
     label: "ログアウト",
     onClick: () => {
       localStorage.removeItem("token");

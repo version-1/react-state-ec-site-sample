@@ -1,10 +1,30 @@
 import style from "./index.module.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { IoCartOutline, IoPerson, IoEnterOutline } from "react-icons/io5";
+import DropDownMenu from "components/organisms/dropdown";
+
+const dropdownMenuList = (navigate) => [
+  {
+    to: "/accounts/edit",
+    label: "プロフィール",
+  },
+  {
+    to: "/accounts/edit",
+    label: "ログアウト",
+    onClick: () => {
+      localStorage.removeItem("token");
+      navigate("/accounts/login");
+    },
+    style: "disruptive",
+  },
+];
 
 const Layout = ({ guest, user, children }) => {
+  const navigate = useNavigate();
   // INFO: サーバー側で固定でユーザを返すので、トークンの有無だけでログインを判断
   const login = !!(localStorage.getItem("token") && user);
+
+  const items = dropdownMenuList(navigate);
 
   return (
     <div className={style.container}>
@@ -53,20 +73,25 @@ const Layout = ({ guest, user, children }) => {
                   </Link>
                 </li>
                 <li className={style.iconMenuItem}>
-                  <Link to="/cart">
-                    <div className={style.iconMenuItemContent}>
-                      <div>
-                        <IoPerson size={24} />
-                      </div>
-                      <p>アカウント</p>
-                    </div>
-                  </Link>
+                  <div className={style.iconMenuItemContent}>
+                    <DropDownMenu
+                      trigger={
+                        <>
+                          <div>
+                            <IoPerson size={24} />
+                          </div>
+                          <p>アカウント</p>
+                        </>
+                      }
+                      items={items}
+                    />
+                  </div>
                 </li>
               </ul>
             ) : (
               <ul className={style.iconMenuList}>
                 <li className={style.iconMenuItem}>
-                  <Link to="/account">
+                  <Link to="/accounts/login">
                     <div className={style.iconMenuItemContent}>
                       <div>
                         <IoEnterOutline size={24} />

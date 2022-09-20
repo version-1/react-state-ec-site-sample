@@ -1,5 +1,5 @@
 import Product from "components/organisms/product";
-import styles from './index.module.css';
+import styles from "./index.module.css";
 
 const ProductList = ({ products }) => {
   return (
@@ -22,4 +22,4 @@ const ProductList = ({ products }) => {
   );
 };
 
-export default ProductList
+export default ProductList;

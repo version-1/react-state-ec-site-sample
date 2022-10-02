@@ -119,7 +119,10 @@ function Cart({ user }) {
           />
           <Button
             label="支払い画面に進む"
-            onClick={() => navigate("/cart/payment")}
+            disabled={!products.length}
+            onClick={() => {
+              navigate("/cart/payment")
+            }}
           />
         </div>
       </div>

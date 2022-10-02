@@ -34,6 +34,10 @@ export const useCart = () => {
     localStorage.setItem(cartKey, JSON.stringify(newCart));
   };
 
+  const clear = () => {
+    localStorage.clear()
+  }
+
   const has = useCallback((item) => !!cart[item.code], [cart]);
 
   const summary = useMemo(() => {
@@ -50,25 +54,35 @@ export const useCart = () => {
       {
         label: "注文点数",
         value: count,
+        actualValue: count,
+        key: "count",
         group: "meidum"
       },
       {
         label: "商品合計",
         value: `¥ ${sum.toLocaleString()}`,
+        actualValue: sum,
+        key: "subtotal",
         group: "medium"
       },
       {
         label: "消費税",
         value: `¥ ${(tax(sum) - sum).toLocaleString()}`,
+        actualValue: tax(sum) - sum,
+        key: "tax",
         group: "medium"
       },
       {
         label: "合計",
         value: `¥ ${tax(sum).toLocaleString()}`,
+        actualValue: tax(sum),
+        key: "totalAmount",
         group: "large"
       },
     ];
   }, [cart]);
+
+  const totalAmount = useMemo(() => summary.find((it) => it.key === "totalAmount"), [summary])?.actualValue;
 
   return {
     codes,
@@ -76,6 +90,8 @@ export const useCart = () => {
     summary,
     add,
     remove,
+    clear,
     has,
+    totalAmount
   };
 };

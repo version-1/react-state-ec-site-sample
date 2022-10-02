@@ -1,4 +1,4 @@
-const tokens = require("../datasource/user_token");
+const tokens = require("../datasource/userToken");
 
 class UserToken {
   static find(id) {

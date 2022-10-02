@@ -8,11 +8,11 @@ import Kids from "screens/kids";
 import Item from "screens/items";
 import Cart from "screens/cart";
 import Login from "screens/accounts/login";
+import Orders from "screens/accounts/orders";
 import Payment from "screens/cart/payment";
 import PaymentConfirmation from "screens/cart/payment/confirmation";
 import PaymentComplete from "screens/cart/payment/complete";
 import Account from "screens/accounts";
-import AccountEdit from "screens/accounts/edit";
 import { fetchUser } from "services/api";
 
 function App() {
@@ -50,6 +50,7 @@ function App() {
           <Route path="/accounts">
             <Route path="" element={<Account user={user} />} />
             <Route path="login" element={<Login user={user} />} />
+            <Route path="orders" element={<Orders user={user} />} />
           </Route>
           <Route path="/items">
             <Route path=":code" element={<Item user={user} />} />

@@ -1,5 +1,6 @@
 const users = require("../datasource/user");
-const shipmentInfo = require("../datasource/shipment_info");
+const shipmentInfo = require("../datasource/shipmentInfo");
+const paymentInfo = require("../datasource/paymentInfo");
 
 class User {
   static find(id) {
@@ -29,6 +30,12 @@ class User {
     return info
   }
 
+  get paymentInfo() {
+    const info = paymentInfo.find((it) => it.userId === this.id)
+
+    return info
+  }
+
   get serialize() {
     return {
       id: this.id,
@@ -39,7 +46,8 @@ class User {
       firstNameKana: this.firstNameKana,
       lastNameKana: this.lastNameKana,
       birthday: this.birthday,
-      shipmentInfo: this.shipmentInfo
+      shipmentInfo: this.shipmentInfo,
+      paymentInfo: this.paymentInfo
     }
   }
 }

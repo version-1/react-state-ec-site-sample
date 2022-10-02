@@ -95,6 +95,8 @@ function Payment({ readOnly, defaultValue, submitLabel, onSubmit }) {
     onSubmit(payment);
   }, [payment, validate]);
 
+  console.log('payment ============', payment)
+
   return (
     <div>
       <div className={styles.container}>
@@ -190,7 +192,7 @@ function Payment({ readOnly, defaultValue, submitLabel, onSubmit }) {
             <h2>2. 支払い方法</h2>
             <div>
               <h2>クレジットカード</h2>
-              <PaymentCard />
+              <PaymentCard payment={payment.userInfo.paymentInfo}/>
               {readOnly ? null : (
                 <div className={styles.newCard}>
                   <a>+ 新しいカードを登録する</a>

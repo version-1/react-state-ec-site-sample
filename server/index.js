@@ -3,8 +3,12 @@ const app = express();
 const port = 8080;
 const bodyParser = require("body-parser");
 const products = require("./datasource/products");
+const orders = require("./datasource/orders");
+const shipmentInfo = require("./datasource/shipmentInfo");
+const paymentInfo = require("./datasource/paymentInfo");
 const User = require("./models/user");
-const UserToken = require("./models/user_token");
+const UserToken = require("./models/userToken");
+const Order = require("./models/order");
 const cors = require("cors");
 const { logMiddleware, authMiddleware } = require("./middlewares");
 
@@ -14,6 +18,8 @@ app.use(bodyParser.json({ type: "application/*+json" }));
 app.use(cors());
 app.use(logMiddleware);
 app.use(authMiddleware);
+
+const context = { orders, products, shipmentInfo, paymentInfo }
 
 const baseRoute = (path) => `/api/v1${path || ''}`
 
@@ -129,6 +135,37 @@ app.get(baseRoute("/products/:code"), (req, res) => {
 
   res.status(200).json({
     data: product,
+  });
+});
+
+app.post(baseRoute("/user/orders"), (req, res) => {
+  const order = new Order(req.body);
+
+  order.save(context)
+  if (!order.valid) {
+    res.status(400).json({
+      errors: order.errors
+    })
+
+    return
+  }
+
+  res.status(200).json({
+    data: order.serialize(context),
+  });
+});
+
+app.get(baseRoute("/user/orders"), (_req, res) => {
+  const user = User.find(loginUserId);
+  if (!user) {
+    res.status(404).json();
+    return;
+  }
+
+  const orders = context.orders.filter((it) => it.userId === user.id)
+
+  res.status(200).json({
+    data: orders.map(order => new Order(order).serialize(context)),
   });
 });
 

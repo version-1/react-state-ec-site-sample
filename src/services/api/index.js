@@ -41,11 +41,12 @@ class HTTPClient {
   }
 
   get errorHandler() {
-    return this._errorHandler
+    return this._errorHandler;
   }
 }
 
 const client = new HTTPClient();
+const baseURL = (path) => "http://localhost:8080/api/v1" + path;
 
 export const fetchProducts = async ({
   page = 1,
@@ -64,21 +65,17 @@ export const fetchProducts = async ({
     size,
   });
 
-  const res = await client.request(
-    `http://localhost:8080/api/v1/products?${qs}`
-  );
+  const res = await client.request(baseURL(`/products?${qs}`));
   return await res.json();
 };
 
 export const fetchUser = async () => {
-  const res = await client.request(`http://localhost:8080/api/v1/user`);
+  const res = await client.request(baseURL(`/user`));
   return await res.json();
 };
 
 export const fetchProduct = async ({ code }) => {
-  const res = await client.request(
-    `http://localhost:8080/api/v1/products/${code}`
-  );
+  const res = await client.request(baseURL(`/products/${code}`));
   return await res.json();
 };
 
@@ -98,7 +95,7 @@ export const fetchProductByCodes = async ({ codes }) => {
 };
 
 export const createToken = async ({ email, password }) => {
-  const res = await client.request(`http://localhost:8080/api/v1/auth/token`, {
+  const res = await client.request(baseURL(`/auth/token`), {
     method: "post",
     headers: {
       "Content-Type": "application/json",
@@ -111,3 +108,33 @@ export const createToken = async ({ email, password }) => {
 
   return await res.json();
 };
+
+export const checkout = async ({
+  userId,
+  products,
+  shipmentInfo,
+  totalAmount
+}) => {
+  debugger
+  const res = await client.request(baseURL(`/user/orders`), {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      userId,
+      totalAmount,
+      products,
+      shipmentInfo,
+      paymentInfo: {},
+    }),
+  });
+
+  return await res.json();
+};
+
+export const fetchOrders = async () => {
+  const res = await client.request(baseURL(`/user/orders`));
+  return await res.json();
+};
+

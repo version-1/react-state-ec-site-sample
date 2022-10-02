@@ -30,8 +30,8 @@ function Accounts({ user }) {
                       <label>名前</label>
                     </p>
                     <p className={styles.twinForm}>
-                      <TextField value={user.firstName} readonly />
-                      <TextField value={user.lastName} readonly />
+                      <TextField value={user.firstName} readOnly />
+                      <TextField value={user.lastName} readOnly />
                     </p>
                   </div>
                   <div>
@@ -39,21 +39,21 @@ function Accounts({ user }) {
                       <label>よみがな</label>
                     </p>
                     <p className={styles.twinForm}>
-                      <TextField value={user.firstNameKana} readonly />
-                      <TextField value={user.lastNameKana} readonly />
+                      <TextField value={user.firstNameKana} readOnly />
+                      <TextField value={user.lastNameKana} readOnly />
                     </p>
                   </div>
                   <div>
                     <p>
                       <label>メールアドレス</label>
                     </p>
-                    <TextField value={user.email} readonly />
+                    <TextField value={user.email} readOnly />
                   </div>
                   <div>
                     <p>
                       <label>生年月日</label>
                     </p>
-                    <TextField value={user.birthday.split(" ")[0]} readonly />
+                    <TextField value={user.birthday.split(" ")[0]} readOnly />
                   </div>
                 </div>
               </div>
@@ -72,25 +72,25 @@ function Accounts({ user }) {
                     <p>
                       <label>都道府県</label>
                     </p>
-                    <TextField value={user.shipmentInfo.prefecture} readonly />
+                    <TextField value={user.shipmentInfo.prefecture} readOnly />
                   </div>
                   <div>
                     <p>
                       <label>市区町村</label>
                     </p>
-                    <TextField value={user.shipmentInfo.city} readonly />
+                    <TextField value={user.shipmentInfo.city} readOnly />
                   </div>
                   <div>
                     <p>
                       <label>住所 1</label>
                     </p>
-                    <TextField value={user.shipmentInfo.address1} readonly />
+                    <TextField value={user.shipmentInfo.address1} readOnly />
                   </div>
                   <div>
                     <p>
                       <label>住所 2</label>
                     </p>
-                    <TextField value={user.shipmentInfo.address2} readonly />
+                    <TextField value={user.shipmentInfo.address2} readOnly />
                   </div>
                 </div>
               </div>

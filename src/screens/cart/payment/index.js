@@ -5,7 +5,7 @@ import PaymentTemplate from "components/templates/payment";
 function Payment({ user }) {
   const navigate = useNavigate();
 
-  const { shipmentInfo } = user || {};
+  const { shipmentInfo, paymentInfo } = user || {};
 
   return (
     <Layout user={user}>
@@ -14,6 +14,7 @@ function Payment({ user }) {
           userInfo: {
             ...user,
             ...shipmentInfo,
+            ...paymentInfo
           },
         }}
         submitLabel="支払い確認画面に進む"

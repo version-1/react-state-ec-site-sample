@@ -5,6 +5,10 @@
   background-color: var(--gray-0);
 }
 
+.container {
+  margin-bottom: 64px;
+}
+
 .logo {
   flex: 1;
   height: 40px;

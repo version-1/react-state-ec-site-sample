@@ -20,6 +20,7 @@ class Order {
     this.shipmentInfoId = params.shipmentInfoId;
     this.paymentInfoId = params.paymentInfoId;
     this.totalAmount = params.totalAmount;
+    this.orderedAt = params.orderedAt;
     this.errors = [];
     this.state = params.state || Status.initial;
   }
@@ -50,7 +51,7 @@ class Order {
       shipmentInfoId: this.shipmentInfo?.id,
       paymentInfo: this.paymentInfo,
       paymentInfoId: this.paymentInfo?.id,
-      orederedAt: this.orderedAt,
+      orderedAt: this.orderedAt,
       state: this.state,
     };
   }
@@ -129,9 +130,9 @@ class Order {
 
       this.id = context.products.length + 1;
       this.state = Status.ordered;
-      this.orderedAt = dayjs.format("YYYY-MM-DD HH:mm:ss");
+      this.orderedAt = dayjs().format("YYYY-MM-DD HH:mm:ss");
 
-      context.orders.push(this.serialize);
+      context.orders.push(this.serialize(context));
     }
 
     return this;

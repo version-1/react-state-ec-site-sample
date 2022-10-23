@@ -1,0 +1,63 @@
+.product {
+  display: flex;
+  border-bottom: 1px solid var(--co-gray);
+  padding: 16px;
+}
+
+.left {
+  flex: 1;
+  padding: 16px;
+}
+
+.center {
+  flex: 3;
+}
+
+.right {
+  flex: 1;
+  margin: auto;
+}
+
+.imageContainer {
+  width: 128px;
+  height: 128px;
+}
+
+.image {
+  width: 100%;
+  object-fit: cover;
+  height: 100%;
+}
+
+.price {
+  font-size: 20px;
+}
+
+.icon {
+  cursor: pointer;
+}
+
+.action {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  min-height: 120px;
+}
+
+.manipulateAmount {
+  display: flex;
+  justify-content: space-around;
+}
+
+.delete {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.deleteLabel {
+  margin-left: 8px;
+}
+
+

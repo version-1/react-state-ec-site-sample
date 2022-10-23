@@ -1,4 +1,5 @@
 const express = require("express");
+const dayjs = require("dayjs");
 const app = express();
 const port = 8080;
 const bodyParser = require("body-parser");
@@ -19,12 +20,12 @@ app.use(cors());
 app.use(logMiddleware);
 app.use(authMiddleware);
 
-const context = { orders, products, shipmentInfo, paymentInfo }
+const context = { orders, products, shipmentInfo, paymentInfo };
 
-const baseRoute = (path) => `/api/v1${path || ''}`
+const baseRoute = (path) => `/api/v1${path || ""}`;
 
-const loginUserId = 1
-const loginUserPassword = "password"
+const loginUserId = 1;
+const loginUserPassword = "password";
 
 const withColors = (item) => {
   item.colors = {};
@@ -47,12 +48,12 @@ app.get(baseRoute("/cart/products"), (req, res) => {
 
   const data = products.reduce((acc, item) => {
     if (!codes.includes(item.code)) {
-      return acc
+      return acc;
     }
 
-    withColors(item)
+    withColors(item);
 
-    return [...acc, item]
+    return [...acc, item];
   }, []);
 
   res.status(200).json({
@@ -81,7 +82,7 @@ app.get(baseRoute("/products"), (req, res) => {
       });
     });
 
-    withColors(item)
+    withColors(item);
 
     if (
       text &&
@@ -139,15 +140,15 @@ app.get(baseRoute("/products/:code"), (req, res) => {
 });
 
 app.post(baseRoute("/user/orders"), (req, res) => {
-  const order = new Order(req.body);
+  const order = new Order({ ...req.body, userId: loginUserId });
 
-  order.save(context)
+  order.save(context);
   if (!order.valid) {
     res.status(400).json({
-      errors: order.errors
-    })
+      errors: order.errors,
+    });
 
-    return
+    return;
   }
 
   res.status(200).json({
@@ -162,10 +163,13 @@ app.get(baseRoute("/user/orders"), (_req, res) => {
     return;
   }
 
-  const orders = context.orders.filter((it) => it.userId === user.id)
+  const orders = context.orders.filter((it) => it.userId === user.id);
+  orders.sort((a, b) => {
+    return dayjs(a.orderedAt).valueOf() > dayjs(b.orderedAt).valueOf() ? -1 : 1;
+  });
 
   res.status(200).json({
-    data: orders.map(order => new Order(order).serialize(context)),
+    data: orders.map((order) => new Order(order).serialize(context)),
   });
 });
 
@@ -199,8 +203,8 @@ app.post(baseRoute("/auth/token"), (req, res) => {
   res.status(200).json({
     data: {
       user: user.serialize,
-      token: userToken.token
-    }
+      token: userToken.token,
+    },
   });
 });
 

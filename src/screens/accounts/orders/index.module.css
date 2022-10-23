@@ -1,14 +1,12 @@
 .container {
-  margin: 64px auto;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-}
-
-.form {
-  width: 40%;
+  margin: auto;
+  margin-top: 80px;
+  width: 60%;
 }
 
 .title {
-  text-align: center;
+  text-align: left;
+  font-weight: normal;
+  border-bottom: 1px solid var(--co-border);
+  margin-bottom: 64px;
 }

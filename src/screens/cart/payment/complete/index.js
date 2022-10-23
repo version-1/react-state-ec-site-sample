@@ -20,7 +20,7 @@ function PaymentComplete({ user }) {
             />
             <Button
               label="購入履歴を確認する"
-              onClick={() => navigate("/accounts/order")}
+              onClick={() => navigate("/accounts/orders")}
             />
           </div>
         </div>

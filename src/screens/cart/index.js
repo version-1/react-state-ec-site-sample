@@ -1,113 +1,75 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { IoCloseCircleSharp } from "react-icons/io5";
-import classNames from "classnames";
 import Layout from "components/templates/layout";
 import Button from "components/atoms/button";
+import Order from "components/organisms/order";
 import { fetchProductByCodes } from "services/api";
 import { useCart } from "hooks/useCart";
 import styles from "./index.module.css";
-import { assetURL } from "constants/index";
-import ProductList from "components/organisms/productList";
 
 function Cart({ user }) {
   const [products, setProducts] = useState([]);
-  const { summary, cart, codes } = useCart();
+  const { cart, codes, remove, increment, decrement } = useCart();
   const navigate = useNavigate();
 
   useEffect(() => {
     const init = async () => {
       const res = await fetchProductByCodes({ codes });
-      setProducts(res.data || []);
+      const products = res.data.map((item) => {
+        const cur = cart[item.code];
+        const { form, product } = cur;
+        return {
+          code: item.code,
+          form,
+          product,
+        };
+      });
+      setProducts(products);
     };
 
     init();
-  }, [codes]);
+  }, [cart, codes]);
 
   return (
     <Layout user={user}>
       <div className={styles.container}>
         <h2 className={styles.title}>カート</h2>
         <div className={styles.content}>
-          {products.length === 0 ? (
+          {codes.length === 0 ? (
             <div className={styles.emptyState}>
               <p className={styles.emptyStateText}>
                 選択された商品はありません
               </p>
             </div>
           ) : (
-            <div className={styles.cartContainer}>
-              <div className={styles.catContent}>
-                {products.map((item) => {
-                  const cur = cart[item.code];
-                  const { form, product } = cur;
-
-                  return (
-                    <div className={styles.product}>
-                      <div className={styles.left}>
-                        <div className={styles.imageContainer}>
-                          <img
-                            className={styles.image}
-                            src={assetURL + product.imageURL}
-                            alt={product.title}
-                          />
-                        </div>
-                      </div>
-                      <div className={styles.center}>
-                        <h3 className={styles.productTitle}>{product.title}</h3>
-                        <p>カラー: {form.color} </p>
-                        <p>サイズ: {form.size}</p>
-                        <p>数量: {form.amount}</p>
-                      </div>
-                      <div className={styles.right}>
-                        <p className={styles.price}>
-                          ¥ {product.price.toLocaleString()}
-                        </p>
-                      </div>
-                      <div className={styles.right}>
-                        <div className={styles.action}>
-                          <p className={styles.delete}>
-                            <IoCloseCircleSharp size={16} />
-                            <label className={styles.deleteLabel}>削除</label>
-                          </p>
-                        </div>
-                      </div>
-                    </div>
+            <Order
+              order={{ products }}
+              onReduce={(item) => {
+                if (item.form.amount === 1) {
+                  const res = window.confirm(
+                    "商品をカートから削除します。よろしいですか？"
                   );
-                })}
-              </div>
-              <div className={styles.subtotal}>
-                <div className={styles.subtotalLeft}></div>
-                <div className={styles.subtotalRight}>
-                  {summary.map((item) => {
-                    return (
-                      <div className={styles.summary}>
-                        <div
-                          className={classNames({
-                            [styles.summaryLabel]: true,
-                            [styles.summarySmall]: item.group === "small",
-                            [styles.summaryMeidum]: item.group === "medium",
-                            [styles.summaryLarge]: item.group === "large",
-                          })}
-                        >
-                          {item.label}
-                        </div>
-                        <div
-                          className={classNames({
-                            [styles.summaryValue]: true,
-                            [styles.summarySmall]: item.group === "small",
-                            [styles.summaryMeidum]: item.group === "medium",
-                            [styles.summaryLarge]: item.group === "large",
-                          })}
-                        >
-                          {item.value}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
+                  if (!res) {
+                    return;
+                  }
+                }
+
+                decrement(item);
+              }}
+              onAdd={(item) => {
+                increment(item);
+              }}
+              onRemove={(item) => {
+                const res = window.confirm(
+                  "商品をカートから削除します。よろしいですか？"
+                );
+                if (!res) {
+                  return;
+                }
+
+                remove(item);
+              }}
+            />
           )}
         </div>
         <div className={styles.buttons}>
@@ -121,7 +83,7 @@ function Cart({ user }) {
             label="支払い画面に進む"
             disabled={!products.length}
             onClick={() => {
-              navigate("/cart/payment")
+              navigate("/cart/payment");
             }}
           />
         </div>

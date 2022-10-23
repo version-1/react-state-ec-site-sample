@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { summarize } from "models/order";
 
 const cartKey = "cart";
 
-const tax = (v) => Math.floor(v * 1.1);
+const deepCopy = (data) => JSON.parse(JSON.stringify(data))
 
 export const useCart = () => {
   const [cart, setCart] = useState({});
@@ -15,10 +16,12 @@ export const useCart = () => {
     setCart(cart);
   }, []);
 
-  const add = (item) => {
+  const updateAmount = (item, delta) => {
+    const newItem = deepCopy(item)
+    newItem.form.amount = item.form.amount + delta
     const newCart = {
       ...cart,
-      [item.code]: item,
+      [item.code]: newItem,
     };
 
     setCart(newCart);
@@ -28,61 +31,36 @@ export const useCart = () => {
   const remove = (item) => {
     const newCart = { ...cart };
 
-    delete cart[item.code];
+    delete newCart[item.code];
 
     setCart(newCart);
     localStorage.setItem(cartKey, JSON.stringify(newCart));
   };
 
-  const clear = () => {
-    localStorage.clear()
+  const add = (item) => updateAmount(item, 0)
+  const increment = (item) => updateAmount(item, 1)
+  const decrement = (item) => {
+    if (item.form.amount === 1) {
+      remove(item)
+      return
+    }
+
+    updateAmount(item, -1)
   }
+
+
+  const clear = () => {
+    localStorage.clear();
+  };
 
   const has = useCallback((item) => !!cart[item.code], [cart]);
 
-  const summary = useMemo(() => {
-    const count = Object.values(cart).reduce(
-      (acc, { form }) => acc + form.amount,
-      0
-    );
-    const sum = Object.values(cart).reduce(
-      (acc, { form, product }) => acc + form.amount * product.price,
-      0
-    );
+  const summary = useMemo(() => summarize(Object.values(cart)), [cart]);
 
-    return [
-      {
-        label: "注文点数",
-        value: count,
-        actualValue: count,
-        key: "count",
-        group: "meidum"
-      },
-      {
-        label: "商品合計",
-        value: `¥ ${sum.toLocaleString()}`,
-        actualValue: sum,
-        key: "subtotal",
-        group: "medium"
-      },
-      {
-        label: "消費税",
-        value: `¥ ${(tax(sum) - sum).toLocaleString()}`,
-        actualValue: tax(sum) - sum,
-        key: "tax",
-        group: "medium"
-      },
-      {
-        label: "合計",
-        value: `¥ ${tax(sum).toLocaleString()}`,
-        actualValue: tax(sum),
-        key: "totalAmount",
-        group: "large"
-      },
-    ];
-  }, [cart]);
-
-  const totalAmount = useMemo(() => summary.find((it) => it.key === "totalAmount"), [summary])?.actualValue;
+  const totalAmount = useMemo(
+    () => summary.find((it) => it.key === "totalAmount"),
+    [summary]
+  )?.actualValue;
 
   return {
     codes,
@@ -90,8 +68,10 @@ export const useCart = () => {
     summary,
     add,
     remove,
+    increment,
+    decrement,
     clear,
     has,
-    totalAmount
+    totalAmount,
   };
 };

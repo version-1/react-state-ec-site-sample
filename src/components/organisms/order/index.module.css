@@ -1,0 +1,53 @@
+.subtotal {
+  display: flex;
+}
+
+.action {
+  color: #666;
+  font-size: 20px;
+}
+
+.delete {
+  display: flex;
+  align-items: center;
+}
+
+.deleteLabel {
+  margin-left: 8px;
+}
+
+.summary {
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--co-gray);
+}
+
+.summaryLabel {
+  margin-right: 16px;
+}
+
+.summaryValue {
+}
+
+.summarySmall {
+  font-size: 12px;
+}
+
+.summaryMedium {
+
+}
+
+.summaryLarge {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.subtotalLeft {
+  flex: 3;
+}
+
+.subtotalRight {
+  flex: 2;
+}
+

@@ -1,9 +1,10 @@
 import { serializeQueryParameters } from "services/query";
 
+const tokenKey = 'token'
+
 const defaultErrorHandler = (e) => {
   if (e.status === 403) {
     throw e;
-    return;
   }
 
   console.error(e);
@@ -13,26 +14,37 @@ const defaultErrorHandler = (e) => {
 
 class HTTPClient {
   _errorHandler = defaultErrorHandler;
+  _clearToken = () => {};
+  _token = undefined;
 
   constructor(params = {}) {
     if (params.errorHandler) {
       this._errorHandler = params.errorHandler;
     }
+    this._token = params.token
   }
 
-  async request(url, options) {
+  async request(url, options = {}) {
     try {
-      const res = await fetch(url, options);
+      const headers = (options.headers || {})
+      if (this._token) {
+        headers['Authorization'] = `Bearer: ${this._token}`
+      }
+      const res = await fetch(url, {
+        ...options,
+        headers
+      });
       if (res.status >= 400) {
         throw res;
       }
 
-      return res;
+      return await res.json();
     } catch (e) {
-      debugger;
-      if (this.errorHandler) {
-        return this._errorHandler(e);
+      if (this._errorHandler) {
+        this._errorHandler(e);
       }
+
+      return { error: e }
     }
   }
 
@@ -40,13 +52,46 @@ class HTTPClient {
     this._errorHandler = handler;
   }
 
+  set token(value) {
+    this._token = value
+  }
+
+  set clearToken(handler) {
+    this._clearToken = handler
+  }
+
   get errorHandler() {
     return this._errorHandler;
   }
 }
 
-const client = new HTTPClient();
+const client = new HTTPClient({ token: localStorage.getItem(tokenKey) });
 const baseURL = (path) => "http://localhost:8080/api/v1" + path;
+
+export const hasToken = (token) => {
+  return !!localStorage.getItem(tokenKey, token);
+}
+
+export const setToken = (token) => {
+  client.token = token
+  localStorage.setItem(tokenKey, token);
+}
+
+export const clearToken = (token) => {
+  if (client._clearToken) {
+    client._clearToken()
+  }
+  client.token = undefined
+  localStorage.removeItem(tokenKey, token);
+}
+
+export const setClearTokenHandler = (handler) => {
+  client.clearToken = handler
+}
+
+export const setErrorHandler = (handler) => {
+  client.errorHandler = handler
+}
 
 export const fetchProducts = async ({
   page = 1,
@@ -65,18 +110,15 @@ export const fetchProducts = async ({
     size,
   });
 
-  const res = await client.request(baseURL(`/products?${qs}`));
-  return await res.json();
+  return await client.request(baseURL(`/products?${qs}`));
 };
 
 export const fetchUser = async () => {
-  const res = await client.request(baseURL(`/user`));
-  return await res.json();
+  return await client.request(baseURL(`/user`));
 };
 
 export const fetchProduct = async ({ code }) => {
-  const res = await client.request(baseURL(`/products/${code}`));
-  return await res.json();
+  return await client.request(baseURL(`/products/${code}`));
 };
 
 export const fetchProductByCodes = async ({ codes }) => {
@@ -88,14 +130,13 @@ export const fetchProductByCodes = async ({ codes }) => {
     return acc + `&codes[]=${code}`;
   }, "");
 
-  const res = await client.request(
+  return await client.request(
     `http://localhost:8080/api/v1/cart/products?${qs}`
   );
-  return await res.json();
 };
 
 export const createToken = async ({ email, password }) => {
-  const res = await client.request(baseURL(`/auth/token`), {
+  return await client.request(baseURL(`/auth/token`), {
     method: "post",
     headers: {
       "Content-Type": "application/json",
@@ -105,8 +146,6 @@ export const createToken = async ({ email, password }) => {
       password,
     }),
   });
-
-  return await res.json();
 };
 
 export const checkout = async ({
@@ -115,8 +154,7 @@ export const checkout = async ({
   shipmentInfo,
   totalAmount
 }) => {
-  debugger
-  const res = await client.request(baseURL(`/user/orders`), {
+  return await client.request(baseURL(`/user/orders`), {
     method: "post",
     headers: {
       "Content-Type": "application/json",
@@ -129,12 +167,9 @@ export const checkout = async ({
       paymentInfo: {},
     }),
   });
-
-  return await res.json();
 };
 
 export const fetchOrders = async () => {
-  const res = await client.request(baseURL(`/user/orders`));
-  return await res.json();
+  return await client.request(baseURL(`/user/orders`));
 };
 

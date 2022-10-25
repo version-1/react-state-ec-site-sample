@@ -26,6 +26,9 @@ const Products = ({ defaultFilters = [] }) => {
 
   const fetch = async (params = {}) => {
     const res = await fetchProducts(params);
+    if (!res.data) {
+      return
+    }
 
     const { page } = params;
     const { data, ...rest } = res;

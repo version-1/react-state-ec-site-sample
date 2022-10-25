@@ -13,6 +13,16 @@ class User {
     return new User(params)
   }
 
+  static findByEmail(email) {
+    const params = users.find(it => it.email === email)
+
+    if (!params) {
+      return
+    }
+
+    return new User(params)
+  }
+
   constructor(params) {
     this.id = params.id
     this.firstName = params.name.split(" ")[0]

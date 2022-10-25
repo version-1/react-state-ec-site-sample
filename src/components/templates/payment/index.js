@@ -47,7 +47,10 @@ function Payment({ readOnly, defaultValue, submitLabel, onSubmit }) {
   useEffect(() => {
     const init = async () => {
       const res = await fetchProductByCodes({ codes });
-      setProducts(res.data || []);
+      if (!res.data) {
+        return
+      }
+      setProducts(res.data);
       setPayment({
         ...payment,
         codes,
@@ -94,8 +97,6 @@ function Payment({ readOnly, defaultValue, submitLabel, onSubmit }) {
 
     onSubmit(payment);
   }, [payment, validate]);
-
-  console.log('payment ============', payment)
 
   return (
     <div>

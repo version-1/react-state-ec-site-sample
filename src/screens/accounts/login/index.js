@@ -4,16 +4,16 @@ import Button from "components/atoms/button";
 import Layout from "components/templates/layout";
 import { useNavigate } from "react-router-dom";
 import styles from "./index.module.css";
-import { createToken } from "services/api";
+import { createToken, setToken } from "services/api";
 
-function Login({ user }) {
+function Login({ user, onLogin }) {
   const navigate = useNavigate();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    if (localStorage.getItem("token") && user) {
+    if (user) {
       navigate("/");
     }
   }, [user, navigate]);
@@ -62,8 +62,10 @@ function Login({ user }) {
 
               try {
                 const res = await createToken({ email, password });
-                if (res) {
-                  localStorage.setItem("token", res.data.token);
+                if (res.data) {
+                  const { token, user } = res.data
+                  setToken(token);
+                  onLogin(user);
                   navigate("/");
                 }
               } catch (e) {

@@ -1,3 +1,4 @@
+const jwt = require("jsonwebtoken");
 const hasKey = (obj) => !!Object.keys(obj).length
 
 const log = (...args) => {
@@ -24,8 +25,29 @@ const logMiddleware = (req, _res, next) => {
   next()
 }
 
-const authMiddleware = (req, _res, next) => {
+const authMiddleware = (signInKey, targets, onSuccess) => (req, res, next) => {
   log('auth middleware')
+  if (!targets.find(it => req.path.startsWith(it))) {
+    next()
+    return
+  }
+
+  const tokenInHeader = req.headers.authorization;
+  if (!tokenInHeader) {
+    log('auth failed: token is empty')
+    res.status(403).json({})
+    return
+  }
+
+  const raw = tokenInHeader.replaceAll('Bearer: ', '');
+  try {
+    const payload = jwt.verify(raw, signInKey)
+    onSuccess(req, res, payload)
+  } catch (e) {
+    log('auth failed', e)
+    res.status(403).json({})
+    return
+  }
 
   next()
 }

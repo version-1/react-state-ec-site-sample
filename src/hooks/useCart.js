@@ -50,7 +50,7 @@ export const useCart = () => {
 
 
   const clear = () => {
-    localStorage.clear();
+    localStorage.removeItem(cartKey);
   };
 
   const has = useCallback((item) => !!cart[item.code], [cart]);

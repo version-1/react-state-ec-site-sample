@@ -12,7 +12,7 @@ module.exports = [
     id: 2,
     name: "Glen Bailey",
     kana: "グレン ベイリー",
-    iconURL: "/assets/icons/glenbailey.bailey.jpeg",
+    iconURL: "/assets/icons/glen.bailey.jpeg",
     email: "glen.bailey@example.com",
     passwordDigest: "",
     birthday: "1976/09/01 00:00:00",

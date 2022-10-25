@@ -13,19 +13,48 @@ import Payment from "screens/cart/payment";
 import PaymentConfirmation from "screens/cart/payment/confirmation";
 import PaymentComplete from "screens/cart/payment/complete";
 import Account from "screens/accounts";
-import { fetchUser } from "services/api";
+import {
+  clearToken,
+  hasToken,
+  fetchUser,
+  setErrorHandler,
+  setClearTokenHandler,
+} from "services/api";
 
 function App() {
   const [user, setUser] = useState();
 
   useEffect(() => {
     const init = async () => {
-      const res = await fetchUser();
-      setUser(res.data);
+      setClearTokenHandler(() => {
+        setUser(undefined);
+      });
+
+      setErrorHandler((e) => {
+        if (e.status === 403) {
+          clearToken();
+          const { hash } = window.location
+          const isRoot = hash.startsWith("#/?") || hash === "#/" || !hash
+          if (!isRoot) {
+            window.location.href = "/";
+          }
+          return
+        }
+
+        console.error(e);
+        alert("リクエストに失敗しました");
+      });
+
+      if (hasToken) {
+        const res = await fetchUser();
+        if (res.data) {
+          setUser(res.data);
+        }
+      }
     };
 
     init();
-  }, []);
+  }, [setUser]);
 
   return (
     <div className="App">
@@ -49,7 +78,17 @@ function App() {
           </Route>
           <Route path="/accounts">
             <Route path="" element={<Account user={user} />} />
-            <Route path="login" element={<Login user={user} />} />
+            <Route
+              path="login"
+              element={
+                <Login
+                  user={user}
+                  onLogin={(user) => {
+                    setUser(user);
+                  }}
+                />
+              }
+            />
             <Route path="orders" element={<Orders user={user} />} />
           </Route>
           <Route path="/items">

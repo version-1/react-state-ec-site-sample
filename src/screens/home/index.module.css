@@ -1,6 +1,57 @@
 .container {
 }
 
+.header {
+  position: absolute;
+  display: flex;
+  z-index: 100;
+  padding: 32px;
+  color: var(--co-white);
+  align-items: center;
+}
+
+.line {
+  position: absolute;
+  z-index: 100;
+  width: 40%;
+  height: 1px;
+  top: 12%;
+  left: 128px;
+  border-bottom: 1px solid var(--co-white);
+}
+
+.incline {
+  position: absolute;
+  z-index: 100;
+  width: 138px;
+  height: 1px;
+  top: 9.5%;
+  left: 40%;
+  transform: rotate(30deg);
+  border-bottom: 1px solid var(--co-white);
+}
+
+.mainArrow {
+  position: absolute;
+  z-index: 100;
+  left: 128px;
+  top: 80px;
+  width: 30%;
+}
+
+.subArrow {
+  position: absolute;
+  z-index: 100;
+  bottom: 80px;
+  right: 25%;
+  width: 20%;
+  transform: rotate(-160deg);
+}
+
+.title {
+  padding-left: 128px;
+}
+
 .main {
   display: flex;
   justify-content: space-evenly;

@@ -17,7 +17,8 @@
 
 .overlay {
   position: absolute;
-  height: 480px;
+  height: 100vh;
+  /* height: 480px; */
   width: 100%;
   background: #22222235;
 }
@@ -32,13 +33,14 @@
 }
 
 .content li.active {
-  height: 480px;
+  height: 100vh;
   width: 100%;
 }
 
 .content li {
   width: 0;
-  height: 480px;
+  height: 100vh;
+  /* height: 480px; */
 }
 
 .content li.active > img {

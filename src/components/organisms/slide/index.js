@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { IoChevronForward, IoChevronBack } from "react-icons/io5";
-import fiberImage from "assets/hero_fiber.jpg";
-import menImage from "assets/hero_men.jpg";
-import womenImage from "assets/hero_women.jpg";
+import kidsImage from "assets/kids/image.jpg";
+import menImage from "assets/men/image.jpg";
+import womenImage from "assets/women/image.jpg";
 import style from "./index.module.css";
 
 const Slide = (
@@ -47,7 +47,7 @@ const Slide = (
           <img src={menImage} alt="" />
         </li>
         <li className={index === 2 ? style.active : ""}>
-          <img src={fiberImage} alt="" />
+          <img src={kidsImage} alt="" />
         </li>
       </ul>
     </div>

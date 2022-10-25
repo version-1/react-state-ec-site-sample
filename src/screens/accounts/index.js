@@ -72,25 +72,25 @@ function Accounts({ user }) {
                     <p>
                       <label>都道府県</label>
                     </p>
-                    <TextField value={user.shipmentInfo.prefecture} readOnly />
+                    <TextField value={user.shipmentInfo?.prefecture} readOnly />
                   </div>
                   <div>
                     <p>
                       <label>市区町村</label>
                     </p>
-                    <TextField value={user.shipmentInfo.city} readOnly />
+                    <TextField value={user.shipmentInfo?.city} readOnly />
                   </div>
                   <div>
                     <p>
                       <label>住所 1</label>
                     </p>
-                    <TextField value={user.shipmentInfo.address1} readOnly />
+                    <TextField value={user.shipmentInfo?.address1} readOnly />
                   </div>
                   <div>
                     <p>
                       <label>住所 2</label>
                     </p>
-                    <TextField value={user.shipmentInfo.address2} readOnly />
+                    <TextField value={user.shipmentInfo?.address2} readOnly />
                   </div>
                 </div>
               </div>
@@ -105,7 +105,11 @@ function Accounts({ user }) {
               <div className={styles.flex}>
                 <div className={styles.left}></div>
                 <div className={styles.right}>
-                  <PaymentCard />
+                  {user.paymentInfo ? (
+                    <PaymentCard payment={user.paymentInfo} />
+                  ) : (
+                    <p className={styles.empty}>支払い情報が登録されていません。</p>
+                  )}
                 </div>
               </div>
               <div className={styles.action}>

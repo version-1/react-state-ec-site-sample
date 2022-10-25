@@ -29,7 +29,9 @@ function Item({ user }) {
 
     const init = async () => {
       const res = await fetchProduct({ code });
-      setItem(res.data);
+      if (res.data) {
+        setItem(res.data);
+      }
     };
 
     init();

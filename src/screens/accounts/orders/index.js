@@ -12,7 +12,9 @@ function Orders({ user }) {
   useEffect(() => {
     const init = async () => {
       const res = await fetchOrders();
-      setOrders(res.data);
+      if (res.data) {
+        setOrders(res.data);
+      }
     };
 
     init();
@@ -23,9 +25,11 @@ function Orders({ user }) {
       <div className={styles.container}>
         <h2 className={styles.title}>注文履歴</h2>
         <div className={styles.body}>
-          {orders.map((item) => (
-            <Order key={item.id} order={item} />
-          ))}
+          {orders.length ? (
+            orders.map((item) => <Order key={item.id} order={item} />)
+          ) : (
+            <p className={styles.empty}>注文の履歴がありません</p>
+          )}
         </div>
       </div>
     </Layout>

@@ -83,6 +83,11 @@ function Cart({ user }) {
             label="支払い画面に進む"
             disabled={!products.length}
             onClick={() => {
+              if (!user) {
+                alert("支払いを完了させるにはログインが必要です。")
+                navigate("/accounts/login");
+                return
+              }
               navigate("/cart/payment");
             }}
           />

@@ -2,6 +2,7 @@ import style from "./index.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { IoCartOutline, IoPerson, IoEnterOutline } from "react-icons/io5";
 import DropDownMenu from "components/organisms/dropdown";
+import { clearToken } from "services/api";
 
 const dropdownMenuList = (navigate) => [
   {
@@ -18,8 +19,8 @@ const dropdownMenuList = (navigate) => [
     key: "logout",
     label: "ログアウト",
     onClick: () => {
-      localStorage.removeItem("token");
-      navigate("/accounts/login");
+      clearToken();
+      window.location.href = "/";
     },
     style: "disruptive",
   },
@@ -27,9 +28,6 @@ const dropdownMenuList = (navigate) => [
 
 const Layout = ({ guest, user, children }) => {
   const navigate = useNavigate();
-  // INFO: サーバー側で固定でユーザを返すので、トークンの有無だけでログインを判断
-  const login = !!(localStorage.getItem("token") && user);
-
   const items = dropdownMenuList(navigate);
 
   return (
@@ -66,7 +64,7 @@ const Layout = ({ guest, user, children }) => {
         )}
         {guest ? null : (
           <div className={style.iconMenu}>
-            {login ? (
+            {user ? (
               <ul className={style.iconMenuList}>
                 <li className={style.iconMenuItem}>
                   <Link to="/cart">
@@ -96,6 +94,16 @@ const Layout = ({ guest, user, children }) => {
               </ul>
             ) : (
               <ul className={style.iconMenuList}>
+                <li className={style.iconMenuItem}>
+                  <Link to="/cart">
+                    <div className={style.iconMenuItemContent}>
+                      <div>
+                        <IoCartOutline size={24} />
+                      </div>
+                      <p>カート</p>
+                    </div>
+                  </Link>
+                </li>
                 <li className={style.iconMenuItem}>
                   <Link to="/accounts/login">
                     <div className={style.iconMenuItemContent}>

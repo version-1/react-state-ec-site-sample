@@ -1,31 +1,48 @@
 const express = require("express");
 const dayjs = require("dayjs");
-const app = express();
-const port = 8080;
+const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
 const products = require("./datasource/products");
 const orders = require("./datasource/orders");
 const shipmentInfo = require("./datasource/shipmentInfo");
 const paymentInfo = require("./datasource/paymentInfo");
 const User = require("./models/user");
-const UserToken = require("./models/userToken");
 const Order = require("./models/order");
 const cors = require("cors");
 const { logMiddleware, authMiddleware } = require("./middlewares");
 
+const app = express();
+
+// config
+const port = 8080;
+const dummySigninKey = "dummy";
+const baseRoute = (path) => `/api/v1${path || ""}`;
+
+// set up middlewares
 app.use(express.static("public"));
 app.use(express.json());
 app.use(bodyParser.json({ type: "application/*+json" }));
 app.use(cors());
 app.use(logMiddleware);
-app.use(authMiddleware);
+app.use(
+  authMiddleware(
+    dummySigninKey,
+    [
+      baseRoute('/user'),
+    ],
+    (req, res, payload) => {
+      const user = User.find(payload.sub);
+      if (!user) {
+        throw new Error(`user not found. id: ${payload.sub}`);
+      }
+
+      req.currentUser = user;
+    }
+  )
+);
 
 const context = { orders, products, shipmentInfo, paymentInfo };
 
-const baseRoute = (path) => `/api/v1${path || ""}`;
-
-const loginUserId = 1;
-const loginUserPassword = "password";
 
 const withColors = (item) => {
   item.colors = {};
@@ -140,7 +157,7 @@ app.get(baseRoute("/products/:code"), (req, res) => {
 });
 
 app.post(baseRoute("/user/orders"), (req, res) => {
-  const order = new Order({ ...req.body, userId: loginUserId });
+  const order = new Order({ ...req.body, userId: req.currentUser.id });
 
   order.save(context);
   if (!order.valid) {
@@ -156,14 +173,8 @@ app.post(baseRoute("/user/orders"), (req, res) => {
   });
 });
 
-app.get(baseRoute("/user/orders"), (_req, res) => {
-  const user = User.find(loginUserId);
-  if (!user) {
-    res.status(404).json();
-    return;
-  }
-
-  const orders = context.orders.filter((it) => it.userId === user.id);
+app.get(baseRoute("/user/orders"), (req, res) => {
+  const orders = context.orders.filter((it) => it.userId === req.currentUser.id);
   orders.sort((a, b) => {
     return dayjs(a.orderedAt).valueOf() > dayjs(b.orderedAt).valueOf() ? -1 : 1;
   });
@@ -173,37 +184,34 @@ app.get(baseRoute("/user/orders"), (_req, res) => {
   });
 });
 
-app.get(baseRoute("/user"), (_req, res) => {
-  const user = User.find(loginUserId);
-  if (!user) {
-    res.status(404).json();
-    return;
-  }
-
+app.get(baseRoute("/user"), (req, res) => {
   res.status(200).json({
-    data: user.serialize,
+    data: req.currentUser.serialize,
   });
 });
 
 app.post(baseRoute("/auth/token"), (req, res) => {
-  const user = User.find(loginUserId);
+  const { email } = req.body;
+
+  // サンプルアプリなのでパスワードでの認証は行わない
+  const user = User.findByEmail(email);
   if (!user) {
     res.status(404).json({});
     return;
   }
 
-  const { email, password } = req.body;
-  if (email !== user.email || password !== loginUserPassword) {
-    res.status(403).json({});
-    return;
-  }
-
-  const userToken = UserToken.find(loginUserId);
+  const token = jwt.sign(
+    {
+      sub: user.id,
+      iat: dayjs().valueOf(),
+    },
+    dummySigninKey
+  );
 
   res.status(200).json({
     data: {
       user: user.serialize,
-      token: userToken.token,
+      token,
     },
   });
 });

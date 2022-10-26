@@ -29,7 +29,7 @@ export const categoryList = [
   },
   {
     label: "T シャツ",
-    code: "t-shirts",
+    value: "t-shirts",
     group: "categories",
   },
   {

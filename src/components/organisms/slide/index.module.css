@@ -4,12 +4,14 @@
 }
 
 .back {
+  cursor: pointer;
   position: absolute;
   top: 50%;
   left: 16px;
 }
 
 .forward {
+  cursor: pointer;
   position: absolute;
   top: 50%;
   right: 16px;
@@ -18,7 +20,6 @@
 .overlay {
   position: absolute;
   height: 100vh;
-  /* height: 480px; */
   width: 100%;
   background: #22222235;
 }
@@ -57,3 +58,63 @@
   height: 0;
   opacity: 0;
 }
+
+.buttons {
+  position: absolute;
+  display: flex;
+  justify-content: space-around;
+  bottom: 30%;
+  width: 100%;
+}
+
+.buttonsForKids {
+  width: 50%;
+  justify-content: center;
+}
+
+.button {
+  width: 200px;
+  padding: 32px;
+  font-size: 24px;
+  letter-spacing: 0.8px;
+  color: var(--co-white);
+  background: var(--co-black);
+  transition: all 0.1s ease;
+}
+
+.button:hover {
+  color: var(--co-black);
+  background: var(--co-white);
+}
+
+.button:hover > span {
+  background: red;
+}
+
+.buttonForKids {
+  width: 300px;
+}
+
+.buttonLight {
+  color: var(--co-black);
+  background: var(--co-white);
+}
+
+.buttonLight:hover {
+  color: var(--co-white);
+  background: var(--co-black);
+}
+
+.kidsButtonText {
+  color: inherit;
+  font-size: 32pz;
+  letter-spacing: 0.8px;
+  vertical-align: middle;
+}
+
+.kidsButtonIcons {
+  position: relative;
+  top: 2px;
+  margin-left: 16px;
+}
+

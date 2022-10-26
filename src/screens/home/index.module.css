@@ -49,7 +49,14 @@
 }
 
 .title {
+  position: relative;
+  top: -4px;
   padding-left: 128px;
+}
+
+.titleText {
+  color: var(--co-white);
+  letter-spacing: 0.8px;
 }
 
 .main {

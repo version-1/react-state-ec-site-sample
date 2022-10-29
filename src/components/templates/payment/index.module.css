@@ -95,3 +95,7 @@
   width: 100px;
 }
 
+.errorMessages {
+  color: var(--co-danger);
+}
+

@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { IoCartOutline, IoPerson, IoEnterOutline } from "react-icons/io5";
 import DropDownMenu from "components/organisms/dropdown";
 import { clearToken } from "services/api";
+import icon from "assets/logo-dark.png";
 
 const dropdownMenuList = (navigate) => [
   {
@@ -35,27 +36,24 @@ const Layout = ({ guest, user, children }) => {
       <header className={style.header}>
         <div className={style.logoContainer}>
           <Link to="/">
-            <div className={style.logo}>
-              <p className={style.logoText}>テク</p>
-              <p className={style.logoText}>クロ</p>
-            </div>
+            <img src={icon} alt="Button" />
           </Link>
         </div>
         {guest ? null : (
           <div className={style.menu}>
             <ul className={style.menuList}>
               <li className={style.menuItem}>
-                <Link className={style.menuItemText} to="/women">
+                <Link className={style.menuItemText} to="/items/women">
                   Women
                 </Link>
               </li>
               <li className={style.menuItem}>
-                <Link className={style.menuItemText} to="/men">
+                <Link className={style.menuItemText} to="/items/men">
                   Men
                 </Link>
               </li>
               <li className={style.menuItem}>
-                <Link className={style.menuItemText} to="/kids">
+                <Link className={style.menuItemText} to="/items/kids">
                   Kids
                 </Link>
               </li>

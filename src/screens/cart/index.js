@@ -77,7 +77,7 @@ function Cart({ user }) {
             label="買い物を続ける"
             variant="outline"
             style={{ marginRight: "8px" }}
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/items")}
           />
           <Button
             label="支払い画面に進む"

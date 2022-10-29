@@ -1,10 +1,10 @@
 import "./App.css";
 import { useEffect, useState } from "react";
 import { HashRouter, Routes, Route } from "react-router-dom";
+import { categoryList } from "models/filter";
+import Layout from "components/templates/layout";
+import Products from "components/templates/products";
 import Home from "screens/home";
-import Men from "screens/men";
-import Women from "screens/women";
-import Kids from "screens/kids";
 import Item from "screens/items";
 import Cart from "screens/cart";
 import Login from "screens/accounts/login";
@@ -33,12 +33,11 @@ function App() {
       setErrorHandler((e) => {
         if (e.status === 403) {
           clearToken();
-          const { hash } = window.location
-          const isRoot = hash.startsWith("#/?") || hash === "#/" || !hash
-          if (!isRoot) {
-            window.location.href = "/";
+          const { hash } = window.location;
+          if (!hash.startsWith("#/accounts")) {
+            window.location.href = "#/items";
           }
-          return
+          return;
         }
 
         console.error(e);
@@ -61,9 +60,6 @@ function App() {
       <HashRouter>
         <Routes>
           <Route path="/" element={<Home user={user} />} caseSensitive />
-          <Route path="/men" element={<Men user={user} />} />
-          <Route path="/women" element={<Women user={user} />} />
-          <Route path="/kids" element={<Kids user={user} />} />
           <Route path="/cart">
             <Route path="" element={<Cart user={user} />} />
             <Route path="payment" element={<Payment user={user} />} />
@@ -92,6 +88,38 @@ function App() {
             <Route path="orders" element={<Orders user={user} />} />
           </Route>
           <Route path="/items">
+            <Route
+              path=""
+              element={
+                <Layout user={user}>
+                  <Products />
+                </Layout>
+              }
+            />
+            <Route
+              path="men"
+              element={
+                <Layout user={user}>
+                  <Products defaultFilters={[categoryList[0]]} />
+                </Layout>
+              }
+            />
+            <Route
+              path="women"
+              element={
+                <Layout user={user}>
+                  <Products defaultFilters={[categoryList[1]]} />
+                </Layout>
+              }
+            />
+            <Route
+              path="kids"
+              element={
+                <Layout user={user}>
+                  <Products defaultFilters={[categoryList[2]]} />
+                </Layout>
+              }
+            />
             <Route path=":code" element={<Item user={user} />} />
           </Route>
         </Routes>

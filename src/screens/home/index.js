@@ -5,21 +5,29 @@ import { ReactComponent as Arrow } from "assets/arrow.svg";
 import styles from "./index.module.css";
 
 const title = [
-  { label: "Women", path: "/#/women" },
-  { label: "Men", path: "/#/men" },
-  { label: "Kids", path: "/#/kids" },
+  { label: "Women", path: "/#/items/women" },
+  { label: "Men", path: "/#/items/men" },
+  { label: "Kids", path: "/#/items/kids" },
 ];
+
+let timer;
 
 const Home = () => {
   const [index, setIndex] = useState(0);
 
   const transit = useCallback(
-    (delta) => () => setIndex(Math.abs((index + delta) % 3)),
+    (delta) => () => {
+      setIndex(Math.abs((index + delta) % 3))
+      if (timer) {
+        clearTimeout(timer)
+        timer = undefined
+      }
+    },
     [index, setIndex]
   );
 
   useEffect(() => {
-    setTimeout(() => {
+    timer = setTimeout(() => {
       transit(1)();
     }, 5000);
   }, [transit]);

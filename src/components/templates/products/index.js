@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { IoSearchOutline } from "react-icons/io5";
 import { useSearchParams } from "react-router-dom";
 import qs from "qs";
 import ProductList from "components/organisms/productList";
@@ -27,7 +26,7 @@ const Products = ({ defaultFilters = [] }) => {
   const fetch = async (params = {}) => {
     const res = await fetchProducts(params);
     if (!res.data) {
-      return
+      return;
     }
 
     const { page } = params;
@@ -60,26 +59,16 @@ const Products = ({ defaultFilters = [] }) => {
 
   return (
     <section className={style.content}>
-      <div className={style.contentHeader}>
-        <h2 className={style.productListTitle}>商品検索</h2>
-        <div className={style.searchForm}>
-          <input
-            className={style.searchFormInput}
-            type="text"
-            placeholder="キーワードで探す"
-            value={text}
-            onChange={(e) => {
-              setText(e.target.value);
-              fetch({ page, text: e.target.value, ...serializedFilters });
-            }}
-          />
-          <a href="#!" className={style.searchFormButton}>
-            <IoSearchOutline size="32" color="white" />
-          </a>
-        </div>
-      </div>
       <div className={style.main}>
-        <Sidebar filters={filters} onChangeFilters={onChangeFilters} />
+        <Sidebar
+          filters={filters}
+          searchText={text}
+          onChangeFilters={onChangeFilters}
+          onSearch={(e) => {
+            setText(e.target.value);
+            fetch({ page, text: e.target.value, ...serializedFilters });
+          }}
+        />
         <div className={style.products}>
           <div className={style.productsHeader}>
             <div>

@@ -3,17 +3,12 @@
 
 .main {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   padding: 16px;
 }
 
 .content {
   padding: 32px;
-}
-
-.contentHeader {
-  width: 80%;
-  margin: auto;
 }
 
 .productsContent {
@@ -33,17 +28,13 @@
   padding: 8px;
 }
 
-.searchForm {
-  display: flex;
-  width: 100%;
-}
-
 .products {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
   padding: 32px;
-  width: 796px;
+  margin-left: 64px;
+  width: 896px;
 }
 
 .productsHeader {
@@ -53,22 +44,9 @@
   margin-bottom: 16px;
 }
 
-.searchFormInput {
-  padding: 8px;
-  padding: 8px 16px;
-  width: 80%;
-}
-
-.searchFormButton {
-  display: block;
-  background: var(--co-black);
-  padding: 8px;
-}
-
 .sidebar {
   text-align: left;
 }
-
 
 .pagination {
   display: flex;

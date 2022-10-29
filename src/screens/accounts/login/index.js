@@ -6,19 +6,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "./index.module.css";
 import { createToken, setToken } from "services/api";
 
-function Login({ user, onLogin }) {
-  const navigate = useNavigate();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [errors, setErrors] = useState({});
-
-  useEffect(() => {
-    if (user) {
-      navigate("/");
-    }
-  }, [user, navigate]);
-
-  const validate = () => {
+  const validate = ({ email, password }) => {
     const newErrors = {};
     if (!email) {
       newErrors.email = "メールアドレスを入力してください";
@@ -28,10 +16,20 @@ function Login({ user, onLogin }) {
       newErrors.password = "パスワードを入力してください";
     }
 
-    setErrors(newErrors);
-
-    return !Object.keys(newErrors).length;
+    return newErrors;
   };
+
+function Login({ user, onLogin }) {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    if (user) {
+      navigate("/items");
+    }
+  }, [user, navigate]);
 
   return (
     <Layout guest>
@@ -56,7 +54,10 @@ function Login({ user, onLogin }) {
           <Button
             label="ログイン"
             onClick={async () => {
-              if (!validate()) {
+              setErrors({})
+              const errors = validate({ email, password })
+              setErrors(errors)
+              if (Object.keys(errors).length !== 0) {
                 return;
               }
 
@@ -66,7 +67,7 @@ function Login({ user, onLogin }) {
                   const { token, user } = res.data
                   setToken(token);
                   onLogin(user);
-                  navigate("/");
+                  navigate("/items");
                 }
               } catch (e) {
                 if (e.status === 403) {

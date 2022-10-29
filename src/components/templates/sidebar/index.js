@@ -1,3 +1,4 @@
+import { IoSearchOutline } from "react-icons/io5";
 import Dropdown from "components/atoms/select";
 import TagList from "components/molecules/tagList";
 import SelectList from "components/molecules/selectList";
@@ -12,7 +13,7 @@ import {
 import SidebarSection from "components/organisms/section";
 import style from "./index.module.css";
 
-const Sidebar = ({ filters, onChangeFilters }) => {
+const Sidebar = ({ searchText, filters, onChangeFilters, onSearch }) => {
   const _onChangeFilters = (item) => {
     const hasFilter = filters.some((filter) => item.value === filter.value);
 
@@ -32,6 +33,21 @@ const Sidebar = ({ filters, onChangeFilters }) => {
   return (
     <div className={style.container}>
       <div style={{ marginBottom: 16 }}>
+        <div className="sidebar-section">
+          <h3>キーワード検索</h3>
+          <div className={style.searchForm}>
+            <input
+              className={style.searchFormInput}
+              type="text"
+              placeholder="キーワードで探す"
+              value={searchText}
+              onChange={onSearch}
+            />
+            <a href="#!" className={style.searchFormButton}>
+              <IoSearchOutline size="24" color="white" />
+            </a>
+          </div>
+        </div>
         <div className="sidebar-section">
           <h3>並び替え</h3>
           <Dropdown data={sortOptions} />

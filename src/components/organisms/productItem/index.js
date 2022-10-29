@@ -2,6 +2,14 @@ import styles from "./index.module.css";
 import { assetURL } from "constants/index";
 import { IoAdd, IoCloseCircleSharp, IoRemove } from "react-icons/io5";
 
+const ColorLabel = {
+  black: 'ブラック',
+  gray: 'グレー',
+  navy: 'ネイビー',
+  red: 'レッド',
+  white: 'ホワイト'
+}
+
 export default function ProductItem({ item, onRemove, onAdd, onReduce }) {
   const { form, product } = item;
   return (
@@ -18,8 +26,8 @@ export default function ProductItem({ item, onRemove, onAdd, onReduce }) {
         </div>
         <div className={styles.center}>
           <h3 className={styles.productTitle}>{product.title}</h3>
-          <p>カラー: {form.color} </p>
-          <p>サイズ: {form.size}</p>
+          <p>カラー: {ColorLabel[form.color]} </p>
+          <p>サイズ: {form.size?.toUpperCase()}</p>
         </div>
         <div className={styles.right}>
           <p className={styles.price}>¥ {product.price.toLocaleString()}</p>

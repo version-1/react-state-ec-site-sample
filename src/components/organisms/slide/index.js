@@ -35,7 +35,7 @@ const Slide = ({ index, onNext = () => {}, onPrev = () => {} }) => {
             <div className={style.buttons}>
               <a
                 className={style.button}
-                href="/#/women?page=1&text=&categories%5B0%5D=women&categories%5B1%5D=t-shirts"
+                href="/#/items/women?page=1&text=&categories%5B0%5D=women&categories%5B1%5D=t-shirts"
               >
                 Shirts
               </a>
@@ -44,13 +44,13 @@ const Slide = ({ index, onNext = () => {}, onPrev = () => {} }) => {
                   [style.button]: true,
                   [style.buttonLight]: true,
                 })}
-                href="/#/women?page=1&text=&categories%5B0%5D=men&categories%5B1%5D=coats"
+                href="/#/items/women?page=1&text=&categories%5B0%5D=men&categories%5B1%5D=coats"
               >
                 Coats
               </a>
               <a
                 className={style.button}
-                href="/#/women?page=1&text=&categories%5B0%5D=women&categories%5B1%5D=t-shirts"
+                href="/#/items/women?page=1&text=&categories%5B0%5D=women&categories%5B1%5D=coats"
               >
                 Outers
               </a>
@@ -63,7 +63,7 @@ const Slide = ({ index, onNext = () => {}, onPrev = () => {} }) => {
             <div className={style.buttons}>
               <a
                 className={style.button}
-                href="/#/men?page=1&text=&categories%5B0%5D=women&categories%5B1%5D=t-shirts"
+                href="/#/items/men?page=1&text=&categories%5B0%5D=women&categories%5B1%5D=t-shirts"
               >
                 Shirts
               </a>
@@ -72,13 +72,13 @@ const Slide = ({ index, onNext = () => {}, onPrev = () => {} }) => {
                   [style.button]: true,
                   [style.buttonLight]: true,
                 })}
-                href="/#/men?page=1&text=&categories%5B0%5D=men&categories%5B1%5D=coats"
+                href="/#/items/men?page=1&text=&categories%5B0%5D=men&categories%5B1%5D=coats"
               >
                 Coats
               </a>
               <a
                 className={style.button}
-                href="/#/men?page=1&text=&categories%5B0%5D=women&categories%5B1%5D=t-shirts"
+                href="/#/items/men?page=1&text=&categories%5B0%5D=women&categories%5B1%5D=coats"
               >
                 Outers
               </a>
@@ -98,7 +98,7 @@ const Slide = ({ index, onNext = () => {}, onPrev = () => {} }) => {
                 [style.button]: true,
                 [style.buttonForKids]: true,
               })}
-              href="/#/kids"
+              href="/#/items/kids"
             >
               <p className={style.kidsButtonText}>
                 <span>Kids</span>

@@ -27,6 +27,7 @@ code {
   --co-gray-3: #ccc;
   --co-gray-4: #bbb;
   --co-gray-5: #999;
+  --container-width: 1200px;
 }
 
 *, *:after {

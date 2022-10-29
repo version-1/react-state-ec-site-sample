@@ -12,7 +12,10 @@
 
 .price {
   margin-bottom: 8px;
-  font-size: 16px;
+  font-size: 18px;
+  font-weight: bold;
+  letter-spacing: 0.8px;
+  color: var(--co-black);
 }
 
 .headlines {
@@ -21,6 +24,10 @@
 
 .title {
   font-size: 16px;
+  font-weight: bold;
+  margin: 4px 0;
+  letter-spacing: 0.8px;
+  color: var(--co-black);
 }
 
 .colors {
@@ -35,8 +42,8 @@
 }
 
 .image {
-  width: 240px;
-  height: 280px;
+  width: 260px;
+  height: 300px;
   margin-bottom: 16px;
 }
 

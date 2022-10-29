@@ -29,7 +29,7 @@ function PaymentConfirmation({ user }) {
         defaultValue={defaultValue}
         onSubmit={async () => {
           try {
-            await checkout({
+            const res = await checkout({
               userId: user.id,
               totalAmount,
               products: defaultValue.codes.map((code) => {
@@ -37,13 +37,14 @@ function PaymentConfirmation({ user }) {
               }),
               shipmentInfo: defaultValue.userInfo.shipmentInfo,
             });
-            clear()
+            if (res) {
+              clear()
+              navigate("/cart/payment/complete");
+            }
           } catch (e) {
             console.error(e);
             return
           }
-
-          navigate("/cart/payment/complete");
         }}
       />
     </Layout>

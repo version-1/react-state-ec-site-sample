@@ -20,23 +20,48 @@ const fieldMap = {
   address1: "番地",
 };
 
+const validate = ({ userInfo }) => {
+  const errors = Object.keys(fieldMap).reduce((acc, key) => {
+    const value = userInfo[key] || userInfo.shipmentInfo?.[key]
+    if (!value) {
+      return {
+        ...acc,
+        [key]: `${fieldMap[key]} を入力してください。`,
+      };
+    }
+
+    return acc;
+  }, {});
+
+  const { paymentInfo } = userInfo;
+  if (!paymentInfo) {
+    errors.paymentInfo = `支払い情報を入力してください。`;
+  }
+  return errors;
+};
+
+const  defaultUserInfo = {
+      firstName: undefined,
+      lastName: undefined,
+      firstNameKana: undefined,
+      lastNameKana: undefined,
+      shipmentInfo: {
+        zipCode: undefined,
+        prefecture: undefined,
+        city: undefined,
+        address1: undefined,
+        address2: undefined,
+      },
+      paymentInfo: undefined,
+    }
+
 function Payment({ readOnly, defaultValue, submitLabel, onSubmit }) {
   const [errors, setErrors] = useState({});
   const [products, setProducts] = useState([]);
   const { summary, cart, codes } = useCart();
   const navigate = useNavigate();
   const [payment, setPayment] = useState({
-    userInfo: {
-      lastName: undefined,
-      firstNameKana: undefined,
-      lastNameKana: undefined,
-      zipCode: undefined,
-      prefecture: undefined,
-      city: undefined,
-      address1: undefined,
-      address2: undefined,
-      card: "dummy",
-    },
+    userInfo: defaultUserInfo,
     codes,
     summary,
     ...(defaultValue || {}),
@@ -48,7 +73,7 @@ function Payment({ readOnly, defaultValue, submitLabel, onSubmit }) {
     const init = async () => {
       const res = await fetchProductByCodes({ codes });
       if (!res.data) {
-        return
+        return;
       }
       setProducts(res.data);
       setPayment({
@@ -63,40 +88,44 @@ function Payment({ readOnly, defaultValue, submitLabel, onSubmit }) {
 
   const handleOnChange = (name) => (e) => {
     const { value } = e.target;
+    const { userInfo, ...rest } = payment;
+    if (Object.keys(defaultUserInfo.shipmentInfo).includes(name)) {
+      setPayment({
+        ...rest,
+        userInfo: {
+          ...userInfo,
+          shipmentInfo: {
+            ...(userInfo.shipmentInfo || defaultUserInfo.shipmentInfo),
+            [name]: value,
+          },
+        },
+      });
+      return
+    }
+
     setPayment({
-      ...payment,
+      ...rest,
       userInfo: {
-        ...payment.userInfo,
+        ...userInfo,
         [name]: value,
       },
     });
   };
 
-  const validate = (payment) => {
-    setErrors({});
-    const result = Object.keys(fieldMap).reduce((acc, key) => {
-      if (!payment.userInfo[key]) {
-        return {
-          ...acc,
-          [key]: `${fieldMap[key]} を入力してください。`,
-        };
-      }
-
-      return acc;
-    }, {});
-
-    setErrors(result);
-
-    return !Object.keys(result).length;
-  };
-
   const handleSubmit = useCallback(() => {
-    if (!validate(payment)) {
+    setErrors({});
+    const errors = validate(payment);
+    setErrors(errors);
+    if (Object.keys(errors).length !== 0) {
       return;
     }
 
     onSubmit(payment);
-  }, [payment, validate]);
+  }, [payment, onSubmit]);
+
+  const { shipmentInfo = {}, paymentInfo } = userInfo
+
+  console.log('userInfo ===========', userInfo, defaultValue)
 
   return (
     <div>
@@ -145,7 +174,7 @@ function Payment({ readOnly, defaultValue, submitLabel, onSubmit }) {
               <h3 className={styles.fieldTitle}>郵便番号</h3>
               <TextField
                 onChange={handleOnChange("zipCode")}
-                value={userInfo.zipCode}
+                value={shipmentInfo.zipCode}
                 readOnly={readOnly}
                 errorMessage={errors.zipCode}
               />
@@ -154,7 +183,7 @@ function Payment({ readOnly, defaultValue, submitLabel, onSubmit }) {
               <h3 className={styles.fieldTitle}>都道府県</h3>
               <TextField
                 onChange={handleOnChange("prefecture")}
-                value={userInfo.prefecture}
+                value={shipmentInfo.prefecture}
                 readOnly={readOnly}
                 errorMessage={errors.prefecture}
               />
@@ -163,7 +192,7 @@ function Payment({ readOnly, defaultValue, submitLabel, onSubmit }) {
               <h3 className={styles.fieldTitle}>市区町村</h3>
               <TextField
                 onChange={handleOnChange("city")}
-                value={userInfo.city}
+                value={shipmentInfo.city}
                 readOnly={readOnly}
                 errorMessage={errors.city}
               />
@@ -172,7 +201,7 @@ function Payment({ readOnly, defaultValue, submitLabel, onSubmit }) {
               <h3 className={styles.fieldTitle}>番地</h3>
               <TextField
                 onChange={handleOnChange("address1")}
-                value={userInfo.address1}
+                value={shipmentInfo.address1}
                 readOnly={readOnly}
                 errorMessage={errors.address1}
               />
@@ -183,7 +212,7 @@ function Payment({ readOnly, defaultValue, submitLabel, onSubmit }) {
               </h3>
               <TextField
                 onChange={handleOnChange("address2")}
-                value={userInfo.address2}
+                value={shipmentInfo.address2}
                 readOnly={readOnly}
                 errorMessage={errors.address2}
               />
@@ -193,7 +222,10 @@ function Payment({ readOnly, defaultValue, submitLabel, onSubmit }) {
             <h2>2. 支払い方法</h2>
             <div>
               <h2>クレジットカード</h2>
-              <PaymentCard payment={payment.userInfo.paymentInfo}/>
+              {errors.paymentInfo && (
+                <p className={styles.errorMessages}>{errors.paymentInfo}</p>
+              )}
+              <PaymentCard payment={paymentInfo} />
               {readOnly ? null : (
                 <div className={styles.newCard}>
                   <a>+ 新しいカードを登録する</a>

@@ -1,6 +1,7 @@
 import "./App.css";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { HashRouter, Routes, Route } from "react-router-dom";
+import { AuthContext } from "contexts";
 import Loader from "components/atoms/loader";
 import Home from "screens/home";
 import Item from "screens/items/show";
@@ -14,22 +15,45 @@ import PaymentComplete from "screens/cart/payment/complete";
 import Account from "screens/accounts";
 import {
   clearToken,
+  setToken,
   hasToken,
   fetchUser,
   setErrorHandler,
-  setClearTokenHandler,
 } from "services/api";
 
 function App() {
-  const [user, setUser] = useState();
   const [loading, setLoading] = useState(true);
+  const [auth, setAuth] = useState({
+    user: undefined,
+    isLogin: false,
+  });
+
+  const updateAuth = useCallback(
+    (value) =>
+      setAuth({
+        ...auth,
+        ...value,
+      }),
+    [auth, setAuth]
+  );
+
+  const login = useCallback(
+    (user, token) => {
+      if (token) {
+        setToken(token);
+      }
+      updateAuth({ user, isLogin: true });
+    },
+    [updateAuth]
+  );
+
+  const logout = useCallback(() => {
+    clearToken();
+    updateAuth({ user: undefined, isLogin: false });
+  }, [updateAuth]);
 
   useEffect(() => {
     const init = async () => {
-      setClearTokenHandler(() => {
-        setUser(undefined);
-      });
-
       setErrorHandler((e) => {
         if (e.status === 403) {
           clearToken();
@@ -45,10 +69,10 @@ function App() {
       });
 
       try {
-        if (hasToken) {
+        if (hasToken()) {
           const res = await fetchUser();
           if (res.data) {
-            setUser(res.data);
+            login(res.data);
           }
         }
       } finally {
@@ -57,7 +81,7 @@ function App() {
     };
 
     init();
-  }, [setUser]);
+  }, []);
 
   if (loading) {
     return <Loader />;
@@ -65,45 +89,40 @@ function App() {
 
   return (
     <div className="App">
-      <HashRouter>
-        <Routes>
-          <Route path="/" element={<Home user={user} />} caseSensitive />
-          <Route path="/cart">
-            <Route path="" element={<Cart user={user} />} />
-            <Route path="payment" element={<Payment user={user} />} />
-            <Route
-              path="payment/confirmation"
-              element={<PaymentConfirmation user={user} />}
-            />
-            <Route
-              path="payment/complete"
-              element={<PaymentComplete user={user} />}
-            />
-          </Route>
-          <Route
-            path="/login"
-            element={
-              <Login
-                user={user}
-                onLogin={(user) => {
-                  setUser(user);
-                }}
+      <AuthContext.Provider
+        value={{
+          data: auth,
+          login,
+          logout,
+        }}
+      >
+        <HashRouter>
+          <Routes>
+            <Route path="/" element={<Home />} caseSensitive />
+            <Route path="/cart">
+              <Route path="" element={<Cart />} />
+              <Route path="payment" element={<Payment />} />
+              <Route
+                path="payment/confirmation"
+                element={<PaymentConfirmation />}
               />
-            }
-          />
-          <Route path="/accounts">
-            <Route path="" element={<Account user={user} />} />
-            <Route path="orders" element={<Orders user={user} />} />
-          </Route>
-          <Route path="/items">
-            <Route path="" element={<Items user={user} />} />
-            <Route path="men" element={<Items user={user} />} />
-            <Route path="women" element={<Items user={user} />} />
-            <Route path="kids" element={<Items user={user} />} />
-            <Route path=":code" element={<Item user={user} />} />
-          </Route>
-        </Routes>
-      </HashRouter>
+              <Route path="payment/complete" element={<PaymentComplete />} />
+            </Route>
+            <Route path="login" element={<Login />} />
+            <Route path="/accounts">
+              <Route path="" element={<Account />} />
+              <Route path="orders" element={<Orders />} />
+            </Route>
+            <Route path="/items">
+              <Route path="" element={<Items />} />
+              <Route path="men" element={<Items />} />
+              <Route path="women" element={<Items />} />
+              <Route path="kids" element={<Items />} />
+              <Route path=":code" element={<Item />} />
+            </Route>
+          </Routes>
+        </HashRouter>
+      </AuthContext.Provider>
     </div>
   );
 }

@@ -14,7 +14,6 @@ const defaultErrorHandler = (e) => {
 
 class HTTPClient {
   _errorHandler = defaultErrorHandler;
-  _clearToken = () => {};
   _token = undefined;
 
   constructor(params = {}) {
@@ -48,16 +47,16 @@ class HTTPClient {
     }
   }
 
+  clearToken() {
+    this._token = undefined
+  }
+
   set errorHandler(handler) {
     this._errorHandler = handler;
   }
 
   set token(value) {
     this._token = value
-  }
-
-  set clearToken(handler) {
-    this._clearToken = handler
   }
 
   get errorHandler() {
@@ -79,16 +78,9 @@ export const setToken = (token) => {
   localStorage.setItem(tokenKey, token);
 }
 
-export const clearToken = (token) => {
-  if (client._clearToken) {
-    client._clearToken()
-  }
-  client.token = undefined
-  localStorage.removeItem(tokenKey, token);
-}
-
-export const setClearTokenHandler = (handler) => {
-  client.clearToken = handler
+export const clearToken = () => {
+  client.clearToken();
+  localStorage.removeItem(tokenKey);
 }
 
 export const setErrorHandler = (handler) => {

@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "contexts";
+import { useNavigate, useLocation } from "react-router-dom";
 import Layout from "components/templates/layout";
 import Button from "components/atoms/button";
 import Order from "components/organisms/order";
@@ -7,10 +8,14 @@ import { fetchProductByCodes } from "services/api";
 import { useCart } from "hooks/useCart";
 import styles from "./index.module.css";
 
-function Cart({ user }) {
+function Cart() {
+  const {
+    data: { isLogin },
+  } = useContext(AuthContext);
   const [products, setProducts] = useState([]);
   const { cart, codes, remove, increment, decrement } = useCart();
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const init = async () => {
@@ -28,10 +33,10 @@ function Cart({ user }) {
     };
 
     init();
-  }, [cart, codes]);
+  }, [cart, codes, location]);
 
   return (
-    <Layout user={user}>
+    <Layout>
       <div className={styles.container}>
         <h2 className={styles.title}>カート</h2>
         <div className={styles.content}>
@@ -83,7 +88,7 @@ function Cart({ user }) {
             label="支払い画面に進む"
             disabled={!products.length}
             onClick={() => {
-              if (!user) {
+              if (!isLogin) {
                 alert("支払いを完了させるにはログインが必要です。")
                 navigate("/login");
                 return

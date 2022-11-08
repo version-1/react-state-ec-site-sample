@@ -76,9 +76,9 @@ const Products = () => {
           onRemove={remove}
           onSelect={(item) => {
             if (has(item)) {
-              remove(item)
+              remove(item);
             } else {
-              add(item)
+              add(item);
             }
           }}
         />

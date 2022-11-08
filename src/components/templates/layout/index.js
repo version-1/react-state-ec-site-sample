@@ -1,11 +1,12 @@
+import { useContext } from "react";
+import { AuthContext } from "contexts";
 import style from "./index.module.css";
 import { Link } from "react-router-dom";
 import { IoCartOutline, IoPerson, IoEnterOutline } from "react-icons/io5";
 import DropDownMenu from "components/organisms/dropdown";
-import { clearToken } from "services/api";
 import icon from "assets/logo-dark.png";
 
-const dropdownMenuList = () => [
+const dropdownMenuList = ({ onLogout }) => [
   {
     key: "profile",
     to: "/accounts",
@@ -20,48 +21,64 @@ const dropdownMenuList = () => [
     key: "logout",
     label: "ログアウト",
     onClick: () => {
-      clearToken();
-      window.location.href = "/";
+      onLogout();
+      window.location.href = "/#/items";
     },
     style: "disruptive",
   },
 ];
 
-const Layout = ({ guest, user, children }) => {
-  const items = dropdownMenuList();
+const Layout = ({ menu = true, publicPage, children }) => {
+  const {
+    data: { user, isLogin },
+    logout,
+  } = useContext(AuthContext);
+  const items = dropdownMenuList({ onLogout: logout });
 
   return (
     <div className={style.container}>
       <header className={style.header}>
         <div className={style.logoContainer}>
-          <Link to="/">
+          <Link to="/" reloadDocument>
             <img src={icon} alt="Button" />
           </Link>
         </div>
-        {guest ? null : (
+        {menu ? (
           <div className={style.menu}>
             <ul className={style.menuList}>
               <li className={style.menuItem}>
-                <Link className={style.menuItemText} to="/items/women">
+                <Link
+                  className={style.menuItemText}
+                  to="/items/women"
+                  reloadDocument
+                >
                   Women
                 </Link>
               </li>
               <li className={style.menuItem}>
-                <Link className={style.menuItemText} to="/items/men">
+                <Link
+                  className={style.menuItemText}
+                  to="/items/men"
+                  reloadDocument
+                >
                   Men
                 </Link>
               </li>
               <li className={style.menuItem}>
-                <Link className={style.menuItemText} to="/items/kids">
+                <Link
+                  className={style.menuItemText}
+                  to="/items/kids"
+                  reloadDocument
+                >
                   Kids
                 </Link>
               </li>
             </ul>
           </div>
-        )}
-        {guest ? null : (
+        ) : null}
+        {menu ? (
           <div className={style.iconMenu}>
-            {user ? (
+            {isLogin ? (
               <ul className={style.iconMenuList}>
                 <li className={style.iconMenuItem}>
                   <Link to="/cart">
@@ -114,9 +131,10 @@ const Layout = ({ guest, user, children }) => {
               </ul>
             )}
           </div>
-        )}
+        ) : null}
       </header>
-      {children}
+      {/* TODO add loader */}
+      {publicPage || user ? children : null}
     </div>
   );
 };

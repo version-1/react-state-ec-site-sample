@@ -10,7 +10,7 @@ import { assetURL } from "constants/index";
 import { sizeList, colorList } from "models/filter";
 import styles from "./index.module.css";
 
-function Item({ user }) {
+function Item() {
   const { code } = useParams();
   const [item, setItem] = useState();
   const [form, setForm] = useState({
@@ -68,7 +68,7 @@ function Item({ user }) {
   }
 
   return (
-    <Layout user={user}>
+    <Layout publicPage>
       <div className={styles.container}>
         <div className={styles.left}>
           <img

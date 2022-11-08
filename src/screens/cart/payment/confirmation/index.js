@@ -5,7 +5,7 @@ import PaymentTemplate from "components/templates/payment";
 import { checkout } from "services/api";
 import { useCart } from "hooks/useCart";
 
-function PaymentConfirmation({ user }) {
+function PaymentConfirmation() {
   const location = useLocation();
   const navigate = useNavigate();
   const { cart, clear, totalAmount } = useCart();
@@ -22,7 +22,7 @@ function PaymentConfirmation({ user }) {
   }
 
   return (
-    <Layout user={user}>
+    <Layout>
       <PaymentTemplate
         readOnly
         submitLabel="支払いを完了させる"

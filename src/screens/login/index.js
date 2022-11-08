@@ -1,38 +1,43 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { TextField } from "components/atoms/textField";
 import Button from "components/atoms/button";
 import Layout from "components/templates/layout";
 import { useNavigate } from "react-router-dom";
 import styles from "./index.module.css";
-import { createToken, setToken } from "services/api";
+import { createToken } from "services/api";
+import { AuthContext } from "contexts";
 
-  const validate = ({ email, password }) => {
-    const newErrors = {};
-    if (!email) {
-      newErrors.email = "メールアドレスを入力してください";
-    }
+const validate = ({ email, password }) => {
+  const newErrors = {};
+  if (!email) {
+    newErrors.email = "メールアドレスを入力してください";
+  }
 
-    if (!password) {
-      newErrors.password = "パスワードを入力してください";
-    }
+  if (!password) {
+    newErrors.password = "パスワードを入力してください";
+  }
 
-    return newErrors;
-  };
+  return newErrors;
+};
 
-function Login({ user, onLogin }) {
+function Login() {
+  const {
+    data: { isLogin },
+    login
+  } = useContext(AuthContext);
   const navigate = useNavigate();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    if (user) {
+    if (isLogin) {
       navigate("/items");
     }
-  }, [user, navigate]);
+  }, [isLogin, navigate]);
 
   return (
-    <Layout guest>
+    <Layout menu={false} publicPage>
       <div className={styles.container}>
         <div className={styles.form}>
           <h2 className={styles.title}>メールアドレスでログイン</h2>
@@ -64,9 +69,8 @@ function Login({ user, onLogin }) {
               try {
                 const res = await createToken({ email, password });
                 if (res.data) {
-                  const { token, user } = res.data
-                  setToken(token);
-                  onLogin(user);
+                  const { token, user } = res.data;
+                  login(user, token);
                   navigate("/items");
                 }
               } catch (e) {

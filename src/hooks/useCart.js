@@ -1,14 +1,34 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { summarize } from "models/order";
+import { fetchProductByCodes } from "services/api";
 
 const cartKey = "cart";
 
 const deepCopy = (data) => JSON.parse(JSON.stringify(data))
 
 export const useCart = () => {
+  const [products, setProducts] = useState([]);
   const [cart, setCart] = useState({});
 
   const codes = useMemo(() => Object.keys(cart), [cart]);
+
+  useEffect(() => {
+    const init = async () => {
+      const res = await fetchProductByCodes({ codes });
+      const products = res.data.map((item) => {
+        const cur = cart[item.code];
+        const { form, product } = cur;
+        return {
+          code: item.code,
+          form,
+          product,
+        };
+      });
+      setProducts(products);
+    };
+
+    init();
+  }, [cart, codes]);
 
   useEffect(() => {
     const cart = JSON.parse(localStorage.getItem(cartKey)) || {};
@@ -64,6 +84,7 @@ export const useCart = () => {
 
   return {
     codes,
+    products,
     cart,
     summary,
     add,

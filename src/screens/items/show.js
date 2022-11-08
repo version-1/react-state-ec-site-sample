@@ -66,7 +66,7 @@ function Item() {
 
   if (!item) {
     return (
-      <Layout>
+      <Layout publicPage>
         <Loader />
       </Layout>
     );
@@ -165,8 +165,7 @@ function Item() {
                         ? (sizes[size.value] || 0) > 0
                         : true;
 
-                      return (
-                        <div
+                      return ( <div
                           key={size.value}
                           className={styles.sizeContainer}
                           onClick={() => {

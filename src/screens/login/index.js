@@ -1,11 +1,13 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { TextField } from "components/atoms/textField";
 import Button from "components/atoms/button";
 import Layout from "components/templates/layout";
 import { useNavigate } from "react-router-dom";
 import styles from "./index.module.css";
 import { createToken } from "services/api";
-import { AuthContext } from "contexts";
+import { setToken } from "services/api";
+import { login } from "features/auth";
 
 const validate = ({ email, password }) => {
   const newErrors = {};
@@ -21,10 +23,8 @@ const validate = ({ email, password }) => {
 };
 
 function Login() {
-  const {
-    data: { isLogin },
-    login
-  } = useContext(AuthContext);
+  const { isLogin } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
@@ -70,7 +70,8 @@ function Login() {
                 const res = await createToken({ email, password });
                 if (res.data) {
                   const { token, user } = res.data;
-                  login(user, token);
+                  dispatch(login(user));
+                  setToken(token);
                   navigate("/items");
                 }
               } catch (e) {

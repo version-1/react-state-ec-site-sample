@@ -1,8 +1,10 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import qs from "qs";
-import { uniq, serialize, sort, deserialize, sortOptions } from "models/filter";
+import { uniq, serialize, sort } from "models/filter";
 import { fetchProducts } from "services/api";
+import { updateData, updateFilter, updateMeta } from "features/products";
 
 export const SortType = Object.freeze({
   latest: "latest",
@@ -11,28 +13,9 @@ export const SortType = Object.freeze({
 });
 
 export const useFilter = () => {
-  const [meta, setMeta] = useState({});
-  const [data, setData] = useState([]);
+  const dispatch = useDispatch();
+  const { meta, data, filters } = useSelector((state) => state.products);
   const [searchParams, setSearchParams] = useSearchParams();
-
-  const defaultSortType = sortOptions.find(
-    (it) => it.value === (searchParams.get("sortType") || SortType.latest)
-  );
-
-  const [filters, setFilters] = useState(() =>
-    uniq([
-      defaultSortType,
-      {
-        group: "page",
-        value: searchParams.get("page") || 1,
-      },
-      {
-        group: "text",
-        value: searchParams.get("text") || "",
-      },
-      ...deserialize(decodeURIComponent(searchParams.toString())),
-    ])
-  );
 
   const serializedFilters = useMemo(() => serialize(filters), [filters]);
   const tags = useMemo(
@@ -43,16 +26,16 @@ export const useFilter = () => {
     [filters]
   );
 
+  useEffect(() => {
+    dispatch(updateFilter({ searchParams: qs.parse(searchParams.toString()) }));
+  }, [dispatch, searchParams]);
+
   const fetch = useCallback(
-    async (params = {}, reset = false) => {
-      const _params = reset
-        ? {
-            ...params,
-          }
-        : {
-            ...serializedFilters,
-            ...params,
-          };
+    async (params = {}) => {
+      const _params = {
+        ...serializedFilters,
+        ...params,
+      };
       const res = await fetchProducts(_params);
       if (!res.data) {
         return;
@@ -60,33 +43,36 @@ export const useFilter = () => {
 
       const { data, ...rest } = res;
       const { limit, totalCount } = rest;
+
       const maxPage = Math.floor(totalCount / limit) + 1;
 
       const { sortType } = params;
       const sortedData = sort(sortType, data);
 
-      setMeta({ ...rest, maxPage });
-      setData(sortedData);
+      dispatch(updateMeta({ meta: { ...rest, maxPage } }));
+      dispatch(updateData({ data: sortedData }));
 
       return res;
     },
-    [serializedFilters, setMeta, setData]
+    [dispatch, serializedFilters]
   );
 
   const update = useCallback(
-    async (params, reset = false) => {
+    async (params) => {
       const _params = uniq(params);
-      setFilters(_params);
+      dispatch(updateFilter({ params: _params }));
 
       const serializedParams = serialize(_params);
       setSearchParams(qs.stringify(serializedParams));
 
-      const res = await fetch(serializedParams, reset);
+      const res = await fetch(serializedParams);
       if (!res) {
         return;
       }
 
-      const { limit, totalCount } = res;
+      const { data, ...rest } = res;
+      const { limit, totalCount } = rest;
+
       const maxPage = Math.floor(totalCount / limit) + 1;
       if (maxPage < serializedFilters.page) {
         return update([
@@ -98,7 +84,7 @@ export const useFilter = () => {
         ]);
       }
     },
-    [fetch, setFilters, setSearchParams, serializedFilters.page]
+    [dispatch, fetch, setSearchParams, serializedFilters.page]
   );
 
   const reset = useCallback(() => {

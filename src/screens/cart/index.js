@@ -1,5 +1,4 @@
-import { useContext } from "react";
-import { AuthContext } from "contexts";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Layout from "components/templates/layout";
 import Button from "components/atoms/button";
@@ -8,10 +7,8 @@ import { useCart } from "hooks/useCart";
 import styles from "./index.module.css";
 
 function Cart() {
-  const {
-    data: { user },
-  } = useContext(AuthContext);
   const { products, remove, increment, decrement } = useCart();
+  const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
   return (

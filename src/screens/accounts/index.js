@@ -4,14 +4,9 @@ import PaymentCard from "components/molecules/paymentCard";
 import styles from "./index.module.css";
 import Button from "components/atoms/button";
 import Tooltip from "components/atoms/tooltip";
-
-const baseURL = "http://localhost:8080";
+import { BASE_URL } from "services/api";
 
 function Accounts({ user }) {
-  if (!user) {
-    return;
-  }
-
   return (
     <Layout user={user}>
       <div className={styles.container}>
@@ -22,7 +17,7 @@ function Accounts({ user }) {
               <h3 className={styles.subtitle}>プロフィール</h3>
               <div className={`${styles.section} ${styles.flex}`}>
                 <div className={styles.avatar}>
-                  <img src={baseURL + user.iconURL} alt="プロフィール" />
+                  <img src={BASE_URL + user.iconURL} alt="プロフィール" />
                 </div>
                 <div className={styles.profile}>
                   <div>
@@ -108,7 +103,9 @@ function Accounts({ user }) {
                   {user.paymentInfo ? (
                     <PaymentCard payment={user.paymentInfo} />
                   ) : (
-                    <p className={styles.empty}>支払い情報が登録されていません。</p>
+                    <p className={styles.empty}>
+                      支払い情報が登録されていません。
+                    </p>
                   )}
                 </div>
               </div>

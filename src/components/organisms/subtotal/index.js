@@ -6,7 +6,7 @@ export default function Subtotal({ summary }) {
     <div className={styles.container}>
       {summary.map((item) => {
         return (
-          <div className={styles.summary}>
+          <div key={item.label} className={styles.summary}>
             <div
               className={classNames({
                 [styles.label]: true,

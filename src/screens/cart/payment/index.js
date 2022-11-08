@@ -5,10 +5,6 @@ import PaymentTemplate from "components/templates/payment";
 function Payment({ user }) {
   const navigate = useNavigate();
 
-  if(!user) {
-    return null
-  }
-
   return (
     <Layout user={user}>
       <PaymentTemplate

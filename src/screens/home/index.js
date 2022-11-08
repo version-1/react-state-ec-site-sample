@@ -2,12 +2,13 @@ import { useCallback, useEffect, useState } from "react";
 import Slide from "components/organisms/slide";
 import icon from "assets/logo-light.png";
 import { ReactComponent as Arrow } from "assets/arrow.svg";
+import { pageLinks } from "constants/index";
 import styles from "./index.module.css";
 
 const title = [
-  { label: "Women", path: "/#/items/women" },
-  { label: "Men", path: "/#/items/men" },
-  { label: "Kids", path: "/#/items/kids" },
+  { label: "Women", path: "/#" + pageLinks.women },
+  { label: "Men", path: "/#" + pageLinks.men },
+  { label: "Kids", path: "/#" + pageLinks.kids },
 ];
 
 let timer;
@@ -17,10 +18,10 @@ const Home = () => {
 
   const transit = useCallback(
     (delta) => () => {
-      setIndex(Math.abs((index + delta) % 3))
+      setIndex(Math.abs((index + delta) % 3));
       if (timer) {
-        clearTimeout(timer)
-        timer = undefined
+        clearTimeout(timer);
+        timer = undefined;
       }
     },
     [index, setIndex]

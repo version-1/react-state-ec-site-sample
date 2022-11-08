@@ -8,18 +8,14 @@ import { useCart } from "hooks/useCart";
 function PaymentConfirmation({ user }) {
   const location = useLocation();
   const navigate = useNavigate();
-  const { cart, clear, totalAmount } = useCart();
+  const { products, clear, totalAmount } = useCart();
   const { payment: defaultValue } = location?.state || {};
 
   useEffect(() => {
     if (!defaultValue) {
       navigate("/cart");
     }
-  }, [defaultValue]);
-
-  if (!defaultValue) {
-    return null;
-  }
+  }, [defaultValue, navigate]);
 
   return (
     <Layout user={user}>
@@ -28,22 +24,18 @@ function PaymentConfirmation({ user }) {
         submitLabel="支払いを完了させる"
         defaultValue={defaultValue}
         onSubmit={async () => {
-          try {
-            const res = await checkout({
-              userId: user.id,
-              totalAmount,
-              products: defaultValue.codes.map((code) => {
-                return cart[code];
-              }),
-              shipmentInfo: defaultValue.userInfo.shipmentInfo,
-            });
-            if (res) {
-              clear()
-              navigate("/cart/payment/complete");
-            }
-          } catch (e) {
-            console.error(e);
-            return
+          const res = await checkout({
+            totalAmount,
+            products,
+            shipmentInfo: defaultValue.userInfo.shipmentInfo,
+          });
+          if (res.data) {
+            clear();
+            navigate("/cart/payment/complete");
+          }
+
+          if (res.error) {
+            console.error(res.error);
           }
         }}
       />

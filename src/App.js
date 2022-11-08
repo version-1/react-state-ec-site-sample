@@ -1,13 +1,12 @@
 import "./App.css";
 import { useEffect, useState } from "react";
 import { HashRouter, Routes, Route } from "react-router-dom";
-import { categoryList } from "models/filter";
-import Layout from "components/templates/layout";
-import Products from "components/templates/products";
+import Loader from "components/atoms/loader";
 import Home from "screens/home";
-import Item from "screens/items";
+import Item from "screens/items/show";
+import Items from "screens/items";
 import Cart from "screens/cart";
-import Login from "screens/accounts/login";
+import Login from "screens/login";
 import Orders from "screens/accounts/orders";
 import Payment from "screens/cart/payment";
 import PaymentConfirmation from "screens/cart/payment/confirmation";
@@ -23,6 +22,7 @@ import {
 
 function App() {
   const [user, setUser] = useState();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const init = async () => {
@@ -34,7 +34,7 @@ function App() {
         if (e.status === 403) {
           clearToken();
           const { hash } = window.location;
-          if (!hash.startsWith("#/accounts")) {
+          if (hash.startsWith("#/accounts")) {
             window.location.href = "#/items";
           }
           return;
@@ -44,16 +44,24 @@ function App() {
         alert("リクエストに失敗しました");
       });
 
-      if (hasToken) {
-        const res = await fetchUser();
-        if (res.data) {
-          setUser(res.data);
+      try {
+        if (hasToken()) {
+          const res = await fetchUser();
+          if (res.data) {
+            setUser(res.data);
+          }
         }
+      } finally {
+        setLoading(false);
       }
     };
 
     init();
   }, [setUser]);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className="App">
@@ -72,54 +80,23 @@ function App() {
               element={<PaymentComplete user={user} />}
             />
           </Route>
+          <Route
+            path="/login"
+            element={
+              <Login
+                user={user}
+                onLogin={(user) => {
+                  setUser(user);
+                }}
+              />
+            }
+          />
           <Route path="/accounts">
             <Route path="" element={<Account user={user} />} />
-            <Route
-              path="login"
-              element={
-                <Login
-                  user={user}
-                  onLogin={(user) => {
-                    setUser(user);
-                  }}
-                />
-              }
-            />
             <Route path="orders" element={<Orders user={user} />} />
           </Route>
           <Route path="/items">
-            <Route
-              path=""
-              element={
-                <Layout user={user}>
-                  <Products />
-                </Layout>
-              }
-            />
-            <Route
-              path="men"
-              element={
-                <Layout user={user}>
-                  <Products defaultFilters={[categoryList[0]]} />
-                </Layout>
-              }
-            />
-            <Route
-              path="women"
-              element={
-                <Layout user={user}>
-                  <Products defaultFilters={[categoryList[1]]} />
-                </Layout>
-              }
-            />
-            <Route
-              path="kids"
-              element={
-                <Layout user={user}>
-                  <Products defaultFilters={[categoryList[2]]} />
-                </Layout>
-              }
-            />
+            <Route path="" element={<Items user={user} />} />
             <Route path=":code" element={<Item user={user} />} />
           </Route>
         </Routes>

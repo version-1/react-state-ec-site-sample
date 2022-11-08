@@ -1,11 +1,12 @@
 import style from "./index.module.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { IoCartOutline, IoPerson, IoEnterOutline } from "react-icons/io5";
 import DropDownMenu from "components/organisms/dropdown";
 import { clearToken } from "services/api";
 import icon from "assets/logo-dark.png";
+import { pageLinks } from "constants/index";
 
-const dropdownMenuList = (navigate) => [
+const dropdownMenuList = () => [
   {
     key: "profile",
     to: "/accounts",
@@ -27,40 +28,18 @@ const dropdownMenuList = (navigate) => [
   },
 ];
 
-const Layout = ({ guest, user, children }) => {
-  const navigate = useNavigate();
-  const items = dropdownMenuList(navigate);
+const Layout = ({ user, menu = true, publicPage, children }) => {
+  const items = dropdownMenuList();
 
   return (
     <div className={style.container}>
       <header className={style.header}>
         <div className={style.logoContainer}>
-          <Link to="/">
+          <Link to="/" reloadDocument>
             <img src={icon} alt="Button" />
           </Link>
         </div>
-        {guest ? null : (
-          <div className={style.menu}>
-            <ul className={style.menuList}>
-              <li className={style.menuItem}>
-                <Link className={style.menuItemText} to="/items/women">
-                  Women
-                </Link>
-              </li>
-              <li className={style.menuItem}>
-                <Link className={style.menuItemText} to="/items/men">
-                  Men
-                </Link>
-              </li>
-              <li className={style.menuItem}>
-                <Link className={style.menuItemText} to="/items/kids">
-                  Kids
-                </Link>
-              </li>
-            </ul>
-          </div>
-        )}
-        {guest ? null : (
+        {menu ? (
           <div className={style.iconMenu}>
             {user ? (
               <ul className={style.iconMenuList}>
@@ -93,7 +72,7 @@ const Layout = ({ guest, user, children }) => {
             ) : (
               <ul className={style.iconMenuList}>
                 <li className={style.iconMenuItem}>
-                  <Link to="/cart">
+                  <Link to="/cart" reloadDocument>
                     <div className={style.iconMenuItemContent}>
                       <div>
                         <IoCartOutline size={24} />
@@ -103,7 +82,7 @@ const Layout = ({ guest, user, children }) => {
                   </Link>
                 </li>
                 <li className={style.iconMenuItem}>
-                  <Link to="/accounts/login">
+                  <Link to="/login" reloadDocument>
                     <div className={style.iconMenuItemContent}>
                       <div>
                         <IoEnterOutline size={24} />
@@ -115,9 +94,9 @@ const Layout = ({ guest, user, children }) => {
               </ul>
             )}
           </div>
-        )}
+        ) : null}
       </header>
-      {children}
+      {publicPage || user ? children : null}
     </div>
   );
 };

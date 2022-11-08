@@ -11,7 +11,7 @@ import { assetURL } from "constants/index";
 import { sizeList, colorList } from "models/filter";
 import styles from "./show.module.css";
 
-function Item() {
+function Item({ user }) {
   const { code } = useParams();
   const [item, setItem] = useState();
   const [form, setForm] = useState({
@@ -73,7 +73,7 @@ function Item() {
   }
 
   return (
-    <Layout publicPage>
+    <Layout user={user} publicPage>
       <div className={styles.container}>
         <div className={styles.left}>
           <img

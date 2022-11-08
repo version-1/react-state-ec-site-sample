@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import Dropdown from "components/atoms/select";
 import TagList from "components/molecules/tagList";
 import SelectList from "components/molecules/selectList";
@@ -12,28 +11,10 @@ import {
 } from "models/filter";
 import SidebarSection from "components/organisms/section";
 import style from "./index.module.css";
-import { FilterContext } from "contexts";
 
-const Sidebar = () => {
-  const {
-    filters,
-    tags,
-    search,
-    reset,
-    has,
-    add,
-    remove,
-  } = useContext(FilterContext);
+const Sidebar = ({ tags, filters, onSearch, onReset, onRemove, onSelect }) => {
   const searchText = filters.find((el) => el.group === "text")?.value;
   const sortType = filters.find((el) => el.group === "sortType");
-
-  const onSelect = (item) => {
-    if (has(item)) {
-      remove(item);
-    } else {
-      add(item);
-    }
-  };
 
   return (
     <div className={style.container}>
@@ -46,23 +27,23 @@ const Sidebar = () => {
               type="text"
               placeholder="キーワードで探す"
               value={searchText}
-              onChange={(e) => search(e.target.value)}
+              onChange={(e) => onSearch(e.target.value)}
             />
           </div>
         </div>
         <div className="sidebar-section">
           <h3>並び替え</h3>
-          <Dropdown data={sortOptions} onSelect={onSelect} value={sortType} />
+          <Dropdown data={sortOptions} onSelect={onSelect} value={sortType}/>
         </div>
         <div className="sidebar-section">
           <h3>フィルタ</h3>
           <TagList
             data={tags}
             emptyStateText="絞り込みなし"
-            onRemoveItem={remove}
+            onRemoveItem={onRemove}
           />
           {tags.length > 0 ? (
-            <p className={style.allClear} onClick={reset}>
+            <p className={style.allClear} onClick={onReset}>
               絞り込みを全て削除
             </p>
           ) : null}

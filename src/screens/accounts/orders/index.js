@@ -5,7 +5,7 @@ import styles from "./index.module.css";
 import { fetchOrders } from "services/api";
 import Order from "components/organisms/order";
 
-function Orders() {
+function Orders({ user }) {
   const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
 
@@ -18,10 +18,10 @@ function Orders() {
     };
 
     init();
-  }, [navigate]);
+  }, [user, navigate]);
 
   return (
-    <Layout>
+    <Layout user={user} >
       <div className={styles.container}>
         <h2 className={styles.title}>注文履歴</h2>
         <div className={styles.body}>

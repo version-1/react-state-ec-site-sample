@@ -1,5 +1,4 @@
 import { useEffect, useMemo } from "react";
-import { FilterContext } from "contexts";
 import ProductList from "components/organisms/productList";
 import Pagination from "components/organisms/pagination";
 import Sidebar from "components/templates/sidebar";
@@ -7,8 +6,19 @@ import { useFilter } from "hooks/useFilter";
 import style from "./index.module.css";
 
 const Products = () => {
-  const filterContextValue = useFilter();
-  const { data, fetch, meta } = filterContextValue;
+  const {
+    data,
+    fetch,
+    filters,
+    tags,
+    meta,
+    add,
+    search,
+    remove,
+    reset,
+    paginate,
+    has,
+  } = useFilter();
 
   useEffect(() => {
     fetch();
@@ -20,26 +30,43 @@ const Products = () => {
   }, [meta]);
 
   return (
-    <FilterContext.Provider value={filterContextValue}>
-      <section className={style.content}>
-        <div className={style.main}>
-          <Sidebar />
-          <div className={style.products}>
-            <div className={style.productsHeader}>
-              <div>
-                <p>
-                  {count} / {meta?.totalCount} 件
-                </p>
-              </div>
-              <div>
-                <Pagination />
-              </div>
+    <section className={style.content}>
+      <div className={style.main}>
+        <Sidebar
+          filters={filters}
+          tags={tags}
+          onSearch={search}
+          onReset={reset}
+          onRemove={remove}
+          onSelect={(item) => {
+            if (has(item)) {
+              remove(item)
+            } else {
+              add(item)
+            }
+          }}
+        />
+        <div className={style.products}>
+          <div className={style.productsHeader}>
+            <div>
+              <p>
+                {count} / {meta?.totalCount} 件
+              </p>
             </div>
-            <ProductList products={data} />
+            <div>
+              <Pagination
+                page={meta?.page}
+                maxPage={meta?.maxPage}
+                totalCount={meta?.totalCount}
+                limit={meta?.limit}
+                onClick={paginate}
+              />
+            </div>
           </div>
+          <ProductList products={data} />
         </div>
-      </section>
-    </FilterContext.Provider>
+      </div>
+    </section>
   );
 };
 

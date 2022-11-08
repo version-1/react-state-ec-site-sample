@@ -1,15 +1,13 @@
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import style from "./index.module.css";
 import { Link } from "react-router-dom";
 import { IoCartOutline, IoPerson, IoEnterOutline } from "react-icons/io5";
+import { useUser } from "hooks/useUser";
 import Loader from "components/atoms/loader";
 import DropDownMenu from "components/organisms/dropdown";
+import { clearToken } from "services/api";
 import icon from "assets/logo-dark.png";
-import { clearToken, hasToken, fetchUser, setErrorHandler } from "services/api";
-import { login, logout, loaded } from "features/auth";
 
-const dropdownMenuList = ({ onLogout }) => [
+const dropdownMenuList = () => [
   {
     key: "profile",
     to: "/accounts",
@@ -24,54 +22,16 @@ const dropdownMenuList = ({ onLogout }) => [
     key: "logout",
     label: "ログアウト",
     onClick: () => {
-      onLogout();
-      window.location.href = "/#/items";
+      clearToken();
+      window.location.href = "/";
     },
     style: "disruptive",
   },
 ];
 
 const Layout = ({ menu = true, publicPage, children }) => {
-  const { user, isLoading } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
-
-  const onLogout = () => {
-    clearToken();
-    dispatch(logout());
-  };
-
-  const items = dropdownMenuList({ onLogout });
-
-  useEffect(() => {
-    const init = async () => {
-      setErrorHandler((e) => {
-        if (e.status === 403) {
-          clearToken();
-          const { hash } = window.location;
-          if (hash.startsWith("#/accounts")) {
-            window.location.href = "#/items";
-          }
-          return;
-        }
-
-        console.error(e);
-        alert("リクエストに失敗しました");
-      });
-
-      try {
-        if (hasToken()) {
-          const res = await fetchUser();
-          if (res.data) {
-            dispatch(login({ user: res.data }));
-          }
-        }
-      } finally {
-        dispatch(loaded());
-      }
-    };
-
-    init();
-  }, [dispatch]);
+  const items = dropdownMenuList();
+  const { data: user, isLoading } = useUser();
 
   if (isLoading) {
     return <Loader />;

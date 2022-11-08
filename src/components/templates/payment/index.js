@@ -56,13 +56,13 @@ const defaultUserInfo = {
 
 function Payment({ readOnly, defaultValue, submitLabel, onSubmit }) {
   const [errors, setErrors] = useState({});
-  const { summary, cart, codes, products } = useCart();
+  const { products, summary, cart, codes } = useCart();
   const navigate = useNavigate();
-  const [payment, setPayment] = useState({
+  const [payment, setPayment] = useState(() => ({
     userInfo: defaultUserInfo,
     summary,
     ...(defaultValue || {}),
-  });
+  }));
 
   const { userInfo } = payment;
 

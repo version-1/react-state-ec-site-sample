@@ -45,14 +45,11 @@ export const useFilter = () => {
       const { limit, totalCount } = rest;
 
       const maxPage = Math.floor(totalCount / limit) + 1;
-
       const { sortType } = params;
       const sortedData = sort(sortType, data);
 
       dispatch(updateMeta({ meta: { ...rest, maxPage } }));
       dispatch(updateData({ data: sortedData }));
-
-      return res;
     },
     [dispatch, serializedFilters]
   );
@@ -67,12 +64,10 @@ export const useFilter = () => {
 
       const res = await fetch(serializedParams);
       if (!res) {
-        return;
+        return
       }
 
-      const { data, ...rest } = res;
-      const { limit, totalCount } = rest;
-
+      const { limit, totalCount } = res;
       const maxPage = Math.floor(totalCount / limit) + 1;
       if (maxPage < serializedFilters.page) {
         return update([

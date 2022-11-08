@@ -1,15 +1,19 @@
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Layout from "components/templates/layout";
 import Button from "components/atoms/button";
 import Order from "components/organisms/order";
 import { useCart } from "hooks/useCart";
+import { useUser } from "hooks/useUser";
 import styles from "./index.module.css";
 
 function Cart() {
-  const { products, remove, increment, decrement } = useCart();
-  const { user } = useSelector((state) => state.auth);
+  const { products, isLoading, remove, increment, decrement } = useCart();
+  const { data: user, isLoading: userIsLoading } = useUser();
   const navigate = useNavigate();
+
+  if (userIsLoading || isLoading) {
+    return null;
+  }
 
   return (
     <Layout publicPage>
@@ -65,7 +69,7 @@ function Cart() {
             disabled={!products.length}
             onClick={() => {
               if (!user) {
-                alert("支払いを完了させるにはログインが必要です。")
+                alert("支払いを完了させるにはログインが必要です。");
                 navigate("/login");
                 return;
               }

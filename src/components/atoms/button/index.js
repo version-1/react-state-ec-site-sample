@@ -7,13 +7,12 @@ const Button = (
     onClick: () => {},
   }
 ) => {
-
   return (
     <button
       className={classNames({
         [styles.base]: true,
         [styles.outline]: variant === "outline",
-        [styles.disabled]: disabled
+        [styles.disabled]: disabled,
       })}
       disabled={disabled}
       style={style}

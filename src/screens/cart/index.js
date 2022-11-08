@@ -1,41 +1,20 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "components/templates/layout";
 import Button from "components/atoms/button";
 import Order from "components/organisms/order";
-import { fetchProductByCodes } from "services/api";
 import { useCart } from "hooks/useCart";
 import styles from "./index.module.css";
 
 function Cart({ user }) {
-  const [products, setProducts] = useState([]);
-  const { cart, codes, remove, increment, decrement } = useCart();
+  const { products, remove, increment, decrement } = useCart();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const init = async () => {
-      const res = await fetchProductByCodes({ codes });
-      const products = res.data.map((item) => {
-        const cur = cart[item.code];
-        const { form, product } = cur;
-        return {
-          code: item.code,
-          form,
-          product,
-        };
-      });
-      setProducts(products);
-    };
-
-    init();
-  }, [cart, codes]);
-
   return (
-    <Layout user={user}>
+    <Layout user={user} publicPage>
       <div className={styles.container}>
         <h2 className={styles.title}>カート</h2>
         <div className={styles.content}>
-          {codes.length === 0 ? (
+          {products.length === 0 ? (
             <div className={styles.emptyState}>
               <p className={styles.emptyStateText}>
                 選択された商品はありません
@@ -84,9 +63,9 @@ function Cart({ user }) {
             disabled={!products.length}
             onClick={() => {
               if (!user) {
-                alert("支払いを完了させるにはログインが必要です。")
-                navigate("/accounts/login");
-                return
+                alert("支払いを完了させるにはログインが必要です。");
+                navigate("/login");
+                return;
               }
               navigate("/cart/payment");
             }}

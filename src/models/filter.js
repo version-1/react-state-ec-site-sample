@@ -1,9 +1,9 @@
 import qs from "qs";
 
 export const sortOptions = [
-  { label: "新着順", value: "latest" },
-  { label: "価格の高い順", value: "higher-price" },
-  { label: "価格の安い順", value: "lower-price" },
+  { label: "新着順", value: "latest", group: "sortType" },
+  { label: "価格の高い順", value: "higherPrice", group: "sortType" },
+  { label: "価格の安い順", value: "lowerPrice", group: "sortType" },
 ];
 
 export const categoryList = [
@@ -143,6 +143,8 @@ export const colorList = [
   },
 ];
 
+const singleChoiceGroups = ["price", "sortType", "text", "page"];
+
 const indexedByValue = (list, cb) => {
   return list.reduce((acc, item) => {
     const key = cb ? cb(item) : item.value;
@@ -152,7 +154,9 @@ const indexedByValue = (list, cb) => {
 
 export const uniq = (list) => {
   return Object.values(
-    indexedByValue(list, (item) => `${item.group}-${item.value}`)
+    indexedByValue(list, (item) =>
+      singleChoiceGroups.includes(item.group) ? item.group : `${item.group}-${item.value}`
+    )
   );
 };
 
@@ -168,7 +172,7 @@ const indexedPriceLabels = indexedByValue(priceLabels, priceKey);
 export const serialize = (filters) => {
   return filters.reduce((acc, item) => {
     if (item.group) {
-      if (["page", "text", "price"].includes(item.group)) {
+      if (singleChoiceGroups.includes(item.group)) {
         return { ...acc, [item.group]: item.value };
       }
 
@@ -201,7 +205,7 @@ export const deserialize = (queryString) => {
     }
 
     if (key === "price") {
-      const value = indexedPriceLabels[priceKey(v)];
+      const value = indexedPriceLabels[priceKey({ value: v })];
       if (value) {
         return [...acc, value];
       }
@@ -230,4 +234,28 @@ export const deserialize = (queryString) => {
 
     return acc;
   }, []);
+};
+
+export const sort = (sortType, data) => {
+  const sortCallbacks = {
+    latest: (data) => {
+      data.sort((a, b) => a.id > b.id ? 1 : 1);
+      return data;
+    },
+    higherPrice: (data) => {
+      data.sort((a, b) => a.price > b.price ? -1 : 1);
+      return data;
+    },
+    lowerPrice: (data) => {
+      data.sort((a, b) => a.price > b.price ? 1 : -1);
+      return data
+    },
+  };
+
+  const cb = sortCallbacks[sortType];
+  if (!cb) {
+    return data;
+  }
+
+  return cb(data);
 };

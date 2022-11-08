@@ -1,70 +1,68 @@
-# Getting Started with Create React App
+## Techpit 状態管理まとめ用サンプルアプリ
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+  こちらは Techpit での表示用のサンプルアプリです。ECサイトを模したアプリをそれぞれ、
 
-## Available Scripts
+  1. React 標準の Hooks API のみでの実装 (feature/base)
+  2. React 標準 Hooks API + Context API での実装 (feature/context)
+  3. Redux (Redux Toolkit) での実装 (feature/redux)
+  4. Tnsack Query での実装 (feature/tansack)
 
-In the project directory, you can run:
+  のようにブランチを分けて実装しています。
 
-### `npm start`
+## 起動方法 (feature/base ブランチを利用)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+  こちらのリポジトリは全てローカルで実行をすることを想定指定作成しています。
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+#### 1. リポジトリからクローン& yarn install
 
-### `npm test`
+リポジトリをクローンして、 `yarn install` を利用して必要なパッケージをインストールします。
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+% git clone [repository url]
+% cd react-state-ec-site-sample
+% git checkout -b feature/base origin/feature/base
+% cd server && yarn install
+```
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### 2. クライアントアプリケーションを起動
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+リポジトリのルートディレクトリで下記コマンドを実行します。
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+% yarn install
+% yarn start
+```
 
-### `npm run eject`
+#### 3. サーバアプリケーションを起動
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+2. とは別のウィンドウを立ち上げて、コマンドを実行します。
+リポジトリのルートディレクトリからserverディレクトリに移動して下記コマンドを実行します。
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+% cd servers
+% yarn install
+% yarn start
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+#### 4. ブラウザでページにアクセス
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+2., 3. のアプリケーションが起動したことを確認して、ブラウザで
+`http://localhost:3000` にアクセスします。
 
-## Learn More
+## ブランチの切り替え
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+冒頭にそれぞれのバージョンでの実装をブランチに分けているので、それぞれのバージョンを動かしてみたい場合は、
+ブランチを切り替えて起動させます。
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+ブランチを切り替えた後には再度 `yarn install` でパッケージをインストールし直すようにしてください。
+下記は、その例です。サーバ側の再起動は不要です。
 
-### Code Splitting
+1 ) feature/context ブランチでアプリを動かす場合
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+% git checkout -b feature/context origin/feature/context
+% yarn install
+% yarn start
+```
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

@@ -14,6 +14,7 @@ const RadioGroup = ({ name, data, value, onClick }) => {
                 onClick={() => {
                   onClick(item);
                 }}
+                onChange={() => {}}
                 checked={item.value === value}
               />
               {item.label}

@@ -1,6 +1,5 @@
 import {
   IoChevronForward,
-  IoChevronForwardSharp,
   IoChevronBack,
 } from "react-icons/io5";
 import classNames from "classnames";
@@ -35,7 +34,7 @@ const Slide = ({ index, onNext = () => {}, onPrev = () => {} }) => {
             <div className={style.buttons}>
               <a
                 className={style.button}
-                href="/#/items/women?page=1&text=&categories%5B0%5D=women&categories%5B1%5D=t-shirts"
+                href="/#/items?page=1&text=&categories%5B0%5D=women&categories%5B1%5D=t-shirts"
               >
                 Shirts
               </a>
@@ -44,13 +43,13 @@ const Slide = ({ index, onNext = () => {}, onPrev = () => {} }) => {
                   [style.button]: true,
                   [style.buttonLight]: true,
                 })}
-                href="/#/items/women?page=1&text=&categories%5B0%5D=men&categories%5B1%5D=coats"
+                href="/#/items?page=1&text=&categories%5B0%5D=women&categories%5B1%5D=coats"
               >
                 Coats
               </a>
               <a
                 className={style.button}
-                href="/#/items/women?page=1&text=&categories%5B0%5D=women&categories%5B1%5D=coats"
+                href="/#/items?page=1&text=&categories%5B0%5D=women&categories%5B1%5D=coats"
               >
                 Outers
               </a>
@@ -63,7 +62,7 @@ const Slide = ({ index, onNext = () => {}, onPrev = () => {} }) => {
             <div className={style.buttons}>
               <a
                 className={style.button}
-                href="/#/items/men?page=1&text=&categories%5B0%5D=women&categories%5B1%5D=t-shirts"
+                href="/#/items?page=1&text=&categories%5B0%5D=men&categories%5B1%5D=t-shirts"
               >
                 Shirts
               </a>
@@ -72,13 +71,13 @@ const Slide = ({ index, onNext = () => {}, onPrev = () => {} }) => {
                   [style.button]: true,
                   [style.buttonLight]: true,
                 })}
-                href="/#/items/men?page=1&text=&categories%5B0%5D=men&categories%5B1%5D=coats"
+                href="/#/items?page=1&text=&categories%5B0%5D=men&categories%5B1%5D=coats"
               >
                 Coats
               </a>
               <a
                 className={style.button}
-                href="/#/items/men?page=1&text=&categories%5B0%5D=women&categories%5B1%5D=coats"
+                href="/#/items?page=1&text=&categories%5B0%5D=men&categories%5B1%5D=coats"
               >
                 Outers
               </a>
@@ -96,16 +95,11 @@ const Slide = ({ index, onNext = () => {}, onPrev = () => {} }) => {
             <a
               className={classNames({
                 [style.button]: true,
-                [style.buttonForKids]: true,
               })}
-              href="/#/items/kids"
+              href="/#/items?page=1&text=&categories%5B0%5D=kids"
             >
               <p className={style.kidsButtonText}>
                 <span>Kids</span>
-                <span className={style.kidsButtonIcons}>
-                  <IoChevronForwardSharp size={20} />
-                  <IoChevronForwardSharp size={20} />
-                </span>
               </p>
             </a>
           </div>

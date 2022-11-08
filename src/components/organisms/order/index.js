@@ -31,7 +31,7 @@ export default function Order({ order, onAdd, onRemove, onReduce }) {
         <div className={styles.subtotalRight}>
           {summary.map((item) => {
             return (
-              <div className={styles.summary}>
+              <div key={item.key} className={styles.summary}>
                 <div
                   className={classNames({
                     [styles.summaryLabel]: true,

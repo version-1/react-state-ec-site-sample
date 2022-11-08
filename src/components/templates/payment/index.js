@@ -1,11 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./index.module.css";
 import { useCart } from "hooks/useCart";
 import Subtotal from "components/organisms/subtotal";
 import Button from "components/atoms/button";
 import { assetURL } from "constants/index";
-import { fetchProductByCodes } from "services/api";
 import { TextField } from "components/atoms/textField";
 import PaymentCard from "components/molecules/paymentCard";
 
@@ -22,7 +21,7 @@ const fieldMap = {
 
 const validate = ({ userInfo }) => {
   const errors = Object.keys(fieldMap).reduce((acc, key) => {
-    const value = userInfo[key] || userInfo.shipmentInfo?.[key]
+    const value = userInfo[key] || userInfo.shipmentInfo?.[key];
     if (!value) {
       return {
         ...acc,
@@ -40,51 +39,32 @@ const validate = ({ userInfo }) => {
   return errors;
 };
 
-const  defaultUserInfo = {
-      firstName: undefined,
-      lastName: undefined,
-      firstNameKana: undefined,
-      lastNameKana: undefined,
-      shipmentInfo: {
-        zipCode: undefined,
-        prefecture: undefined,
-        city: undefined,
-        address1: undefined,
-        address2: undefined,
-      },
-      paymentInfo: undefined,
-    }
+const defaultUserInfo = {
+  firstName: undefined,
+  lastName: undefined,
+  firstNameKana: undefined,
+  lastNameKana: undefined,
+  shipmentInfo: {
+    zipCode: undefined,
+    prefecture: undefined,
+    city: undefined,
+    address1: undefined,
+    address2: undefined,
+  },
+  paymentInfo: undefined,
+};
 
 function Payment({ readOnly, defaultValue, submitLabel, onSubmit }) {
   const [errors, setErrors] = useState({});
-  const [products, setProducts] = useState([]);
-  const { summary, cart, codes } = useCart();
+  const { summary, cart, codes, products } = useCart();
   const navigate = useNavigate();
   const [payment, setPayment] = useState({
     userInfo: defaultUserInfo,
-    codes,
     summary,
     ...(defaultValue || {}),
   });
 
   const { userInfo } = payment;
-
-  useEffect(() => {
-    const init = async () => {
-      const res = await fetchProductByCodes({ codes });
-      if (!res.data) {
-        return;
-      }
-      setProducts(res.data);
-      setPayment({
-        ...payment,
-        codes,
-        summary,
-      });
-    };
-
-    init();
-  }, [codes]);
 
   const handleOnChange = (name) => (e) => {
     const { value } = e.target;
@@ -100,7 +80,7 @@ function Payment({ readOnly, defaultValue, submitLabel, onSubmit }) {
           },
         },
       });
-      return
+      return;
     }
 
     setPayment({
@@ -120,17 +100,16 @@ function Payment({ readOnly, defaultValue, submitLabel, onSubmit }) {
       return;
     }
 
-    onSubmit(payment);
-  }, [payment, onSubmit]);
+    onSubmit({ ...payment, codes });
+  }, [codes, payment, onSubmit]);
 
-  const { shipmentInfo = {}, paymentInfo } = userInfo
-
-  console.log('userInfo ===========', userInfo, defaultValue)
+  const { shipmentInfo = {}, paymentInfo } = userInfo;
 
   return (
     <div>
       <div className={styles.container}>
         <div className={styles.left}>
+          <h1>購入手続き {readOnly ? "（確認）" : ""}</h1>
           <div className={styles.section}>
             <h2>1. お届け情報の入力</h2>
             <div>
@@ -228,7 +207,7 @@ function Payment({ readOnly, defaultValue, submitLabel, onSubmit }) {
               <PaymentCard payment={paymentInfo} />
               {readOnly ? null : (
                 <div className={styles.newCard}>
-                  <a>+ 新しいカードを登録する</a>
+                  <span>+ 新しいカードを登録する</span>
                 </div>
               )}
             </div>
@@ -242,7 +221,7 @@ function Payment({ readOnly, defaultValue, submitLabel, onSubmit }) {
               const { form, product } = cur;
 
               return (
-                <div className={styles.product}>
+                <div key={item.code} className={styles.product}>
                   <div className={styles.productLeft}>
                     <div className={styles.imageContainer}>
                       <img

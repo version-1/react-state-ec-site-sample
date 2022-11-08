@@ -37,9 +37,8 @@ const DropDownMenu = ({ trigger, items }) => {
           }
 
           return (
-            <Link to={item.to}>
+            <Link key={item.key} to={item.to}>
               <li
-                key={item.key}
                 className={classNames({
                   [style.item]: true,
                   [style.disruptive]: item.style === disruptiveStyle,

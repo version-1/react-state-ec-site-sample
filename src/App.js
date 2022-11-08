@@ -1,8 +1,6 @@
-import "./App.css";
-import { useCallback, useEffect, useState } from "react";
+import { Provider } from "react-redux";
+import { store } from "store";
 import { HashRouter, Routes, Route } from "react-router-dom";
-import { AuthContext } from "contexts";
-import Loader from "components/atoms/loader";
 import Home from "screens/home";
 import Cart from "screens/cart";
 import Login from "screens/login";
@@ -13,89 +11,12 @@ import Payment from "screens/cart/payment";
 import PaymentConfirmation from "screens/cart/payment/confirmation";
 import PaymentComplete from "screens/cart/payment/complete";
 import Account from "screens/accounts";
-import {
-  clearToken,
-  setToken,
-  hasToken,
-  fetchUser,
-  setErrorHandler,
-} from "services/api";
+import "./App.css";
 
 function App() {
-  const [auth, setAuth] = useState({
-    user: undefined,
-    isLogin: false,
-  });
-  const [loading, setLoading] = useState(true);
-
-  const updateAuth = useCallback(
-    (value) =>
-      setAuth({
-        ...auth,
-        ...value,
-      }),
-    [auth, setAuth]
-  );
-
-  const login = useCallback(
-    (user, token) => {
-      if (token) {
-        setToken(token);
-      }
-      updateAuth({ user, isLogin: true });
-    },
-    [updateAuth]
-  );
-
-  const logout = useCallback(() => {
-    clearToken();
-    updateAuth({ user: undefined, isLogin: false });
-  }, [updateAuth]);
-
-  useEffect(() => {
-    const init = async () => {
-      setErrorHandler((e) => {
-        if (e.status === 403) {
-          clearToken();
-          const { hash } = window.location;
-          if (hash.startsWith("#/accounts")) {
-            window.location.href = "#/items";
-          }
-          return;
-        }
-
-        console.error(e);
-        alert("リクエストに失敗しました");
-      });
-
-      try {
-        if (hasToken()) {
-          const res = await fetchUser();
-          if (res.data) {
-            login(res.data);
-          }
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    init();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  if (loading) {
-    return <Loader />;
-  }
-
   return (
     <div className="App">
-      <AuthContext.Provider
-        value={{
-          data: auth,
-          login,
-          logout,
-        }}
-      >
+      <Provider store={store}>
         <HashRouter>
           <Routes>
             <Route path="/" element={<Home />} caseSensitive />
@@ -119,7 +40,7 @@ function App() {
             </Route>
           </Routes>
         </HashRouter>
-      </AuthContext.Provider>
+      </Provider>
     </div>
   );
 }

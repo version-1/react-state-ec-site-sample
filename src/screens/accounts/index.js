@@ -1,17 +1,14 @@
-import { useContext } from 'react';
+import { useSelector } from "react-redux";
 import Layout from "components/templates/layout";
 import { TextField } from "components/atoms/textField";
 import PaymentCard from "components/molecules/paymentCard";
-import { AuthContext } from "contexts";
 import styles from "./index.module.css";
 import Button from "components/atoms/button";
 import Tooltip from "components/atoms/tooltip";
 import { BASE_URL } from "services/api";
 
 function Accounts() {
-  const {
-    data: { user }
-  } = useContext(AuthContext);
+  const { user } = useSelector((state) => state.auth);
 
   return (
     <Layout>

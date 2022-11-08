@@ -100,7 +100,7 @@ function App() {
               path="men"
               element={
                 <Layout user={user}>
-                  <Products defaultFilters={[categoryList[0]]} />
+                  <Products />
                 </Layout>
               }
             />
@@ -108,7 +108,7 @@ function App() {
               path="women"
               element={
                 <Layout user={user}>
-                  <Products defaultFilters={[categoryList[1]]} />
+                  <Products />
                 </Layout>
               }
             />
@@ -116,7 +116,7 @@ function App() {
               path="kids"
               element={
                 <Layout user={user}>
-                  <Products defaultFilters={[categoryList[2]]} />
+                  <Products />
                 </Layout>
               }
             />

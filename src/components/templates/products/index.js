@@ -1,56 +1,58 @@
-import { useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import qs from "qs";
+import { useEffect, useMemo } from "react";
+import { useLocation } from "react-router-dom";
 import ProductList from "components/organisms/productList";
 import Pagination from "components/organisms/pagination";
 import Sidebar from "components/templates/sidebar";
-import { fetchProducts } from "services/api";
-import { uniq, serialize, deserialize } from "models/filter";
+import { useFilter } from "hooks/useFilter";
+import { categoryList } from "models/filter";
 import style from "./index.module.css";
 
-const Products = ({ defaultFilters = [] }) => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [products, setProducts] = useState([]);
-  const [meta, setMeta] = useState([]);
-  const [text, setText] = useState(searchParams.get("text") || "");
-  const [page, setPage] = useState(searchParams.get("page") || 1);
-  const [filters, setFilters] = useState(() =>
-    uniq([
-      ...defaultFilters,
-      ...deserialize(decodeURIComponent(searchParams.toString())),
-    ])
-  );
-
-  const serializedFilters = useMemo(() => serialize(filters), [filters]);
-
-  const fetch = async (params = {}) => {
-    const res = await fetchProducts(params);
-    if (!res.data) {
-      return;
-    }
-
-    const { page } = params;
-    const { data, ...rest } = res;
-    const { limit, totalCount } = rest;
-
-    const maxPage = Math.floor(totalCount / limit) + 1;
-
-    setProducts(data);
-    setMeta({ ...rest, maxPage });
-    setPage(page);
-    const serialziedParams = qs.stringify(params);
-    setSearchParams(serialziedParams);
-  };
+const Products = () => {
+  const { hash, pathname } = useLocation();
+  const {
+    data,
+    fetch,
+    filters,
+    tags,
+    meta,
+    update,
+    add,
+    search,
+    remove,
+    reset,
+    paginate,
+    has,
+  } = useFilter();
 
   useEffect(() => {
-    fetch({ page, text, ...serializedFilters });
+    fetch();
   }, []);
 
-  const onChangeFilters = (params) => {
-    const _params = serialize(params);
-    fetch({ page, text, ..._params });
-    setFilters(params);
-  };
+  useEffect(() => {
+    const defaultFilters = {
+      men: categoryList[0],
+      women: categoryList[1],
+      kids: categoryList[2],
+    };
+    const getKey = (path) => path.split("?")[0].split("/").slice(-1)[0];
+    const key = getKey(pathname || hash);
+    const defaultFilter = defaultFilters[key];
+
+    if (defaultFilter) {
+      update([
+        {
+          group: "page",
+          value: 1,
+        },
+        {
+          group: "text",
+          value: "",
+        },
+        defaultFilter,
+        ...filters
+      ]);
+    }
+  }, [pathname, hash]);
 
   const count = useMemo(() => {
     const cnt = meta.page * meta.limit;
@@ -62,37 +64,36 @@ const Products = ({ defaultFilters = [] }) => {
       <div className={style.main}>
         <Sidebar
           filters={filters}
-          searchText={text}
-          onChangeFilters={onChangeFilters}
-          onSearch={(e) => {
-            setText(e.target.value);
-            fetch({ page, text: e.target.value, ...serializedFilters });
+          tags={tags}
+          onSearch={search}
+          onReset={reset}
+          onRemove={remove}
+          onSelect={(item) => {
+            if (has(item)) {
+              remove(item)
+            } else {
+              add(item)
+            }
           }}
         />
         <div className={style.products}>
           <div className={style.productsHeader}>
             <div>
               <p>
-                {count} / {meta.totalCount} 件
+                {count} / {meta?.totalCount} 件
               </p>
             </div>
             <div>
               <Pagination
-                page={page}
+                page={meta?.page}
                 maxPage={meta?.maxPage}
                 totalCount={meta?.totalCount}
                 limit={meta?.limit}
-                onClick={(page) => {
-                  fetch({
-                    page,
-                    text,
-                    ...serialize(filters),
-                  });
-                }}
+                onClick={paginate}
               />
             </div>
           </div>
-          <ProductList products={products} />
+          <ProductList products={data} />
         </div>
       </div>
     </section>

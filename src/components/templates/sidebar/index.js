@@ -1,4 +1,3 @@
-import { IoSearchOutline } from "react-icons/io5";
 import Dropdown from "components/atoms/select";
 import TagList from "components/molecules/tagList";
 import SelectList from "components/molecules/selectList";
@@ -13,22 +12,9 @@ import {
 import SidebarSection from "components/organisms/section";
 import style from "./index.module.css";
 
-const Sidebar = ({ searchText, filters, onChangeFilters, onSearch }) => {
-  const _onChangeFilters = (item) => {
-    const hasFilter = filters.some((filter) => item.value === filter.value);
-
-    if (hasFilter) {
-      onChangeFilters(filters.filter((f) => item.value !== f.value));
-    } else {
-      onChangeFilters([...filters, item]);
-    }
-  };
-
-  const _onChangeRadioGroup = (item) => {
-    const _filters = filters.filter((item) => item.group !== "price");
-
-    onChangeFilters([..._filters, item]);
-  };
+const Sidebar = ({ tags, filters, onSearch, onReset, onRemove, onSelect }) => {
+  const searchText = filters.find((el) => el.group === "text")?.value;
+  const sortType = filters.find((el) => el.group === "sortType");
 
   return (
     <div className={style.container}>
@@ -41,30 +27,23 @@ const Sidebar = ({ searchText, filters, onChangeFilters, onSearch }) => {
               type="text"
               placeholder="キーワードで探す"
               value={searchText}
-              onChange={onSearch}
+              onChange={(e) => onSearch(e.target.value)}
             />
           </div>
         </div>
         <div className="sidebar-section">
           <h3>並び替え</h3>
-          <Dropdown data={sortOptions} />
+          <Dropdown data={sortOptions} onSelect={onSelect} value={sortType}/>
         </div>
         <div className="sidebar-section">
           <h3>フィルタ</h3>
           <TagList
-            data={filters}
+            data={tags}
             emptyStateText="絞り込みなし"
-            onRemoveItem={(item) => {
-              onChangeFilters(filters.filter((f) => item.value !== f.value));
-            }}
+            onRemoveItem={onRemove}
           />
-          {filters.length > 0 ? (
-            <p
-              className={style.allClear}
-              onClick={() => {
-                onChangeFilters([]);
-              }}
-            >
+          {tags.length > 0 ? (
+            <p className={style.allClear} onClick={onReset}>
               絞り込みを全て削除
             </p>
           ) : null}
@@ -72,44 +51,32 @@ const Sidebar = ({ searchText, filters, onChangeFilters, onSearch }) => {
       </div>
       <SidebarSection
         title="カテゴリ"
-        defaultOpen={filters.some((item) => item.group === "categories")}
+        defaultOpen={tags.some((item) => item.group === "categories")}
       >
-        <SelectList
-          data={categoryList}
-          selected={filters}
-          onClick={_onChangeFilters}
-        />
+        <SelectList data={categoryList} selected={filters} onClick={onSelect} />
       </SidebarSection>
       <SidebarSection
         title="価格"
-        defaultOpen={filters.some((item) => item.group === "price")}
+        defaultOpen={tags.some((item) => item.group === "price")}
       >
         <RadioGroup
           name="price-range"
           data={priceLabels}
-          onClick={_onChangeRadioGroup}
-          value={filters.find((item) => item.group === "price")?.value}
+          onClick={onSelect}
+          value={tags.find((item) => item.group === "price")?.value}
         />
       </SidebarSection>
       <SidebarSection
         title="サイズ"
-        defaultOpen={filters.some((item) => item.group === "size")}
+        defaultOpen={tags.some((item) => item.group === "size")}
       >
-        <SelectList
-          data={sizeList}
-          selected={filters}
-          onClick={_onChangeFilters}
-        />
+        <SelectList data={sizeList} selected={tags} onClick={onSelect} />
       </SidebarSection>
       <SidebarSection
         title="カラー"
-        defaultOpen={filters.some((item) => item.group === "color")}
+        defaultOpen={tags.some((item) => item.group === "color")}
       >
-        <SelectList
-          data={colorList}
-          selected={filters}
-          onClick={_onChangeFilters}
-        />
+        <SelectList data={colorList} selected={tags} onClick={onSelect} />
       </SidebarSection>
     </div>
   );

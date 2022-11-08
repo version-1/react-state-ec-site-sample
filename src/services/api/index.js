@@ -56,20 +56,18 @@ class HTTPClient {
     this._token = value
   }
 
-  set clearToken(handler) {
-    this._clearToken = handler
-  }
-
   get errorHandler() {
     return this._errorHandler;
   }
 }
 
 const client = new HTTPClient({ token: localStorage.getItem(tokenKey) });
-const baseURL = (path) => "http://localhost:8080/api/v1" + path;
 
-export const hasToken = (token) => {
-  return !!localStorage.getItem(tokenKey, token);
+export const BASE_URL = "http://localhost:8080"
+const baseURL = (path) => `${BASE_URL}/api/v1` + path;
+
+export const hasToken = () => {
+  return !!localStorage.getItem(tokenKey);
 }
 
 export const setToken = (token) => {

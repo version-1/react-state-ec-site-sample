@@ -6,18 +6,18 @@ import { useNavigate } from "react-router-dom";
 import styles from "./index.module.css";
 import { createToken, setToken } from "services/api";
 
-  const validate = ({ email, password }) => {
-    const newErrors = {};
-    if (!email) {
-      newErrors.email = "メールアドレスを入力してください";
-    }
+const validate = ({ email, password }) => {
+  const newErrors = {};
+  if (!email) {
+    newErrors.email = "メールアドレスを入力してください";
+  }
 
-    if (!password) {
-      newErrors.password = "パスワードを入力してください";
-    }
+  if (!password) {
+    newErrors.password = "パスワードを入力してください";
+  }
 
-    return newErrors;
-  };
+  return newErrors;
+};
 
 function Login({ user, onLogin }) {
   const navigate = useNavigate();
@@ -32,7 +32,7 @@ function Login({ user, onLogin }) {
   }, [user, navigate]);
 
   return (
-    <Layout guest>
+    <Layout publicPage>
       <div className={styles.container}>
         <div className={styles.form}>
           <h2 className={styles.title}>メールアドレスでログイン</h2>
@@ -54,9 +54,9 @@ function Login({ user, onLogin }) {
           <Button
             label="ログイン"
             onClick={async () => {
-              setErrors({})
-              const errors = validate({ email, password })
-              setErrors(errors)
+              setErrors({});
+              const errors = validate({ email, password });
+              setErrors(errors);
               if (Object.keys(errors).length !== 0) {
                 return;
               }
@@ -64,7 +64,7 @@ function Login({ user, onLogin }) {
               try {
                 const res = await createToken({ email, password });
                 if (res.data) {
-                  const { token, user } = res.data
+                  const { token, user } = res.data;
                   setToken(token);
                   onLogin(user);
                   navigate("/items");
@@ -74,6 +74,7 @@ function Login({ user, onLogin }) {
                   alert("メールアドレスかパスワードが正しくありません。");
                   return;
                 }
+                console.error(e);
               }
             }}
           />

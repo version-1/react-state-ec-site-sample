@@ -1,24 +1,26 @@
 import style from "./index.module.css";
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 
+const calcIndex = ({ totalCount, limit }) => {
+  const res = [];
+  let i = 0;
+  let _page = 1;
+  while (i < totalCount) {
+    res.push({
+      label: _page,
+      value: _page,
+      active: false,
+    });
+
+    _page = _page + 1;
+    i = i + limit;
+  }
+
+  return res;
+};
+
 const Pagination = ({ page, maxPage, totalCount, limit, onClick }) => {
-  const pagination = (function () {
-    const res = [];
-    let i = 0;
-    let _page = 1;
-    while (i < totalCount) {
-      res.push({
-        label: _page,
-        value: _page,
-        active: false,
-      });
-
-      _page = _page + 1;
-      i = i + limit;
-    }
-
-    return res;
-  })();
+  const pagination = calcIndex({ totalCount, limit });
 
   return (
     <ul className={style.pagination}>

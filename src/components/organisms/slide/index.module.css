@@ -107,9 +107,9 @@
 
 .kidsButtonText {
   color: inherit;
-  font-size: 32pz;
   letter-spacing: 0.8px;
   vertical-align: middle;
+  text-align: center;
 }
 
 .kidsButtonIcons {

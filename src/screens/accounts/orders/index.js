@@ -21,7 +21,7 @@ function Orders({ user }) {
   }, [user, navigate]);
 
   return (
-    <Layout user={user}>
+    <Layout user={user} >
       <div className={styles.container}>
         <h2 className={styles.title}>注文履歴</h2>
         <div className={styles.body}>

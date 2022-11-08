@@ -9,7 +9,7 @@ const TagList = ({ data, emptyStateText = null, onRemoveItem }) => {
   return (
     <ul className={style.container}>
       {data.map((item) => (
-        <li className={style.item} key={item}>
+        <li className={style.item} key={item.label}>
           <Tag label={item.label} onRemove={() => onRemoveItem(item)} />
         </li>
       ))}

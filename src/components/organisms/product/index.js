@@ -40,7 +40,7 @@ const Product = ({ item }) => {
           <ul className={style.colors}>
             {Object.keys(item.colors).map((color) => {
               return (
-                <li key={color.hex}>
+                <li key={color}>
                   <div
                     style={{
                       border: "1px solid #bbb",

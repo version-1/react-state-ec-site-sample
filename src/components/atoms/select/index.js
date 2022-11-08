@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import style from "./index.module.css";
 import classNames from "classnames";
 
-const Select = ({ data, defaultValue, onSelect }) => {
-  const [selected, setSelected] = useState(defaultValue || data[0]);
+const Select = ({ data, value, onSelect }) => {
+  const [selected, setSelected] = useState(value || data[0]);
   const [active, setActive] = useState(false);
 
   const closeOptions = () => {

@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { IoAdd, IoRemove } from "react-icons/io5";
 import classNames from "classnames";
 import style from "./index.module.css";
 
 const Section = ({ title, children, defaultOpen }) => {
   const [open, setOpen] = useState(defaultOpen);
+
+  useEffect(() => {
+    setOpen(defaultOpen)
+  }, [defaultOpen])
 
   return (
     <section className={style.container}>

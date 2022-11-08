@@ -1,11 +1,12 @@
+import { useContext } from "react";
+import { AuthContext } from "contexts";
 import style from "./index.module.css";
 import { Link } from "react-router-dom";
 import { IoCartOutline, IoPerson, IoEnterOutline } from "react-icons/io5";
 import DropDownMenu from "components/organisms/dropdown";
-import { clearToken } from "services/api";
 import icon from "assets/logo-dark.png";
 
-const dropdownMenuList = () => [
+const dropdownMenuList = ({ onLogout }) => [
   {
     key: "profile",
     to: "/accounts",
@@ -20,15 +21,19 @@ const dropdownMenuList = () => [
     key: "logout",
     label: "ログアウト",
     onClick: () => {
-      clearToken();
-      window.location.href = "/";
+      onLogout();
+      window.location.href = "/#/items";
     },
     style: "disruptive",
   },
 ];
 
-const Layout = ({ user, menu = true, publicPage, children }) => {
-  const items = dropdownMenuList();
+const Layout = ({ menu = true, publicPage, children }) => {
+  const {
+    data: { user },
+    logout,
+  } = useContext(AuthContext);
+  const items = dropdownMenuList({ onLogout: logout });
 
   return (
     <div className={style.container}>

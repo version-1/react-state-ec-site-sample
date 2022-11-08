@@ -1,9 +1,9 @@
 import Layout from "components/templates/layout";
 import Products from "components/templates/products";
 
-function Items({ user }) {
+function Items() {
   return (
-    <Layout user={user} publicPage>
+    <Layout publicPage>
       <Products />
     </Layout>
   );

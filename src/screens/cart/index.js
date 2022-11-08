@@ -1,3 +1,5 @@
+import { useContext } from "react";
+import { AuthContext } from "contexts";
 import { useNavigate } from "react-router-dom";
 import Layout from "components/templates/layout";
 import Button from "components/atoms/button";
@@ -5,12 +7,15 @@ import Order from "components/organisms/order";
 import { useCart } from "hooks/useCart";
 import styles from "./index.module.css";
 
-function Cart({ user }) {
+function Cart() {
+  const {
+    data: { user },
+  } = useContext(AuthContext);
   const { products, remove, increment, decrement } = useCart();
   const navigate = useNavigate();
 
   return (
-    <Layout user={user} publicPage>
+    <Layout publicPage>
       <div className={styles.container}>
         <h2 className={styles.title}>カート</h2>
         <div className={styles.content}>
@@ -63,7 +68,7 @@ function Cart({ user }) {
             disabled={!products.length}
             onClick={() => {
               if (!user) {
-                alert("支払いを完了させるにはログインが必要です。");
+                alert("支払いを完了させるにはログインが必要です。")
                 navigate("/login");
                 return;
               }

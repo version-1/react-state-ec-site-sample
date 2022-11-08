@@ -3,11 +3,11 @@ import styles from "./index.module.css";
 import Layout from "components/templates/layout";
 import Button from "components/atoms/button";
 
-function PaymentComplete({ user }) {
+function PaymentComplete() {
   const navigate = useNavigate();
 
   return (
-    <Layout user={user}>
+    <Layout>
       <div className={styles.container}>
         <div className={styles.content}>
           <h2 className={styles.message}>支払いを完了しました</h2>

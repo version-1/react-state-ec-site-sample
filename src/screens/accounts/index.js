@@ -108,7 +108,9 @@ function Accounts({ user }) {
                   {user.paymentInfo ? (
                     <PaymentCard payment={user.paymentInfo} />
                   ) : (
-                    <p className={styles.empty}>支払い情報が登録されていません。</p>
+                    <p className={styles.empty}>
+                      支払い情報が登録されていません。
+                    </p>
                   )}
                 </div>
               </div>

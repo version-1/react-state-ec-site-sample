@@ -93,7 +93,7 @@ const Layout = ({ guest, user, children }) => {
             ) : (
               <ul className={style.iconMenuList}>
                 <li className={style.iconMenuItem}>
-                  <Link to="/cart">
+                  <Link to="/cart" reloadDocument>
                     <div className={style.iconMenuItemContent}>
                       <div>
                         <IoCartOutline size={24} />
@@ -103,7 +103,7 @@ const Layout = ({ guest, user, children }) => {
                   </Link>
                 </li>
                 <li className={style.iconMenuItem}>
-                  <Link to="/accounts/login">
+                  <Link to="/accounts/login" reloadDocument>
                     <div className={style.iconMenuItemContent}>
                       <div>
                         <IoEnterOutline size={24} />

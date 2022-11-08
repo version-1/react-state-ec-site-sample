@@ -54,9 +54,9 @@ function Login({ user, onLogin }) {
           <Button
             label="ログイン"
             onClick={async () => {
-              setErrors({})
-              const errors = validate({ email, password })
-              setErrors(errors)
+              setErrors({});
+              const errors = validate({ email, password });
+              setErrors(errors);
               if (Object.keys(errors).length !== 0) {
                 return;
               }
@@ -74,6 +74,7 @@ function Login({ user, onLogin }) {
                   alert("メールアドレスかパスワードが正しくありません。");
                   return;
                 }
+                console.error(e)
               }
             }}
           />

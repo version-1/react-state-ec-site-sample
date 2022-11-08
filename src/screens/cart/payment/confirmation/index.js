@@ -30,7 +30,6 @@ function PaymentConfirmation({ user }) {
         onSubmit={async () => {
           try {
             const res = await checkout({
-              userId: user.id,
               totalAmount,
               products: defaultValue.codes.map((code) => {
                 return cart[code];

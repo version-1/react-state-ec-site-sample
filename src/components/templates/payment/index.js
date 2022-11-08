@@ -125,8 +125,6 @@ function Payment({ readOnly, defaultValue, submitLabel, onSubmit }) {
 
   const { shipmentInfo = {}, paymentInfo } = userInfo
 
-  console.log('userInfo ===========', userInfo, defaultValue)
-
   return (
     <div>
       <div className={styles.container}>

@@ -43,9 +43,6 @@ const Sidebar = ({ searchText, filters, onChangeFilters, onSearch }) => {
               value={searchText}
               onChange={onSearch}
             />
-            <a href="#!" className={style.searchFormButton}>
-              <IoSearchOutline size="24" color="white" />
-            </a>
           </div>
         </div>
         <div className="sidebar-section">

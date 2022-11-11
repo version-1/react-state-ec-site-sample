@@ -1,24 +1,29 @@
+import { useContext } from "react";
 import style from "./index.module.css";
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
+import { FilterContext } from "contexts";
 
-const Pagination = ({ page, maxPage, totalCount, limit, onClick }) => {
-  const pagination = (function () {
-    const res = [];
-    let i = 0;
-    let _page = 1;
-    while (i < totalCount) {
-      res.push({
-        label: _page,
-        value: _page,
-        active: false,
-      });
+const calcIndex = ({ totalCount, limit }) => {
+  const res = [];
+  let i = 0;
+  let _page = 1;
+  while (i < totalCount) {
+    res.push({
+      label: _page,
+      value: _page,
+      active: false,
+    });
 
-      _page = _page + 1;
-      i = i + limit;
-    }
+    _page = _page + 1;
+    i = i + limit;
+  }
 
-    return res;
-  })();
+  return res;
+};
+const Pagination = () => {
+  const { meta = {}, paginate } = useContext(FilterContext);
+  const { page, maxPage, totalCount, limit } = meta;
+  const pagination = calcIndex({ totalCount, limit });
 
   return (
     <ul className={style.pagination}>
@@ -27,7 +32,7 @@ const Pagination = ({ page, maxPage, totalCount, limit, onClick }) => {
           <IoChevronBack
             size={24}
             onClick={() => {
-              onClick(page - 1);
+              paginate(page - 1);
             }}
           />
         </li>
@@ -43,7 +48,7 @@ const Pagination = ({ page, maxPage, totalCount, limit, onClick }) => {
                 : undefined,
             ].join(" ")}
           >
-            <p onClick={() => onClick(index + 1)}>{item.label}</p>
+            <p onClick={() => paginate(index + 1)}>{item.label}</p>
           </li>
         );
       })}
@@ -52,7 +57,7 @@ const Pagination = ({ page, maxPage, totalCount, limit, onClick }) => {
           <IoChevronForward
             size={24}
             onClick={() => {
-              onClick(page + 1);
+              paginate(page + 1);
             }}
           />
         </li>

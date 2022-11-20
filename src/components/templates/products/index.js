@@ -38,6 +38,12 @@ const Products = () => {
     const key = getKey(pathname || hash);
     const defaultFilter = defaultFilters[key];
 
+    const _filters = filters.map(
+      (item) =>
+        item.group !== "categories" &&
+        !Object.keys(defaultFilters).includes(item.value)
+    );
+
     if (defaultFilter) {
       update([
         {
@@ -49,7 +55,7 @@ const Products = () => {
           value: "",
         },
         defaultFilter,
-        ...filters
+        ..._filters
       ]);
     }
   }, [pathname, hash]);

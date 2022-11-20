@@ -1,7 +1,6 @@
 import "./App.css";
 import { useEffect, useState } from "react";
 import { HashRouter, Routes, Route } from "react-router-dom";
-import { categoryList } from "models/filter";
 import Layout from "components/templates/layout";
 import Products from "components/templates/products";
 import Home from "screens/home";

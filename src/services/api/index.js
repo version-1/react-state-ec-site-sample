@@ -44,7 +44,7 @@ class HTTPClient {
         this._errorHandler(e);
       }
 
-      return { error: e }
+      return { error: await e.json(), status: e.status }
     }
   }
 
@@ -70,8 +70,8 @@ const client = new HTTPClient({ token: localStorage.getItem(tokenKey) });
 export const BASE_URL = "http://localhost:8080"
 const baseURL = (path) => `${BASE_URL}/api/v1` + path;
 
-export const hasToken = (token) => {
-  return !!localStorage.getItem(tokenKey, token);
+export const hasToken = () => {
+  return !!localStorage.getItem(tokenKey);
 }
 
 export const setToken = (token) => {
@@ -80,9 +80,6 @@ export const setToken = (token) => {
 }
 
 export const clearToken = (token) => {
-  if (client._clearToken) {
-    client._clearToken()
-  }
   client.token = undefined
   localStorage.removeItem(tokenKey, token);
 }

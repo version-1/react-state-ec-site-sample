@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import classNames from "classnames";
 import Layout from "components/templates/layout";
@@ -6,13 +6,20 @@ import Dropdown from "components/atoms/select";
 import Button from "components/atoms/button";
 import { useCart } from "hooks/useCart";
 import { fetchProduct } from "services/api";
-import { assetURL } from "constants/index";
+import { assetURL } from "constants";
 import { sizeList, colorList } from "models/filter";
+import { useQuery } from "@tanstack/react-query";
 import styles from "./index.module.css";
 
-function Item({ user }) {
+function Item() {
   const { code } = useParams();
-  const [item, setItem] = useState();
+  const query = useQuery({
+    queryKey: ["items", code],
+    queryFn: async () => {
+      const res = await fetchProduct({ code });
+      return res.data || [];
+    },
+  });
   const [form, setForm] = useState({
     color: undefined,
     size: undefined,
@@ -22,20 +29,7 @@ function Item({ user }) {
   const navigate = useNavigate();
   const { add, has } = useCart();
 
-  useEffect(() => {
-    if (!code) {
-      return;
-    }
-
-    const init = async () => {
-      const res = await fetchProduct({ code });
-      if (res.data) {
-        setItem(res.data);
-      }
-    };
-
-    init();
-  }, [code]);
+  const { data: item = [] } = query;
 
   const sizes = useMemo(() => {
     if (!form.color) {
@@ -63,12 +57,12 @@ function Item({ user }) {
     [setForm, setErrors]
   );
 
-  if (!item) {
+  if (query.isLoading) {
     return null;
   }
 
   return (
-    <Layout user={user}>
+    <Layout>
       <div className={styles.container}>
         <div className={styles.left}>
           <img

@@ -1,16 +1,18 @@
 import { useNavigate } from "react-router-dom";
+import { useUser } from "hooks/useUser";
 import Layout from "components/templates/layout";
 import PaymentTemplate from "components/templates/payment";
 
-function Payment({ user }) {
+function Payment() {
   const navigate = useNavigate();
+  const { data: user, isLoading } = useUser();
 
-  if(!user) {
+  if(isLoading) {
     return null
   }
 
   return (
-    <Layout user={user}>
+    <Layout>
       <PaymentTemplate
         defaultValue={{
           userInfo: user || {},

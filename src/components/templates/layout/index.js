@@ -1,6 +1,7 @@
 import style from "./index.module.css";
 import { Link } from "react-router-dom";
 import { IoCartOutline, IoPerson, IoEnterOutline } from "react-icons/io5";
+import { useUser } from "hooks/useUser";
 import DropDownMenu from "components/organisms/dropdown";
 import { clearToken } from "services/api";
 import icon from "assets/logo-dark.png";
@@ -27,8 +28,13 @@ const dropdownMenuList = () => [
   },
 ];
 
-const Layout = ({ guest, user, children }) => {
+const Layout = ({ guest, children }) => {
   const items = dropdownMenuList();
+  const { data: user, isLoading } = useUser();
+
+  if (isLoading) {
+    return null;
+  }
 
   return (
     <div className={style.container}>

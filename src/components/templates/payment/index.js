@@ -1,11 +1,10 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./index.module.css";
 import { useCart } from "hooks/useCart";
 import Subtotal from "components/organisms/subtotal";
 import Button from "components/atoms/button";
 import { assetURL } from "constants/index";
-import { fetchProductByCodes } from "services/api";
 import { TextField } from "components/atoms/textField";
 import PaymentCard from "components/molecules/paymentCard";
 
@@ -22,7 +21,7 @@ const fieldMap = {
 
 const validate = ({ userInfo }) => {
   const errors = Object.keys(fieldMap).reduce((acc, key) => {
-    const value = userInfo[key] || userInfo.shipmentInfo?.[key]
+    const value = userInfo[key] || userInfo.shipmentInfo?.[key];
     if (!value) {
       return {
         ...acc,
@@ -40,51 +39,33 @@ const validate = ({ userInfo }) => {
   return errors;
 };
 
-const  defaultUserInfo = {
-      firstName: undefined,
-      lastName: undefined,
-      firstNameKana: undefined,
-      lastNameKana: undefined,
-      shipmentInfo: {
-        zipCode: undefined,
-        prefecture: undefined,
-        city: undefined,
-        address1: undefined,
-        address2: undefined,
-      },
-      paymentInfo: undefined,
-    }
+const defaultUserInfo = {
+  firstName: undefined,
+  lastName: undefined,
+  firstNameKana: undefined,
+  lastNameKana: undefined,
+  shipmentInfo: {
+    zipCode: undefined,
+    prefecture: undefined,
+    city: undefined,
+    address1: undefined,
+    address2: undefined,
+  },
+  paymentInfo: undefined,
+};
 
 function Payment({ readOnly, defaultValue, submitLabel, onSubmit }) {
   const [errors, setErrors] = useState({});
-  const [products, setProducts] = useState([]);
-  const { summary, cart, codes } = useCart();
+  const { products, summary, cart, codes } = useCart();
   const navigate = useNavigate();
-  const [payment, setPayment] = useState({
+  const [payment, setPayment] = useState(() => ({
     userInfo: defaultUserInfo,
     codes,
     summary,
     ...(defaultValue || {}),
-  });
+  }));
 
   const { userInfo } = payment;
-
-  useEffect(() => {
-    const init = async () => {
-      const res = await fetchProductByCodes({ codes });
-      if (!res.data) {
-        return;
-      }
-      setProducts(res.data);
-      setPayment({
-        ...payment,
-        codes,
-        summary,
-      });
-    };
-
-    init();
-  }, [codes]);
 
   const handleOnChange = (name) => (e) => {
     const { value } = e.target;
@@ -100,7 +81,7 @@ function Payment({ readOnly, defaultValue, submitLabel, onSubmit }) {
           },
         },
       });
-      return
+      return;
     }
 
     setPayment({
@@ -123,7 +104,7 @@ function Payment({ readOnly, defaultValue, submitLabel, onSubmit }) {
     onSubmit(payment);
   }, [payment, onSubmit]);
 
-  const { shipmentInfo = {}, paymentInfo } = userInfo
+  const { shipmentInfo = {}, paymentInfo } = userInfo;
 
   return (
     <div>

@@ -5,22 +5,24 @@ import Layout from "components/templates/layout";
 import { useNavigate } from "react-router-dom";
 import styles from "./index.module.css";
 import { createToken, setToken } from "services/api";
+import { useUser } from "hooks/useUser";
 
-  const validate = ({ email, password }) => {
-    const newErrors = {};
-    if (!email) {
-      newErrors.email = "メールアドレスを入力してください";
-    }
+const validate = ({ email, password }) => {
+  const newErrors = {};
+  if (!email) {
+    newErrors.email = "メールアドレスを入力してください";
+  }
 
-    if (!password) {
-      newErrors.password = "パスワードを入力してください";
-    }
+  if (!password) {
+    newErrors.password = "パスワードを入力してください";
+  }
 
-    return newErrors;
-  };
+  return newErrors;
+};
 
-function Login({ user, onLogin }) {
+function Login() {
   const navigate = useNavigate();
+  const { data: user } = useUser();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [errors, setErrors] = useState({});
@@ -64,9 +66,8 @@ function Login({ user, onLogin }) {
               try {
                 const res = await createToken({ email, password });
                 if (res.data) {
-                  const { token, user } = res.data
+                  const { token } = res.data;
                   setToken(token);
-                  onLogin(user);
                   navigate("/items");
                 }
               } catch (e) {
@@ -74,7 +75,7 @@ function Login({ user, onLogin }) {
                   alert("メールアドレスかパスワードが正しくありません。");
                   return;
                 }
-                console.error(e)
+                console.error(e);
               }
             }}
           />

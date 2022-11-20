@@ -5,7 +5,7 @@ import PaymentTemplate from "components/templates/payment";
 import { checkout } from "services/api";
 import { useCart } from "hooks/useCart";
 
-function PaymentConfirmation({ user }) {
+function PaymentConfirmation() {
   const location = useLocation();
   const navigate = useNavigate();
   const { cart, clear, totalAmount } = useCart();
@@ -22,27 +22,26 @@ function PaymentConfirmation({ user }) {
   }
 
   return (
-    <Layout user={user}>
+    <Layout>
       <PaymentTemplate
         readOnly
         submitLabel="支払いを完了させる"
         defaultValue={defaultValue}
         onSubmit={async () => {
-          try {
-            const res = await checkout({
-              totalAmount,
-              products: defaultValue.codes.map((code) => {
-                return cart[code];
-              }),
-              shipmentInfo: defaultValue.userInfo.shipmentInfo,
-            });
-            if (res) {
-              clear()
-              navigate("/cart/payment/complete");
-            }
-          } catch (e) {
-            console.error(e);
-            return
+          const res = await checkout({
+            totalAmount,
+            products: defaultValue.codes.map((code) => {
+              return cart[code];
+            }),
+            shipmentInfo: defaultValue.userInfo.shipmentInfo,
+          });
+          if (res.data) {
+            clear();
+            navigate("/cart/payment/complete");
+          }
+
+          if (res.error) {
+            console.error(res.error)
           }
         }}
       />

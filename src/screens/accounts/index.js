@@ -5,14 +5,17 @@ import styles from "./index.module.css";
 import Button from "components/atoms/button";
 import Tooltip from "components/atoms/tooltip";
 import { BASE_URL } from "services/api";
+import { useUser } from "hooks/useUser";
 
-function Accounts({ user }) {
-  if (!user) {
-    return;
+function Accounts() {
+  const { data: user, isLoading } = useUser();
+
+  if (isLoading) {
+    return null;
   }
 
   return (
-    <Layout user={user}>
+    <Layout>
       <div className={styles.container}>
         <div className={styles.content}>
           <h2 className={styles.title}> アカウント</h2>

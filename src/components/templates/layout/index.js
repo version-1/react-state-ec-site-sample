@@ -1,11 +1,11 @@
 import style from "./index.module.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { IoCartOutline, IoPerson, IoEnterOutline } from "react-icons/io5";
 import DropDownMenu from "components/organisms/dropdown";
 import { clearToken } from "services/api";
 import icon from "assets/logo-dark.png";
 
-const dropdownMenuList = (navigate) => [
+const dropdownMenuList = () => [
   {
     key: "profile",
     to: "/accounts",
@@ -28,8 +28,7 @@ const dropdownMenuList = (navigate) => [
 ];
 
 const Layout = ({ guest, user, children }) => {
-  const navigate = useNavigate();
-  const items = dropdownMenuList(navigate);
+  const items = dropdownMenuList();
 
   return (
     <div className={style.container}>
@@ -103,7 +102,7 @@ const Layout = ({ guest, user, children }) => {
                   </Link>
                 </li>
                 <li className={style.iconMenuItem}>
-                  <Link to="/accounts/login" reloadDocument>
+                  <Link to="/login" reloadDocument>
                     <div className={style.iconMenuItemContent}>
                       <div>
                         <IoEnterOutline size={24} />

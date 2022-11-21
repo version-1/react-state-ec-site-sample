@@ -6,7 +6,7 @@ import Products from "components/templates/products";
 import Home from "screens/home";
 import Item from "screens/items";
 import Cart from "screens/cart";
-import Login from "screens/accounts/login";
+import Login from "screens/login";
 import Orders from "screens/accounts/orders";
 import Payment from "screens/cart/payment";
 import PaymentConfirmation from "screens/cart/payment/confirmation";
@@ -33,7 +33,7 @@ function App() {
         if (e.status === 403) {
           clearToken();
           const { hash } = window.location;
-          if (!hash.startsWith("#/accounts")) {
+          if (hash.startsWith("#/accounts")) {
             window.location.href = "#/items";
           }
           return;
@@ -71,19 +71,19 @@ function App() {
               element={<PaymentComplete user={user} />}
             />
           </Route>
+          <Route
+            path="/login"
+            element={
+              <Login
+                user={user}
+                onLogin={(user) => {
+                  setUser(user);
+                }}
+              />
+            }
+          />
           <Route path="/accounts">
             <Route path="" element={<Account user={user} />} />
-            <Route
-              path="login"
-              element={
-                <Login
-                  user={user}
-                  onLogin={(user) => {
-                    setUser(user);
-                  }}
-                />
-              }
-            />
             <Route path="orders" element={<Orders user={user} />} />
           </Route>
           <Route path="/items">

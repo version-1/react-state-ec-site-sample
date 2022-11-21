@@ -66,7 +66,9 @@ class HTTPClient {
 }
 
 const client = new HTTPClient({ token: localStorage.getItem(tokenKey) });
-const baseURL = (path) => "http://localhost:8080/api/v1" + path;
+
+export const BASE_URL = "http://localhost:8080"
+const baseURL = (path) => `${BASE_URL}/api/v1` + path;
 
 export const hasToken = (token) => {
   return !!localStorage.getItem(tokenKey, token);

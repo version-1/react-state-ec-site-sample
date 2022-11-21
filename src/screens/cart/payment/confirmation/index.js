@@ -15,7 +15,7 @@ function PaymentConfirmation({ user }) {
     if (!defaultValue) {
       navigate("/cart");
     }
-  }, [defaultValue]);
+  }, [defaultValue, navigate]);
 
   if (!defaultValue) {
     return null;

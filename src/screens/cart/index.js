@@ -85,7 +85,7 @@ function Cart({ user }) {
             onClick={() => {
               if (!user) {
                 alert("支払いを完了させるにはログインが必要です。")
-                navigate("/accounts/login");
+                navigate("/login");
                 return
               }
               navigate("/cart/payment");

@@ -149,13 +149,6 @@ export const useFilter = () => {
     [add]
   );
 
-  const get = useCallback(
-    (group) => {
-      return filters.find((it) => it.group === group);
-    },
-    [filters]
-  );
-
   return {
     data,
     meta,

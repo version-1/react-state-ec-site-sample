@@ -44,11 +44,15 @@ export const useFilter = () => {
   );
 
   const fetch = useCallback(
-    async (params = {}) => {
-      const _params = {
-        ...serializedFilters,
-        ...params,
-      };
+    async (params = {}, reset = false) => {
+      const _params = reset
+        ? {
+            ...params,
+          }
+        : {
+            ...serializedFilters,
+            ...params,
+          };
       const res = await fetchProducts(_params);
       if (!res.data) {
         return;
@@ -77,14 +81,14 @@ export const useFilter = () => {
   );
 
   const update = useCallback(
-    async (params) => {
+    async (params, reset = false) => {
       const _params = uniq(params);
       setFilters(_params);
 
       const serializedParams = serialize(_params);
       setSearchParams(qs.stringify(serializedParams));
 
-      await fetch(serializedParams);
+      await fetch(serializedParams, reset);
     },
     [fetch, setFilters, setSearchParams]
   );
@@ -99,7 +103,7 @@ export const useFilter = () => {
         group: "text",
         value: "",
       },
-    ]);
+    ], true);
   }, [update]);
 
   const has = useCallback(

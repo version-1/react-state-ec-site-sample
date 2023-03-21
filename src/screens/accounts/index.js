@@ -7,10 +7,6 @@ import Tooltip from "components/atoms/tooltip";
 import { BASE_URL } from "services/api";
 
 function Accounts({ user }) {
-  if (!user) {
-    return;
-  }
-
   return (
     <Layout user={user}>
       <div className={styles.container}>

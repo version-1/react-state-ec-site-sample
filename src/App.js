@@ -1,10 +1,10 @@
 import "./App.css";
 import { useEffect, useState } from "react";
 import { HashRouter, Routes, Route } from "react-router-dom";
-import Layout from "components/templates/layout";
-import Products from "components/templates/products";
+import Loader from "components/atoms/loader";
 import Home from "screens/home";
-import Item from "screens/items";
+import Item from "screens/items/show";
+import Items from "screens/items";
 import Cart from "screens/cart";
 import Login from "screens/login";
 import Orders from "screens/accounts/orders";
@@ -22,6 +22,7 @@ import {
 
 function App() {
   const [user, setUser] = useState();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const init = async () => {
@@ -43,16 +44,24 @@ function App() {
         alert("リクエストに失敗しました");
       });
 
-      if (hasToken) {
-        const res = await fetchUser();
-        if (res.data) {
-          setUser(res.data);
+      try {
+        if (hasToken) {
+          const res = await fetchUser();
+          if (res.data) {
+            setUser(res.data);
+          }
         }
+      } finally {
+        setLoading(false);
       }
     };
 
     init();
   }, [setUser]);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className="App">
@@ -87,38 +96,10 @@ function App() {
             <Route path="orders" element={<Orders user={user} />} />
           </Route>
           <Route path="/items">
-            <Route
-              path=""
-              element={
-                <Layout user={user}>
-                  <Products />
-                </Layout>
-              }
-            />
-            <Route
-              path="men"
-              element={
-                <Layout user={user}>
-                  <Products />
-                </Layout>
-              }
-            />
-            <Route
-              path="women"
-              element={
-                <Layout user={user}>
-                  <Products />
-                </Layout>
-              }
-            />
-            <Route
-              path="kids"
-              element={
-                <Layout user={user}>
-                  <Products />
-                </Layout>
-              }
-            />
+            <Route path="" element={<Items user={user} />} />
+            <Route path="men" element={<Items user={user} />} />
+            <Route path="women" element={<Items user={user} />} />
+            <Route path="kids" element={<Items user={user} />} />
             <Route path=":code" element={<Item user={user} />} />
           </Route>
         </Routes>

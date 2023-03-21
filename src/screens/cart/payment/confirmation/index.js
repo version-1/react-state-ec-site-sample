@@ -17,10 +17,6 @@ function PaymentConfirmation({ user }) {
     }
   }, [defaultValue, navigate]);
 
-  if (!defaultValue) {
-    return null;
-  }
-
   return (
     <Layout user={user}>
       <PaymentTemplate
@@ -37,12 +33,12 @@ function PaymentConfirmation({ user }) {
               shipmentInfo: defaultValue.userInfo.shipmentInfo,
             });
             if (res) {
-              clear()
+              clear();
               navigate("/cart/payment/complete");
             }
           } catch (e) {
             console.error(e);
-            return
+            return;
           }
         }}
       />

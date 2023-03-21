@@ -27,95 +27,101 @@ const dropdownMenuList = () => [
   },
 ];
 
-const Layout = ({ guest, user, children }) => {
+const Header = ({ guest, user }) => {
   const items = dropdownMenuList();
 
   return (
-    <div className={style.container}>
-      <header className={style.header}>
-        <div className={style.logoContainer}>
-          <Link to="/">
-            <img src={icon} alt="Button" />
-          </Link>
+    <header className={style.header}>
+      <div className={style.logoContainer}>
+        <Link to="/">
+          <img src={icon} alt="Button" />
+        </Link>
+      </div>
+      {guest ? null : (
+        <div className={style.menu}>
+          <ul className={style.menuList}>
+            <li className={style.menuItem}>
+              <Link className={style.menuItemText} to="/items/women">
+                Women
+              </Link>
+            </li>
+            <li className={style.menuItem}>
+              <Link className={style.menuItemText} to="/items/men">
+                Men
+              </Link>
+            </li>
+            <li className={style.menuItem}>
+              <Link className={style.menuItemText} to="/items/kids">
+                Kids
+              </Link>
+            </li>
+          </ul>
         </div>
-        {guest ? null : (
-          <div className={style.menu}>
-            <ul className={style.menuList}>
-              <li className={style.menuItem}>
-                <Link className={style.menuItemText} to="/items/women">
-                  Women
+      )}
+      {guest ? null : (
+        <div className={style.iconMenu}>
+          {user ? (
+            <ul className={style.iconMenuList}>
+              <li className={style.iconMenuItem}>
+                <Link to="/cart">
+                  <div className={style.iconMenuItemContent}>
+                    <div>
+                      <IoCartOutline size={24} />
+                    </div>
+                    <p>カート</p>
+                  </div>
                 </Link>
               </li>
-              <li className={style.menuItem}>
-                <Link className={style.menuItemText} to="/items/men">
-                  Men
+              <li className={style.iconMenuItem}>
+                <div className={style.iconMenuItemContent}>
+                  <DropDownMenu
+                    trigger={
+                      <>
+                        <div>
+                          <IoPerson size={24} />
+                        </div>
+                        <p>アカウント</p>
+                      </>
+                    }
+                    items={items}
+                  />
+                </div>
+              </li>
+            </ul>
+          ) : (
+            <ul className={style.iconMenuList}>
+              <li className={style.iconMenuItem}>
+                <Link to="/cart" reloadDocument>
+                  <div className={style.iconMenuItemContent}>
+                    <div>
+                      <IoCartOutline size={24} />
+                    </div>
+                    <p>カート</p>
+                  </div>
                 </Link>
               </li>
-              <li className={style.menuItem}>
-                <Link className={style.menuItemText} to="/items/kids">
-                  Kids
+              <li className={style.iconMenuItem}>
+                <Link to="/login" reloadDocument>
+                  <div className={style.iconMenuItemContent}>
+                    <div>
+                      <IoEnterOutline size={24} />
+                    </div>
+                    <p>ログイン</p>
+                  </div>
                 </Link>
               </li>
             </ul>
-          </div>
-        )}
-        {guest ? null : (
-          <div className={style.iconMenu}>
-            {user ? (
-              <ul className={style.iconMenuList}>
-                <li className={style.iconMenuItem}>
-                  <Link to="/cart">
-                    <div className={style.iconMenuItemContent}>
-                      <div>
-                        <IoCartOutline size={24} />
-                      </div>
-                      <p>カート</p>
-                    </div>
-                  </Link>
-                </li>
-                <li className={style.iconMenuItem}>
-                  <div className={style.iconMenuItemContent}>
-                    <DropDownMenu
-                      trigger={
-                        <>
-                          <div>
-                            <IoPerson size={24} />
-                          </div>
-                          <p>アカウント</p>
-                        </>
-                      }
-                      items={items}
-                    />
-                  </div>
-                </li>
-              </ul>
-            ) : (
-              <ul className={style.iconMenuList}>
-                <li className={style.iconMenuItem}>
-                  <Link to="/cart" reloadDocument>
-                    <div className={style.iconMenuItemContent}>
-                      <div>
-                        <IoCartOutline size={24} />
-                      </div>
-                      <p>カート</p>
-                    </div>
-                  </Link>
-                </li>
-                <li className={style.iconMenuItem}>
-                  <Link to="/login" reloadDocument>
-                    <div className={style.iconMenuItemContent}>
-                      <div>
-                        <IoEnterOutline size={24} />
-                      </div>
-                      <p>ログイン</p>
-                    </div>
-                  </Link>
-                </li>
-              </ul>
-            )}
-          </div>
-        )}
-      </header>
+          )}
+        </div>
+      )}
+    </header>
+  );
+};
+
+const Layout = ({ guest, user, children }) => {
+  return (
+    <div className={style.container}>
+      <Header user={user} guest={guest} />
       {children}
     </div>
   );

@@ -36,7 +36,7 @@ function Cart() {
   }, [cart, codes, location]);
 
   return (
-    <Layout>
+    <Layout publicPage>
       <div className={styles.container}>
         <h2 className={styles.title}>カート</h2>
         <div className={styles.content}>

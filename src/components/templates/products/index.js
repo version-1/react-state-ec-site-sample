@@ -11,7 +11,7 @@ import style from "./index.module.css";
 const Products = () => {
   const { hash, pathname } = useLocation();
   const filterContextValue = useFilter();
-  const { data, fetch, filters, meta, update, paginate } = filterContextValue;
+  const { data, fetch, filters, meta, update } = filterContextValue;
 
   useEffect(() => {
     fetch();
@@ -44,7 +44,7 @@ const Products = () => {
           value: "",
         },
         defaultFilter,
-        ..._filters
+        ..._filters,
       ]);
     }
   }, [pathname, hash]);

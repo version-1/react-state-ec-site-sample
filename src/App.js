@@ -2,13 +2,13 @@ import "./App.css";
 import { useCallback, useEffect, useState } from "react";
 import { HashRouter, Routes, Route } from "react-router-dom";
 import { AuthContext } from "contexts";
-import Layout from "components/templates/layout";
-import Products from "components/templates/products";
+import Loader from "components/atoms/loader";
 import Home from "screens/home";
-import Item from "screens/items";
 import Cart from "screens/cart";
 import Login from "screens/login";
 import Orders from "screens/accounts/orders";
+import Items from "screens/items";
+import Item from "screens/items/show";
 import Payment from "screens/cart/payment";
 import PaymentConfirmation from "screens/cart/payment/confirmation";
 import PaymentComplete from "screens/cart/payment/complete";
@@ -26,6 +26,7 @@ function App() {
     user: undefined,
     isLogin: false,
   });
+  const [loading, setLoading] = useState(true);
 
   const updateAuth = useCallback(
     (value) =>
@@ -67,16 +68,24 @@ function App() {
         alert("リクエストに失敗しました");
       });
 
-      if (hasToken) {
-        const res = await fetchUser();
-        if (res.data) {
-          login(res.data);
+      try {
+        if (hasToken) {
+          const res = await fetchUser();
+          if (res.data) {
+            login(res.data);
+          }
         }
+      } finally {
+        setLoading(false);
       }
     };
 
     init();
   }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className="App">
@@ -105,38 +114,10 @@ function App() {
               <Route path="orders" element={<Orders />} />
             </Route>
             <Route path="/items">
-              <Route
-                path=""
-                element={
-                  <Layout publicPage>
-                    <Products />
-                  </Layout>
-                }
-              />
-              <Route
-                path="men"
-                element={
-                  <Layout publicPage>
-                    <Products />
-                  </Layout>
-                }
-              />
-              <Route
-                path="women"
-                element={
-                  <Layout publicPage>
-                    <Products />
-                  </Layout>
-                }
-              />
-              <Route
-                path="kids"
-                element={
-                  <Layout publicPage>
-                    <Products />
-                  </Layout>
-                }
-              />
+              <Route path="" element={<Items />} />
+              <Route path="men" element={<Items />} />
+              <Route path="women" element={<Items />} />
+              <Route path="kids" element={<Items />} />
               <Route path=":code" element={<Item />} />
             </Route>
           </Routes>

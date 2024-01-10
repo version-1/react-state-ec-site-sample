@@ -1,6 +1,7 @@
+import { useContext } from "react";
 import style from "./index.module.css";
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
-import { useFilter } from "hooks/useFilter";
+import { FilterContext } from "contexts";
 
 const calcIndex = ({ totalCount, limit }) => {
   const res = [];
@@ -19,9 +20,8 @@ const calcIndex = ({ totalCount, limit }) => {
 
   return res;
 };
-
 const Pagination = () => {
-  const { meta = {}, paginate } = useFilter();
+  const { meta = {}, paginate } = useContext(FilterContext);
   const { page, maxPage, totalCount, limit } = meta;
   const pagination = calcIndex({ totalCount, limit });
 

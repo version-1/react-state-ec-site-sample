@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import Dropdown from "components/atoms/select";
 import TagList from "components/molecules/tagList";
 import SelectList from "components/molecules/selectList";
@@ -11,10 +12,18 @@ import {
 } from "models/filter";
 import SidebarSection from "components/organisms/section";
 import style from "./index.module.css";
-import { useFilter } from "hooks/useFilter";
+import { FilterContext } from "contexts";
 
 const Sidebar = () => {
-  const { filters, tags, search, reset, has, add, remove } = useFilter();
+  const {
+    filters,
+    tags,
+    search,
+    reset,
+    has,
+    add,
+    remove,
+  } = useContext(FilterContext);
   const searchText = filters.find((el) => el.group === "text")?.value;
   const sortType = filters.find((el) => el.group === "sortType");
 

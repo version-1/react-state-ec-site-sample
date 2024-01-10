@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import Layout from "components/templates/layout";
 import { TextField } from "components/atoms/textField";
 import PaymentCard from "components/molecules/paymentCard";
@@ -6,9 +5,19 @@ import styles from "./index.module.css";
 import Button from "components/atoms/button";
 import Tooltip from "components/atoms/tooltip";
 import { BASE_URL } from "services/api";
+import { useUser } from "hooks/useUser";
+import Loader from "components/atoms/loader";
 
 function Accounts() {
-  const { user } = useSelector((state) => state.auth);
+  const { data: user, isLoading } = useUser();
+
+  if (isLoading) {
+    return (
+      <Layout>
+        <Loader />
+      </Layout>
+    );
+  }
 
   return (
     <Layout>

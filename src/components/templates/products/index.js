@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from "react";
+import { FilterContext } from "contexts";
 import ProductList from "components/organisms/productList";
 import Pagination from "components/organisms/pagination";
 import Sidebar from "components/templates/sidebar";
@@ -19,24 +20,26 @@ const Products = () => {
   }, [meta]);
 
   return (
-    <section className={style.content}>
-      <div className={style.main}>
-        <Sidebar />
-        <div className={style.products}>
-          <div className={style.productsHeader}>
-            <div>
-              <p>
-                {count} / {meta?.totalCount} 件
-              </p>
+    <FilterContext.Provider value={filterContextValue}>
+      <section className={style.content}>
+        <div className={style.main}>
+          <Sidebar />
+          <div className={style.products}>
+            <div className={style.productsHeader}>
+              <div>
+                <p>
+                  {count} / {meta?.totalCount} 件
+                </p>
+              </div>
+              <div>
+                <Pagination />
+              </div>
             </div>
-            <div>
-              <Pagination />
-            </div>
+            <ProductList products={data} />
           </div>
-          <ProductList products={data} />
         </div>
-      </div>
-    </section>
+      </section>
+    </FilterContext.Provider>
   );
 };
 

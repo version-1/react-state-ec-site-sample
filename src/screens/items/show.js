@@ -165,8 +165,7 @@ function Item() {
                         ? (sizes[size.value] || 0) > 0
                         : true;
 
-                      return (
-                        <div
+                      return ( <div
                           key={size.value}
                           className={styles.sizeContainer}
                           onClick={() => {

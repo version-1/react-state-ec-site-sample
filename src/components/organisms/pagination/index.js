@@ -1,5 +1,7 @@
+import { useContext } from "react";
 import style from "./index.module.css";
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
+import { FilterContext } from "contexts";
 
 const calcIndex = ({ totalCount, limit }) => {
   const res = [];
@@ -18,8 +20,9 @@ const calcIndex = ({ totalCount, limit }) => {
 
   return res;
 };
-
-const Pagination = ({ page, maxPage, totalCount, limit, onClick }) => {
+const Pagination = () => {
+  const { meta = {}, paginate } = useContext(FilterContext);
+  const { page, maxPage, totalCount, limit } = meta;
   const pagination = calcIndex({ totalCount, limit });
 
   return (
@@ -29,7 +32,7 @@ const Pagination = ({ page, maxPage, totalCount, limit, onClick }) => {
           <IoChevronBack
             size={24}
             onClick={() => {
-              onClick(page - 1);
+              paginate(page - 1);
             }}
           />
         </li>
@@ -45,7 +48,7 @@ const Pagination = ({ page, maxPage, totalCount, limit, onClick }) => {
                 : undefined,
             ].join(" ")}
           >
-            <p onClick={() => onClick(index + 1)}>{item.label}</p>
+            <p onClick={() => paginate(index + 1)}>{item.label}</p>
           </li>
         );
       })}
@@ -54,7 +57,7 @@ const Pagination = ({ page, maxPage, totalCount, limit, onClick }) => {
           <IoChevronForward
             size={24}
             onClick={() => {
-              onClick(page + 1);
+              paginate(page + 1);
             }}
           />
         </li>
